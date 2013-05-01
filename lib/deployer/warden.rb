@@ -20,6 +20,10 @@ Warden::Strategies.add(:apikey) do
     end
   end
 
+  def store?
+    false
+  end
+
 private
 
   def uid
