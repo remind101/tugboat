@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# Expects the following environment variables to be set:
+#
+# $SSH_KEY: Private key to use when deploying.
+# $REPO:    The repo to deploy.
+# $BRANCH:  The branch to checkout. Or...
+# $SHA:     A SHA1 hash to checkout.
+# $APP:     Name of the Heroku app to deploy to.
+
+SSH_KEY_FILE="$(tempfile)"
+echo "$SSH_KEY" > "$SSH_KEY_FILE"
+export SSH_KEY="$SSH_KEY_FILE"
+
+# Use a shimmed ssh command.
+export GIT_SSH="$HOME/bin/ssh"
+
+# Work in a temp directory.
+cd $(mktemp -d)
+
+# Checkout the repo.
+git init .
+git remote add origin "$REPO"
+git fetch -q origin
+
+if [ ! -z "$BRANCH" ]; then
+    git reset -q --hard "origin/$BRANCH"
+elif [ ! -z "$SHA" ]; then
+    git reset -q --hard "$SHA"
+fi
+
+# Deploy the repo to Heroku.
+git push "git@heroku.com:$APP.git" HEAD:master
