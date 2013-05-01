@@ -4,6 +4,7 @@ Bundler.require :default
 require './deploy'
 
 class API < Grape::API
+  logger Logger.new(STDOUT)
   version 'v1', using: :header, vendor: 'heroku'
   format :json
 
