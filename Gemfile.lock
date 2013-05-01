@@ -52,6 +52,7 @@ GEM
       rack (>= 0.4)
     rack-mount (0.8.3)
       rack (>= 1.0.0)
+    rake (10.0.4)
     redis (3.0.4)
     rest (2.6.0)
       rest-client (>= 0.3.0)
@@ -84,6 +85,7 @@ DEPENDENCIES
   heroku-api
   iron_worker_ng
   pg (~> 0.15.1)
+  rake
   redis
   shotgun
   thin

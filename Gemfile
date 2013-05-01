@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'rake'
 gem 'grape'
 gem 'thin'
 gem 'iron_worker_ng'

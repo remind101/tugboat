@@ -6,6 +6,19 @@ module Deployer
 
     helpers do
       delegate :iron_worker, to: Deployer
+      delegate :authenticated?, :authenticate!, to: :warden
+
+      def deploy(*args)
+        iron_worker.tasks.create('Deploy', *args)
+      end
+
+      def warden
+        env['warden']
+      end
+
+      def session
+        env['rack.session']
+      end
     end
 
     desc 'Deploy a git repo to a Heroku app.'
@@ -15,7 +28,8 @@ module Deployer
       optional :notify, type: String
     end
     post do
-      iron_worker.tasks.create('Deploy', params)
+      authenticate!
+      deploy(params)
     end
   end
 end

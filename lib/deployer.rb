@@ -4,6 +4,8 @@ require 'active_support/core_ext'
 
 require 'deployer/warden'
 
+autoload :User, 'deployer/models/user'
+
 module Deployer
   autoload :API, 'deployer/api'
 
@@ -35,7 +37,14 @@ module Deployer
         secret: ENV['COOKIE_SECRET'].to_s
 
       use Warden::Manager do |config|
-        config.failure_app = lambda { |e| Rack::Resposne.new("Can't login", 401).finish }
+        config.failure_app = lambda do |env|
+          [
+            401,
+            { 'Content-Type' => 'application/json' },
+            [ { error: 'Unauthorized' }.to_json ]
+          ]
+        end
+        config.default_strategies :apikey
       end
 
       run API
