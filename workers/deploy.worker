@@ -1,0 +1,4 @@
+runtime 'node'
+exec 'deploy.js'
+dir '../bin'
+name 'Deploy'
