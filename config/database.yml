@@ -1,0 +1,9 @@
+development:
+  adapter: postgresql
+  host: localhost
+  database: heroku-deployer-dev
+
+test:
+  adapter: postgresql
+  host: localhost
+  database: heroku-deployer-test
