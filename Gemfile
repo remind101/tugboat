@@ -2,8 +2,10 @@ source 'https://rubygems.org'
 
 gem 'grape'
 gem 'thin'
-gem 'sidekiq'
+gem 'redis'
+gem 'iron_worker_ng'
 
 group :development do
+  gem 'dotenv'
   gem 'foreman'
 end

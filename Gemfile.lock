@@ -6,15 +6,10 @@ GEM
       multi_json (~> 1.0)
     backports (2.6.7)
     builder (3.2.0)
-    celluloid (0.12.4)
-      facter (>= 1.6.12)
-      timers (>= 1.0.0)
-    connection_pool (1.0.0)
     daemons (1.1.9)
     descendants_tracker (0.0.1)
     dotenv (0.7.0)
     eventmachine (1.0.3)
-    facter (1.6.18)
     foreman (0.63.0)
       dotenv (>= 0.7)
       thor (>= 0.13.6)
@@ -30,6 +25,13 @@ GEM
       virtus
     hashie (2.0.4)
     i18n (0.6.1)
+    iron_core (0.6.1)
+      rest (>= 2.2.0)
+    iron_worker_ng (0.16.4)
+      bundler (>= 1.2.0)
+      iron_core (>= 0.5.1)
+      rubyzip (>= 0.9.9)
+    mime-types (1.23)
     multi_json (1.7.2)
     multi_xml (0.5.3)
     rack (1.5.2)
@@ -38,20 +40,16 @@ GEM
     rack-mount (0.8.3)
       rack (>= 1.0.0)
     redis (3.0.3)
-    redis-namespace (1.2.1)
-      redis (~> 3.0.0)
-    sidekiq (2.6.4)
-      celluloid (~> 0.12.0)
-      connection_pool (~> 1.0)
-      multi_json (~> 1)
-      redis (~> 3)
-      redis-namespace
+    rest (2.6.0)
+      rest-client (>= 0.3.0)
+    rest-client (1.6.7)
+      mime-types (>= 1.16)
+    rubyzip (0.9.9)
     thin (1.5.1)
       daemons (>= 1.0.9)
       eventmachine (>= 0.12.6)
       rack (>= 1.0.0)
     thor (0.18.1)
-    timers (1.1.0)
     virtus (0.5.4)
       backports (~> 2.6.1)
       descendants_tracker (~> 0.0.1)
@@ -60,7 +58,9 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  dotenv
   foreman
   grape
-  sidekiq
+  iron_worker_ng
+  redis
   thin
