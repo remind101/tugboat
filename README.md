@@ -17,7 +17,7 @@ Accept: application/json
 
 ```json
 {
-  "repo": "git@:<github token>@github.com/org/repo.git",
+  "repo": "git://:<github token>@github.com/org/repo.git",
   "app": "repo-production"
 }
 ```
