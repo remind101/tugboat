@@ -21,6 +21,4 @@ function parse_payload(args) {
     return JSON.parse(fs.readFileSync(args[payloadIndex], 'ascii'))
 }
 
-module.exports.parse = function(args) {
-    return parse_payload(args)
-}
+module.exports = parse_payload(process.argv)
