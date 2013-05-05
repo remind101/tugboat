@@ -1,7 +1,7 @@
 # Heroku Deployer
 
 Rest API for deploying git repositories to heroku. You give it a uri to a git
-repository, the name of an app, and a heroku api key, and it will deploy the
+repository, the name of an app, a heroku api key, and your ssh key, and it will deploy the
 repo to the app.
 
 ## Deploy
@@ -18,7 +18,12 @@ Accept: application/json
 ```json
 {
   "repo": "git://:<github token>@github.com/org/repo.git",
-  "app": "repo-production"
+  "app": "repo-production",
+  "ssh_key": "-----BEGIN RSA PRIVATE KEY-----
+MIICWwIBAAKBgQCZnC8N6fZzNarpy8NnfUPD/yhZenV3HWL4r9NX6Q7fU0OQRO5q
+...
+xVmHSNtxaaAf7BaJ9vMzzqPa4CZKioHEsl3DWSRWuA==
+-----END RSA PRIVATE KEY-----"
 }
 ```
 
