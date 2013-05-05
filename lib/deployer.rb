@@ -21,7 +21,7 @@ module Deployer
   # StringInquirer for RACK_ENV
   #
   # Example
-  # 
+  #
   #   env.production?
   #   # => true
   def self.env

@@ -13,9 +13,13 @@ Warden::Strategies.add(:apikey) do
   end
 
   def authenticate!
-    if user = User.where(uid: uid).first_or_create
-      success! user
-    else
+    begin
+      if user = User.where(uid: uid).first_or_create
+        success! user
+      else
+        fail!
+      end
+    rescue Heroku::API::Errors::Unauthorized
       fail!
     end
   end
