@@ -15,8 +15,5 @@ module Deployer
   end
 
   def self.setup
-    config = YAML.load Pathname('../../config/database.yml').expand_path(__FILE__).read
-    ActiveRecord::Base.configurations = config
-    ActiveRecord::Base.establish_connection(ENV['RACK_ENV'])
   end
 end

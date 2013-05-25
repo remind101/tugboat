@@ -1,7 +1,6 @@
 #!/usr/bin/env rake
 
 require 'bundler/setup'
-require 'micro_migrations'
 require 'deployer'
 
 desc 'Start an irb session'

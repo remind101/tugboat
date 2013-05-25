@@ -11,13 +11,11 @@ gem 'activesupport', '~> 3.2.13', require: 'active_support'
 gem 'grape',        '~> 0.4.1'
 gem 'grape-entity', '~> 0.3.0'
 
-# Database
-gem 'pg',           '~> 0.15.1'
-gem 'activerecord', '~> 3.2.13', require: 'active_record'
+# Persistence
+gem 'redis'
 
 group :development do
   gem 'rails', '~> 3.2.13'
-  gem 'micro_migrations', git: 'https://gist.github.com/2087829.git'
   gem 'dotenv'
   gem 'shotgun'
   gem 'foreman'
