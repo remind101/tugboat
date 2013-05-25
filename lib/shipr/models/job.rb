@@ -30,6 +30,10 @@ class Job
     self.uuid ||= UUID.new.generate
   end
 
+  after_create do
+    tasks.create 'Deploy', task_params
+  end
+
   # ===========
   # = Methods =
   # ===========
@@ -49,6 +53,10 @@ class Job
   end
 
 private
+
+  def task_params
+    { uuid: uuid, env: attributes.slice(:repo, :environment) }
+  end
 
   def key
     "#{self.class.to_s}:#{uuid}"

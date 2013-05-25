@@ -2,6 +2,11 @@ require 'spec_helper'
 
 describe Job do
   let(:redis) { Redis.any_instance }
+  let(:iron_worker) { IronWorkerNG::Client.any_instance }
+
+  before do
+    iron_worker.stub_chain :tasks, :create
+  end
 
   describe '#create' do
     subject(:job) { described_class.create(args) }
