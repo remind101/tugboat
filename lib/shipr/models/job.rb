@@ -39,11 +39,11 @@ class Job
   # ===========
 
   def self.create(*args)
-    job = new(*args)
-    job.run_callbacks :create do
-      job.save
+    new(*args).tap do |job|
+      job.run_callbacks :create do
+        job.save
+      end
     end
-    job
   end
 
   def save
