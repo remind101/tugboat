@@ -1,9 +1,13 @@
-development:
-  adapter: postgresql
-  host: localhost
-  database: heroku-deployer-dev
-
 test:
   adapter: postgresql
-  host: localhost
-  database: heroku-deployer-test
+  database: deployer_test
+  encoding: utf8
+  pool: 5
+  min_messages: warning
+
+development:
+  adapter: postgresql
+  database: deployer_development
+  encoding: utf8
+  pool: 5
+  min_messages: warning

@@ -1,9 +1,14 @@
 ENV['RACK_ENV'] ||= 'development'
 
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
-require 'deployer'
+require 'bundler/setup'
+Bundler.require :default, ENV['RACK_ENV']
 
-if Deployer.env.development?
+begin
   require 'dotenv'
   Dotenv.load
+rescue LoadError
+  # We don't use dotenv on production
 end
+
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+require 'deployer'
