@@ -4,21 +4,15 @@ class Job
   # = Delegation =
   # ==============
 
-  delegate :iron_worker, to: Deployer
-  delegate :tasks,       to: :iron_worker
-
-  # =============
-  # = Callbacks =
-  # =============
-
-  after_create :deploy
+  delegate :iron_worker, :redis, to: Deployer
+  delegate :tasks, to: :iron_worker
 
   # ===========
   # = Methods =
   # ===========
 
-  def deploy
-    tasks.create('Deploy', attributes)
+  def self.create(*args)
+    # TODO
   end
 
 end
