@@ -1,6 +1,8 @@
 require 'pathname'
 require 'active_support/core_ext'
 
+autoload :Job, 'deployer/models/job'
+
 module Deployer
   autoload :API, 'deployer/api'
 

@@ -8,7 +8,7 @@ module Deployer
       delegate :iron_worker, to: Deployer
 
       def deploy(*args)
-        iron_worker.tasks.create('Deploy', *args)
+        Job.create(*args)
       end
     end
 
@@ -20,7 +20,7 @@ module Deployer
         type: String
     end
     post do
-      deploy(declared params)
+      present deploy(declared params)
     end
   end
 end
