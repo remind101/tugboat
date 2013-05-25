@@ -1,11 +1,11 @@
-module Deployer
+module Shipr
   class API < Grape::API
-    logger Deployer.logger
-    version 'v1', using: :header, vendor: 'deployer'
+    logger Shipr.logger
+    version 'v1', using: :header, vendor: 'shipr'
     format :json
 
     helpers do
-      delegate :iron_worker, to: Deployer
+      delegate :iron_worker, to: Shipr
 
       def deploy(*args)
         Job.create(*args)

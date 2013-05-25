@@ -1,10 +1,10 @@
 require 'pathname'
 require 'active_support/core_ext'
 
-autoload :Job, 'deployer/models/job'
+autoload :Job, 'shipr/models/job'
 
-module Deployer
-  autoload :API, 'deployer/api'
+module Shipr
+  autoload :API, 'shipr/api'
 
   def self.redis=(redis)
     @redis = redis

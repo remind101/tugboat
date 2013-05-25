@@ -1,4 +1,4 @@
-# Heroku Deployer
+# Shipr
 
 Rest API for deploying git repositories. You give it a path to a git repo
 and an environment to deploy to and it will clone the repo, then run
@@ -7,7 +7,7 @@ and an environment to deploy to and it will clone the repo, then run
 
 ## Deploy
 
-Deploy a git repo to a heroku app.
+Deploy a repo.
 
 **Request**
 

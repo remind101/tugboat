@@ -1,7 +1,7 @@
 #!/usr/bin/env rake
 
 require 'bundler/setup'
-require 'deployer'
+require 'shipr'
 
 desc 'Start an irb session'
 task :console do
