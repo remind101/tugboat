@@ -20,8 +20,7 @@ module Deployer
         type: String
     end
     post do
-      authenticate!
-      deploy(params)
+      deploy(declared params)
     end
   end
 end
