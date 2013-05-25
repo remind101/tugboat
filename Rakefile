@@ -1,7 +1,6 @@
 #!/usr/bin/env rake
 
-require 'bundler/setup'
-require 'shipr'
+require File.expand_path('../config/environment', __FILE__)
 
 desc 'Start an irb session'
 task :console do

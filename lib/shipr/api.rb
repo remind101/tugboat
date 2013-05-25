@@ -19,7 +19,7 @@ module Shipr
       requires :environment,
         type: String
     end
-    post do
+    post :deploy do
       present deploy(declared params)
     end
   end

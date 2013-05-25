@@ -4,8 +4,11 @@ gem 'rake'
 gem 'unicorn', '~> 4.6.2'
 
 # Support
-gem 'iron_worker_ng'
-gem 'activesupport', '~> 3.2.13', require: 'active_support'
+gem 'iron_worker_ng', '~> 0.16.4'
+gem 'uuid'
+gem 'virtus',         '~> 0.5.4'
+gem 'activesupport',  '~> 3.2.13', require: 'active_support'
+gem 'activemodel',    '~> 3.2.13', require: 'active_model'
 
 # API
 gem 'grape',        '~> 0.4.1'
@@ -23,6 +26,5 @@ end
 
 group :test do
   gem 'rspec'
-  gem 'database_cleaner'
   gem 'rack-test'
 end
