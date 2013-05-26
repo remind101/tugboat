@@ -90,19 +90,14 @@ private
     def iron_mq
       { credentials: {
           token: ENV['IRON_MQ_TOKEN'],
-          project_id: ENV['IRON_MQ_PROJECT_ID'] },
-        queue: queue }
+          project_id: ENV['IRON_MQ_PROJECT_ID'] } }
     end
 
     def env
-      { 'REPO'               => repo,
-        'TREEISH'            => treeish,
-        'ENVIRONMENT'        => environment,
-        'SSH_KEY'            => ENV['SSH_KEY'] }
-    end
-
-    def queue
-      'progress'
+      { 'REPO'        => repo,
+        'TREEISH'     => treeish,
+        'ENVIRONMENT' => environment,
+        'SSH_KEY'     => ENV['SSH_KEY'] }
     end
 
   end
