@@ -43,7 +43,7 @@ describe Job do
 
     it 'sets a key in redis to the attributes' do
       redis.should_receive(:set)
-        .with('Job:foo', kind_of(Hash))
+        .with('Job:foo', kind_of(String))
       save
     end
   end
