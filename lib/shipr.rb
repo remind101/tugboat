@@ -11,11 +11,21 @@ module Shipr
   end
 
   def self.redis
-    @redis ||= Redis.new
+    @redis ||= begin
+      if url = ENV['REDIS_URL']
+        Redis.new(url)
+      else
+        Redis.new
+      end
+    end
   end
 
-  def self.iron_worker
-    @iron_worker ||= IronWorkerNG::Client.new
+  def self.workers
+    @workers ||= IronWorkerNG::Client.new
+  end
+
+  def self.messages
+    @messages ||= IronMQ::Client.new
   end
 
   def self.logger

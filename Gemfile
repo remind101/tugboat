@@ -5,6 +5,7 @@ gem 'unicorn', '~> 4.6.2'
 
 # Support
 gem 'iron_worker_ng', '~> 0.16.4'
+gem 'iron_mq',        '~> 4.0.3'
 gem 'uuid'
 gem 'virtus',         '~> 0.5.4'
 gem 'activesupport',  '~> 3.2.13', require: 'active_support'

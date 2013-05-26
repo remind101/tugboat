@@ -58,6 +58,8 @@ GEM
     i18n (0.6.1)
     iron_core (0.6.2)
       rest (>= 2.2.0)
+    iron_mq (4.0.3)
+      iron_core (>= 0.5.1)
     iron_worker_ng (0.16.4)
       bundler (>= 1.2.0)
       iron_core (>= 0.5.1)
@@ -157,6 +159,7 @@ DEPENDENCIES
   foreman
   grape (~> 0.4.1)
   grape-entity (~> 0.3.0)
+  iron_mq (~> 4.0.3)
   iron_worker_ng (~> 0.16.4)
   rack-test
   rails (~> 3.2.13)

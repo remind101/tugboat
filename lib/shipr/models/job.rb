@@ -13,12 +13,12 @@ class Job
   # ==============
 
   class << self
-    delegate :iron_worker, :redis, to: Shipr
-    delegate :tasks,               to: :iron_worker
+    delegate :workers, :redis,   to: Shipr
+    delegate :tasks,             to: :workers
   end
 
-  delegate :iron_worker, :redis,   to: self
-  delegate :tasks,                 to: self
+  delegate :iron_worker, :redis, to: self
+  delegate :tasks,               to: self
 
   # =============
   # = Callbacks =
@@ -55,7 +55,15 @@ class Job
 private
 
   def task_params
-    { uuid: uuid, env: attributes.slice(:repo, :environment) }
+    { uuid: uuid, env: task_env }
+  end
+
+  def task_env
+    { 'REPO'               => repo,
+      'ENVIRONMENT'        => environment,
+      'SSH_KEY'            => ENV['SSH_KEY'],
+      'IRON_MQ_PROJECT_ID' => ENV['IRON_MQ_PROJECT_ID'],
+      'IRON_MQ_TOKEN'      => ENV['IRON_MQ_TOKEN'] }
   end
 
   def key
