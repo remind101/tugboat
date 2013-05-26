@@ -1,3 +1,5 @@
 #!/bin/bash
 
 echo "Deploying to $ENVIRONMENT"
+
+git push git@heroku.com:heroku-deployer.git HEAD:master
