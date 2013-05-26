@@ -2,11 +2,8 @@ require 'open3'
 require 'json'
 require 'iron_mq'
 
-client = IronMQ::Client.new \
-  token: params['env']['IRON_MQ_TOKEN'],
-  project_id: params['env']['IRON_MQ_PROJECT_ID']
-
-queue = client.queue('progress')
+client = IronMQ::Client.new params['iron_mq']['credentials']
+queue  = client.queue params['iron_mq']['queue']
 
 Open3.popen2e(params['env'], 'deploy') do |stdin, output, wait_thr|
   output.each do |line|

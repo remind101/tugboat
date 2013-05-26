@@ -33,7 +33,7 @@ describe Job do
 
     it 'sets a key in redis to the attributes' do
       redis.should_receive(:set)
-        .with('Job:foo', uuid: 'foo', repo: 'bar', treeish: 'master', environment: nil)
+        .with('Job:foo', uuid: 'foo', repo: 'bar', treeish: 'master', environment: 'production')
       save
     end
   end

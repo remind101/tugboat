@@ -81,18 +81,30 @@ private
       tasks.create 'Deploy', params
     end
 
+  private
+
     def params
-      { uuid: uuid, env: env }
+      { uuid: uuid, iron_mq: iron_mq, env: env }
+    end
+
+    def iron_mq
+      { credentials: {
+          token: ENV['IRON_MQ_TOKEN'],
+          project_id: ENV['IRON_MQ_PROJECT_ID'] },
+        queue: queue }
     end
 
     def env
       { 'REPO'               => repo,
         'TREEISH'            => treeish,
         'ENVIRONMENT'        => environment,
-        'SSH_KEY'            => ENV['SSH_KEY'],
-        'IRON_MQ_PROJECT_ID' => ENV['IRON_MQ_PROJECT_ID'],
-        'IRON_MQ_TOKEN'      => ENV['IRON_MQ_TOKEN'] }
+        'SSH_KEY'            => ENV['SSH_KEY'] }
     end
+
+    def queue
+      'progress'
+    end
+
   end
 
 end
