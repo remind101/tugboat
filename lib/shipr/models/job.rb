@@ -30,7 +30,7 @@ class Job
   end
 
   after_create do
-    DeployTask.new(self).create
+    DeployTask.create(self)
   end
 
   # ===========
@@ -74,6 +74,8 @@ private
     # ===========
     # = Methods =
     # ===========
+
+    def self.create(*args); new(*args).create end
 
     def create
       tasks.create 'Deploy', params
