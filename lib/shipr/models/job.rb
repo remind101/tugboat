@@ -6,6 +6,7 @@ class Job
 
   attribute :uuid, String
   attribute :repo, String
+  attribute :treeish, String, default: 'master'
   attribute :environment, String
 
   # ==============
@@ -60,6 +61,7 @@ private
 
   def task_env
     { 'REPO'               => repo,
+      'TREEISH'            => treeish,
       'ENVIRONMENT'        => environment,
       'SSH_KEY'            => ENV['SSH_KEY'],
       'IRON_MQ_PROJECT_ID' => ENV['IRON_MQ_PROJECT_ID'],
