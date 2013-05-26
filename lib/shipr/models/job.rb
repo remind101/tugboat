@@ -14,12 +14,10 @@ class Job
   # ==============
 
   class << self
-    delegate :workers, :redis,   to: Shipr
-    delegate :tasks,             to: :workers
+    delegate :redis, to: Shipr
   end
 
-  delegate :iron_worker, :redis, to: self
-  delegate :tasks,               to: self
+  delegate :redis, to: self
 
   # =============
   # = Callbacks =
@@ -32,7 +30,7 @@ class Job
   end
 
   after_create do
-    tasks.create 'Deploy', task_params
+    DeployTask.new(self).create
   end
 
   # ===========
@@ -55,21 +53,44 @@ class Job
 
 private
 
-  def task_params
-    { uuid: uuid, env: task_env }
-  end
-
-  def task_env
-    { 'REPO'               => repo,
-      'TREEISH'            => treeish,
-      'ENVIRONMENT'        => environment,
-      'SSH_KEY'            => ENV['SSH_KEY'],
-      'IRON_MQ_PROJECT_ID' => ENV['IRON_MQ_PROJECT_ID'],
-      'IRON_MQ_TOKEN'      => ENV['IRON_MQ_TOKEN'] }
-  end
-
   def key
     "#{self.class.to_s}:#{uuid}"
+  end
+
+  class DeployTask < Struct.new(:job)
+    # ==============
+    # = Delegation =
+    # ==============
+
+    delegate :workers, to: Shipr
+    delegate :tasks, to: :workers
+    delegate \
+      :uuid,
+      :repo,
+      :treeish,
+      :environment,
+      to: :job
+
+    # ===========
+    # = Methods =
+    # ===========
+
+    def create
+      tasks.create 'Deploy', params
+    end
+
+    def params
+      { uuid: uuid, env: env }
+    end
+
+    def env
+      { 'REPO'               => repo,
+        'TREEISH'            => treeish,
+        'ENVIRONMENT'        => environment,
+        'SSH_KEY'            => ENV['SSH_KEY'],
+        'IRON_MQ_PROJECT_ID' => ENV['IRON_MQ_PROJECT_ID'],
+        'IRON_MQ_TOKEN'      => ENV['IRON_MQ_TOKEN'] }
+    end
   end
 
 end
