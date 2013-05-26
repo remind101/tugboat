@@ -47,6 +47,8 @@ module Shipr
 
   def self.app
     @app ||= Rack::Builder.app do
+      use Rack::SSL if ENV['RACK_ENV'] == 'production'
+
       map '/_update' do
         use Rack::ForceJSON
         use Rack::PostBodyContentTypeParser

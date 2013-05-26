@@ -21,6 +21,7 @@ gem 'sinatra'
 # API
 gem 'grape',        '~> 0.4.1'
 gem 'grape-entity', '~> 0.3.0'
+gem 'rack-ssl'
 
 # Persistence
 gem 'redis'

@@ -171,6 +171,7 @@ DEPENDENCIES
   iron_worker_ng (~> 0.16.4)
   json (~> 1.8.0)
   rack-contrib
+  rack-ssl
   rack-test
   rails (~> 3.2.13)
   rake
