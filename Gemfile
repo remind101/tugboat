@@ -4,6 +4,7 @@ gem 'rake'
 gem 'unicorn', '~> 4.6.2'
 
 # Support
+gem 'json',           '~> 1.8.0'
 gem 'iron_worker_ng', '~> 0.16.4'
 gem 'iron_mq',        '~> 4.0.3'
 gem 'uuid'
