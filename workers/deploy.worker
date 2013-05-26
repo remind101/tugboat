@@ -1,5 +1,5 @@
-runtime 'node'
-exec 'deploy.js'
+runtime 'ruby'
+exec 'deploy.rb'
 dir '../bin'
-dir 'lib'
+gem 'iron_mq'
 name 'Deploy'
