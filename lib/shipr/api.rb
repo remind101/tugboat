@@ -12,15 +12,25 @@ module Shipr
       end
     end
 
-    desc 'Deploy.'
-    params do
-      requires :repo,
-        type: String
-      requires :environment,
-        type: String
-    end
-    post :deploy do
-      present deploy(declared params)
+    namespace :deploy do
+      desc 'Deploy.'
+      params do
+        requires :repo,
+          type: String
+        requires :environment,
+          type: String
+      end
+      post do
+        present deploy(declared params)
+      end
+
+      params do
+        requires :uuid,
+          type: String
+      end
+      get ':uuid' do
+        present Job.find(params.uuid)
+      end
     end
   end
 end
