@@ -8,6 +8,8 @@ class Job
   attribute :repo, String
   attribute :treeish, String, default: 'master'
   attribute :environment, String, default: 'production'
+  attribute :output, String
+  attribute :status, Integer
 
   # ==============
   # = Delegation =

@@ -9,7 +9,7 @@ status   = client.queue 'status'
 Open3.popen2e(params['env'], 'deploy') do |stdin, output, wait_thr|
   output.each do |line|
     puts line
-    queue.post({ uuid: params['uuid'], output: line }.to_json)
+    progress.post({ uuid: params['uuid'], output: line }.to_json)
   end
   exit_status = wait_thr.value
   status.post({ uuid: params['uuid'], status: exit_status }.to_json)
