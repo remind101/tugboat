@@ -5,11 +5,13 @@ module Shipr
     format :json
 
     post '/progress' do
-      puts params
+      log params
+      200
     end
 
     post '/status' do
-      puts params
+      log params
+      200
     end
   end
 end
