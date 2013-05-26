@@ -8,6 +8,7 @@
 # $ENVIRONMENT: e.g. production, staging, etc.
 
 echo "$SSH_KEY" > "$HOME/id_rsa"
+chmod 0600 "$HOME/id_rsa"
 
 # Use a shimmed ssh command.
 export GIT_SSH="$HOME/bin/ssh"
