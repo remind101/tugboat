@@ -26,6 +26,16 @@ describe Job do
     end
   end
 
+  describe '#find' do
+    subject(:job) { described_class.find('foo') }
+
+    before do
+      Shipr.redis.set 'Job:foo', { uuid: 'bar' }.to_json
+    end
+
+    its(:uuid) { should eq 'bar' }
+  end
+
   describe '.save' do
     subject(:save) { job.save }
 

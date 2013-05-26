@@ -1,11 +1,13 @@
 require 'pathname'
 require 'active_support/core_ext'
+require 'rack/force_json'
+require 'rack/contrib/post_body_content_type_parser'
 
 autoload :Job, 'shipr/models/job'
 
 module Shipr
-  autoload :API,      'shipr/api'
-  autoload :Messages, 'shipr/messages'
+  autoload :API,    'shipr/api'
+  autoload :Update, 'shipr/update'
 
   def self.redis=(redis)
     @redis = redis
@@ -34,23 +36,21 @@ module Shipr
     @logger ||= Logger.new(STDOUT)
   end
 
-  def self.messages_endpoint
-    "https://#{ENV['DOMAIN']}/_messages"
-  end
-
   def self.setup
-    %w[progress status].each do |queue|
-      subscribers = [ { url: [messages_endpoint, queue].join('/') } ]
-      messages.queue(queue).update \
-        subscribers: subscribers,
-        push_type: :multicast
-    end
+    subscribers = [
+      { url: "https://#{ENV['DOMAIN']}/_update" }
+    ]
+    messages.queue('update').update \
+      subscribers: subscribers,
+      push_type: :multicast
   end
 
   def self.app
     @app ||= Rack::Builder.app do
-      map '/_messages' do
-        run Messages
+      map '/_update' do
+        use Rack::ForceJSON
+        use Rack::PostBodyContentTypeParser
+        run Update
       end
 
       map '/' do

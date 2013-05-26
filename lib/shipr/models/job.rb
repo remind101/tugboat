@@ -8,7 +8,7 @@ class Job
   attribute :repo, String
   attribute :treeish, String, default: 'master'
   attribute :environment, String, default: 'production'
-  attribute :output, String
+  attribute :output, String, default: ''
   attribute :status, Integer
 
   # ==============
@@ -39,6 +39,11 @@ class Job
   # = Methods =
   # ===========
 
+  def self.find(uuid)
+    params = redis.get(key(uuid))
+    new(JSON.parse(params))
+  end
+
   def self.create(*args)
     new(*args).tap do |job|
       job.run_callbacks :create do
@@ -49,14 +54,18 @@ class Job
 
   def save
     run_callbacks :save do
-      redis.set key, attributes
+      redis.set key, attributes.to_json
     end
   end
 
 private
 
+  def self.key(uuid)
+    "#{self.to_s}:#{uuid}"
+  end
+
   def key
-    "#{self.class.to_s}:#{uuid}"
+    self.class.key(uuid)
   end
 
   class DeployTask < Struct.new(:job)

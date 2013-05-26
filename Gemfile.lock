@@ -82,8 +82,12 @@ GEM
       rack (>= 0.4)
     rack-cache (1.2)
       rack (>= 0.4)
+    rack-contrib (1.1.0)
+      rack (>= 0.9.1)
     rack-mount (0.8.3)
       rack (>= 1.0.0)
+    rack-protection (1.5.0)
+      rack
     rack-ssl (1.3.3)
       rack
     rack-test (0.6.2)
@@ -124,6 +128,10 @@ GEM
     rubyzip (0.9.9)
     shotgun (0.9)
       rack (>= 1.0)
+    sinatra (1.3.6)
+      rack (~> 1.4)
+      rack-protection (~> 1.3)
+      tilt (~> 1.3, >= 1.3.3)
     sprockets (2.2.2)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -162,12 +170,14 @@ DEPENDENCIES
   iron_mq (~> 4.0.3)
   iron_worker_ng (~> 0.16.4)
   json (~> 1.8.0)
+  rack-contrib
   rack-test
   rails (~> 3.2.13)
   rake
   redis
   rspec
   shotgun
+  sinatra
   unicorn (~> 4.6.2)
   uuid
   virtus (~> 0.5.4)
