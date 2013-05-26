@@ -13,7 +13,8 @@ module Shipr
   def self.redis
     @redis ||= begin
       if url = ENV['REDIS_URL']
-        Redis.new(url)
+        uri = URI.parse(url)
+        Redis.new(host: uri.host, port: uri.port, password: uri.password)
       else
         Redis.new
       end
