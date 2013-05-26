@@ -1,3 +1,5 @@
 require File.expand_path('../config/environment', __FILE__)
 
-run Shipr::API
+Shipr.setup
+
+run Shipr.app
