@@ -2,8 +2,10 @@
 
 Rest API for deploying git repositories. You give it a path to a git repo
 and an environment to deploy to and it will clone the repo, then run
-./script/deploy, passing in the environment as `ENVIRONMENT`.
+./script/deploy within that repo, passing along the following environment
+variables:
 
+* `ENVIRONMENT`: e.g. production/staging/etc.
 
 ## Deploy
 
@@ -27,6 +29,8 @@ Accept: application/json
 
 ```json
 {
-  "id": "Zoph8OoG",
+  "uuid": "d4b1c6e0-a7f6-0130-6f80-0ee966cd821f",
+  "repo": "git@github.com:ejholmes/shipr.git",
+  "environment": "production"
 }
 ```
