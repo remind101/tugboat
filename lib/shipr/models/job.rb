@@ -7,7 +7,7 @@ class Job
   attribute :uuid, String
   attribute :repo, String
   attribute :treeish, String, default: 'master'
-  attribute :environment, String
+  attribute :environment, String, default: 'production'
 
   # ==============
   # = Delegation =
