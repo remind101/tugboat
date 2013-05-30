@@ -12,8 +12,7 @@ describe Job do
     subject(:job) { described_class.create(args) }
 
     let(:args) do
-      { repo: 'git@github.com:foo/bar.git',
-        environment: 'staging' }
+      { repo: 'git@github.com:foo/bar.git' }
     end
 
     it 'sets a uuid' do

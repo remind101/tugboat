@@ -2,10 +2,9 @@
 
 # Expects the following environment variables to be set:
 #
-# $SSH_KEY:     Private key to use when deploying.
-# $REPO:        The repo to deploy.
-# $TREEISH:     The branch to checkout. Or...
-# $ENVIRONMENT: e.g. production, staging, etc.
+# $SSH_KEY: Private key to use when deploying.
+# $REPO:    The repo to deploy.
+# $TREEISH: The branch, tag, or sha to checkout.
 
 echo "$SSH_KEY" > "$HOME/id_rsa"
 chmod 0600 "$HOME/id_rsa"
