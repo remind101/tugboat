@@ -15,34 +15,16 @@ variables:
    3. Exports your config vars as environment variables
    4. Runs ./script/deploy within the cloned repo.
 
-## Deploy
+## Setup
 
-Deploy a repo.
+1. Create a heroku app
 
-**Request**
+   ```bash
+   $ heroku create
+   ```
 
-```yaml
-# POST /deploy
-Accept: application/json
-```
+2. Add an ssh key to the app
 
-```json
-{
-  "repo": "git@github.com:org/repo.git",
-  "config": {
-    "ENVIRONMENT": "production"
-  }
-}
-```
-
-**Response**
-
-```json
-{
-  "uuid": "d4b1c6e0-a7f6-0130-6f80-0ee966cd821f",
-  "repo": "git@github.com:ejholmes/shipr.git",
-  "config": {
-    "ENVIRONMENT": "production"
-  }
-}
-```
+   ```bash
+   $ heroku config:set SSH_KEY="$(cat ~/.ssh/id_rsa)"
+   ```
