@@ -5,8 +5,6 @@ module Shipr
     format :json
 
     helpers do
-      delegate :iron_worker, to: Shipr
-
       def deploy(*args)
         Job.create(*args)
       end
