@@ -15,6 +15,11 @@ variables:
    3. Exports your config vars as environment variables
    4. Runs ./script/deploy within the cloned repo
 
+## Why?
+
+The main goal is to make it easier to create tooling for deploying. For me,
+this means deploying from Hipchat.
+
 ## Setup
 
 1. Create a heroku app
