@@ -3,6 +3,8 @@ require 'active_support/core_ext'
 require 'rack/force_json'
 require 'rack/contrib/post_body_content_type_parser'
 
+require 'shipr/warden'
+
 autoload :Job, 'shipr/models/job'
 
 module Shipr
@@ -45,6 +47,8 @@ module Shipr
     @app ||= Rack::Builder.app do
       use Rack::SSL if ENV['RACK_ENV'] == 'production'
 
+      use Rack::Session::Cookie, key: '_shipr_session'
+
       map '/_update' do
         use Rack::ForceJSON
         use Rack::PostBodyContentTypeParser
@@ -52,6 +56,20 @@ module Shipr
       end
 
       map '/' do
+        use Warden::Manager do |manager|
+          manager.default_strategies :basic
+          manager.failure_app = lambda do |env|
+            [
+              401,
+              {
+                'Content-Type' => 'application/json',
+                'WWW-Authenticate' => %(Basic realm="API Authentication")
+              },
+              [ { error: '401 Unauthorized' }.to_json ]
+            ]
+          end
+        end
+
         run API
       end
     end

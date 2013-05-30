@@ -5,6 +5,7 @@ class Job
   include Virtus
 
   attribute :uuid, String
+  attribute :user, String
   attribute :repo, String
   attribute :treeish, String, default: 'master'
   attribute :config, Hash, default: { 'ENVIRONMENT' => 'production' }

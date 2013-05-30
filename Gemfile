@@ -26,6 +26,9 @@ gem 'rack-ssl'
 # Persistence
 gem 'redis'
 
+# Authentication
+gem 'warden'
+
 group :development do
   gem 'rails', '~> 3.2.13'
   gem 'dotenv'

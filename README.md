@@ -33,3 +33,9 @@ this means deploying from Hipchat.
    ```bash
    $ heroku config:set SSH_KEY="$(cat ~/.ssh/id_rsa)"
    ```
+
+3. Add an auth token
+
+   ```bash
+   $ heroku config:set AUTH_TOKEN="$(pwgen 32 1)"
+   ```

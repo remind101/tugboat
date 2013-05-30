@@ -153,6 +153,8 @@ GEM
     virtus (0.5.4)
       backports (~> 2.6.1)
       descendants_tracker (~> 0.0.1)
+    warden (1.2.1)
+      rack (>= 1.0)
     webmock (1.11.0)
       addressable (>= 2.2.7)
       crack (>= 0.3.2)
@@ -182,4 +184,5 @@ DEPENDENCIES
   unicorn (~> 4.6.2)
   uuid
   virtus (~> 0.5.4)
+  warden
   webmock
