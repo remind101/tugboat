@@ -9,10 +9,6 @@ module Shipr
   autoload :API,    'shipr/api'
   autoload :Update, 'shipr/update'
 
-  def self.redis=(redis)
-    @redis = redis
-  end
-
   def self.redis
     @redis ||= begin
       if url = ENV['REDIS_URL']
