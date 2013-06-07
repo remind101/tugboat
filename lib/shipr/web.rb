@@ -1,3 +1,5 @@
+require 'sinatra/base'
+
 module Shipr
   class Web < Sinatra::Base
     configure :test do
@@ -18,7 +20,14 @@ module Shipr
 
     get '/:id/stream', provides: 'text/event-stream' do |id|
       job = Job.find(id)
-      stream do |out|
+      stream :keep_open do |out|
+
+        # The Heroku router needs to see some kind of response every 30 seconds
+        # or it will close the connection.
+        Thread.new do
+          EM.run { EM::PeriodicTimer.new(15) { out << "\0" } }
+        end
+
         job.on_output do |line|
           out << "event: output\ndata: #{line}\n\n"
         end

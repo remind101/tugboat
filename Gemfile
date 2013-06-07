@@ -10,6 +10,7 @@ gem 'uuid'
 gem 'virtus',         '~> 0.5.4'
 gem 'activesupport',  '~> 3.2.13', require: 'active_support'
 gem 'activemodel',    '~> 3.2.13', require: 'active_model'
+gem 'eventmachine',   '~> 1.0.0.beta'
 
 # Workers
 gem 'iron_worker_ng', '~> 0.16.4'

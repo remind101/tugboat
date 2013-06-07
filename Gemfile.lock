@@ -37,6 +37,7 @@ GEM
     diff-lcs (1.2.4)
     dotenv (0.7.0)
     erubis (2.7.0)
+    eventmachine (1.0.3)
     faraday (0.8.7)
       multipart-post (~> 1.1)
     faraday_middleware (0.9.0)
@@ -185,6 +186,7 @@ DEPENDENCIES
   activemodel (~> 3.2.13)
   activesupport (~> 3.2.13)
   dotenv
+  eventmachine (~> 1.0.0.beta)
   foreman
   grape (~> 0.4.1)
   grape-entity (~> 0.3.0)
