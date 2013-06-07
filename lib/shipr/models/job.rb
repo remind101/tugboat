@@ -67,13 +67,18 @@ class Job
   end
 
   def append_output(line)
-    redis.publish pubsub_key, line
+    redis.publish pubsub_key, { 'line' => line.strip }.to_json
     self.output << line
     save
   end
 
   def on_output(&block)
-    redis.subscribe pubsub_key, &block
+    redis.subscribe pubsub_key do |on|
+      on.message do |channel, msg|
+        data = JSON.parse(msg)
+        block.call(data['line'])
+      end
+    end
   end
 
 private
