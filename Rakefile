@@ -1,8 +1,12 @@
 #!/usr/bin/env rake
 
-require 'bundler/setup'
-require 'micro_migrations'
-require 'shipr'
+require File.expand_path('../config/environment', __FILE__)
+
+begin
+  require 'micro_migrations'
+rescue LoadError
+  # Not used in production
+end
 
 desc 'Start an irb session'
 task :console do
