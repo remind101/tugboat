@@ -15,8 +15,8 @@ module Shipr
     post do
       job = Job.find params.id
 
-      job.append_output!(params.output) if params.output
-      job.complete!(params.exit_status) if params.exit_status
+      job.append_output!(params.output) if params.output?
+      job.complete!(params.exit_status) if params.exit_status?
 
       status 200
 

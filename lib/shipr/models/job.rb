@@ -15,7 +15,7 @@ class Job < ActiveRecord::Base
   # = Callbacks =
   # =============
 
-  after_initialize :set_defaults
+  before_validation :set_defaults
   after_create :queue_task
 
   # =================
@@ -57,7 +57,7 @@ class Job < ActiveRecord::Base
   #   # => true
   def append_output!(output)
     redis.publish channel, output
-    self.output << output
+    self.output += output
     self.save!
   end
 
