@@ -11,60 +11,64 @@ module Shipr
   autoload :API,    'shipr/api'
   autoload :Update, 'shipr/update'
 
-  def self.redis
-    Redis.current
-  end
+  class << self
 
-  def self.workers
-    @workers ||= IronWorkerNG::Client.new
-  end
+    def redis
+      Redis.current
+    end
 
-  def self.messages
-    @messages ||= IronMQ::Client.new
-  end
+    def workers
+      @workers ||= IronWorkerNG::Client.new
+    end
 
-  def self.logger
-    @logger ||= Logger.new(STDOUT)
-  end
+    def messages
+      @messages ||= IronMQ::Client.new
+    end
 
-  def self.setup
-    subscribers = [
-      { url: "https://#{ENV['DOMAIN']}/_update" }
-    ]
-    messages.queue('update').update \
-      subscribers: subscribers,
-      push_type: :multicast
-  end
+    def logger
+      @logger ||= Logger.new(STDOUT)
+    end
 
-  def self.app
-    @app ||= Rack::Builder.app do
-      use Rack::SSL if ENV['RACK_ENV'] == 'production'
+    def setup
+      subscribers = [
+        { url: "https://#{ENV['DOMAIN']}/_update" }
+      ]
+      messages.queue('update').update \
+        subscribers: subscribers,
+        push_type: :multicast
+    end
 
-      use Rack::Session::Cookie, key: '_shipr_session'
+    def app
+      @app ||= Rack::Builder.app do
+        use Rack::SSL if ENV['RACK_ENV'] == 'production'
 
-      map '/_update' do
-        use Rack::ForceJSON
-        use Rack::PostBodyContentTypeParser
-        run Update
-      end
+        use Rack::Session::Cookie, key: '_shipr_session'
 
-      map '/' do
-        use Warden::Manager do |manager|
-          manager.default_strategies :basic
-          manager.failure_app = lambda do |env|
-            [
-              401,
-              {
-                'Content-Type' => 'application/json',
-                'WWW-Authenticate' => %(Basic realm="API Authentication")
-              },
-              [ { error: '401 Unauthorized' }.to_json ]
-            ]
-          end
+        map '/_update' do
+          use Rack::ForceJSON
+          use Rack::PostBodyContentTypeParser
+          run Update
         end
 
-        run API
+        map '/' do
+          use Warden::Manager do |manager|
+            manager.default_strategies :basic
+            manager.failure_app = lambda do |env|
+              [
+                401,
+                {
+                  'Content-Type' => 'application/json',
+                  'WWW-Authenticate' => %(Basic realm="API Authentication")
+                },
+                [ { error: '401 Unauthorized' }.to_json ]
+              ]
+            end
+          end
+
+          run API
+        end
       end
     end
+
   end
 end
