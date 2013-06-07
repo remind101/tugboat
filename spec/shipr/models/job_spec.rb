@@ -3,47 +3,33 @@ require 'spec_helper'
 describe Job do
   let(:redis) { Redis.any_instance }
   let(:iron_worker) { IronWorkerNG::Client.any_instance }
+  subject(:job) { described_class.create(repo: 'git@github.com:ejholmes/shipr.git') }
 
   before do
     iron_worker.stub_chain :tasks, :create
   end
 
   describe '#create' do
-    subject(:job) { described_class.create(args) }
-
-    let(:args) do
-      { repo: 'git@github.com:foo/bar.git' }
-    end
-
-    it 'sets a uuid' do
-      expect(job.uuid).to_not be_empty
-    end
-
-    it 'persists the job to redis' do
-      Job.any_instance.should_receive(:save)
-      job
-    end
+    it { should be_valid }
+    its(:branch) { should eq 'master' }
+    its(:config) { should eq('ENVIRONMENT' => 'production') }
+    its(:output) { should eq '' }
   end
 
-  describe '#find' do
-    subject(:job) { described_class.find('foo') }
-
+  describe '.complete!' do
     before do
-      Shipr.redis.set 'Job:foo', { uuid: 'bar' }.to_json
+      job.complete!(-1)
     end
 
-    its(:uuid) { should eq 'bar' }
+    its(:exit_status) { should eq -1 }
   end
 
-  describe '.save' do
-    subject(:save) { job.save }
-
-    let(:job) { described_class.new(uuid: 'foo', repo: 'bar') }
-
-    it 'sets a key in redis to the attributes' do
-      redis.should_receive(:set)
-        .with('Job:foo', kind_of(String))
-      save
+  describe '.append_output!' do
+    before do
+      job.append_output!('hello')
+      job.append_output!('world')
     end
+
+    its(:output) { should eq 'helloworld' }
   end
 end

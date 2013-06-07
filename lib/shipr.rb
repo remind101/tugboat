@@ -23,7 +23,16 @@ module Shipr
     end
 
     def messages
-      @messages ||= IronMQ::Client.new
+      @messages ||= begin
+        messages = IronMQ::Client.new
+        subscribers = [
+          { url: "https://#{ENV['DOMAIN']}/_hooks" }
+        ]
+        messages.queue('update').update \
+          subscribers: subscribers,
+          push_type: :multicast
+        messages
+      end
     end
 
     def logger
@@ -31,12 +40,9 @@ module Shipr
     end
 
     def setup
-      subscribers = [
-        { url: "https://#{ENV['DOMAIN']}/_hooks" }
-      ]
-      messages.queue('update').update \
-        subscribers: subscribers,
-        push_type: :multicast
+      config = YAML.load Pathname('../../config/database.yml').expand_path(__FILE__).read
+      ActiveRecord::Base.configurations = config
+      ActiveRecord::Base.establish_connection(ENV['RACK_ENV'])
     end
 
     def app

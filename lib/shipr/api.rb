@@ -24,7 +24,7 @@ module Shipr
       end
     end
 
-    namespace :deploy do
+    namespace :deploys do
       before do
         authenticate!
       end
@@ -43,11 +43,11 @@ module Shipr
       end
 
       params do
-        requires :uuid,
-          type: String
+        requires :id,
+          type: Integer
       end
-      get ':uuid' do
-        present Job.find(params.uuid)
+      get ':id' do
+        present Job.find(params.id)
       end
     end
   end

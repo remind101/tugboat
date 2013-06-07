@@ -39,3 +39,13 @@ this means deploying from Hipchat.
    ```bash
    $ heroku config:set AUTH_TOKEN="$(pwgen 32 1)"
    ```
+
+## Hacking on Shipr
+
+### Generating a migration
+
+Kinda hackish, but gets the job done:
+
+```
+RACK_ENV=production ./script/rails g migration
+```

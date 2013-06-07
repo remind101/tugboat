@@ -1,13 +1,23 @@
 require 'spec_helper'
+require 'securerandom'
 
 describe Shipr::API do
   include Rack::Test::Methods
 
-  let(:app) { Shipr.app }
+  def app
+    Rack::Builder.new do
+      use Rack::Session::Cookie, secret: SecureRandom.hex
+      use Warden::Manager do |manager|
+        manager.default_strategies :basic
+      end
+      run Shipr::API
+    end
+  end
+
   let(:current_user) { 'foo@bar.com' }
   let(:body) { JSON.parse(last_response.body) }
 
-  describe 'POST /deploy' do
+  describe 'POST /deploys' do
     with_authenticated_user
 
     let(:attrs) do
@@ -16,9 +26,16 @@ describe Shipr::API do
 
     it 'creates a job' do
       Job.should_receive(:create).with(attrs)
-      post '/deploy', attrs
-      puts last_response.body
+      post '/deploys', attrs
       expect(last_response.status).to eq 201
+    end
+  end
+
+  describe 'GET /deploys/:id' do
+    with_authenticated_user
+
+    it 'retrives the job' do
+      get '/deploys', id: '1234'
     end
   end
 end
