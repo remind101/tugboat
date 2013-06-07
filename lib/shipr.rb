@@ -57,7 +57,6 @@ module Shipr
 
         map '/_hooks' do
           use Rack::ForceJSON
-          use Rack::PostBodyContentTypeParser
           run Hooks
         end
 
