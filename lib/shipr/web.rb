@@ -11,6 +11,12 @@ module Shipr
       set :raise_errors, true
     end
 
+    helpers do
+      def stream_url
+        "#{request.scheme}://#{request.host_with_port}#{request.fullpath}/stream"
+      end
+    end
+
     before do
       github_organization_authenticate!(ENV['GITHUB_ORGANIZATION'])
     end

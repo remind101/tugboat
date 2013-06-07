@@ -1,3 +1,2 @@
 %pre
-  %code{ 'data-stream' => "#{request.scheme}://#{request.host_with_port}#{request.fullpath}/stream" }
-    = @job.output
+  %code{ 'data-stream' => stream_url }= @job.output
