@@ -1,4 +1,6 @@
 class Job < ActiveRecord::Base
+  include Grape::Entity::DSL
+
   # ==============
   # = Delegation =
   # ==============
@@ -75,6 +77,12 @@ class Job < ActiveRecord::Base
       end
     end
   end
+
+  def done
+    exit_status.present?
+  end
+
+  entity :id, :repo, :branch, :user, :config, :exit_status, :done
 
 private
   
