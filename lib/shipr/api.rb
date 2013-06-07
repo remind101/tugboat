@@ -35,7 +35,7 @@ module Shipr
           type: String
         optional :config,
           type: Hash
-        optional :treeish,
+        optional :branch,
           type: String
       end
       post do

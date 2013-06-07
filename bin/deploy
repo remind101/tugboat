@@ -4,7 +4,7 @@
 #
 # $SSH_KEY: Private key to use when deploying.
 # $REPO:    The repo to deploy.
-# $TREEISH: The branch, tag, or sha to checkout.
+# $BRANCH: The branch, tag, or sha to checkout.
 
 echo "$SSH_KEY" > "$HOME/id_rsa"
 chmod 0600 "$HOME/id_rsa"
@@ -20,7 +20,7 @@ git init .
 git remote add origin "$REPO"
 git fetch -q origin
 
-git reset -q --hard "origin/$TREEISH"
+git reset -q --hard "origin/$BRANCH"
 
 # Run the projects deploy script.
 ./script/deploy

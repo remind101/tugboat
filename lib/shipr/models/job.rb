@@ -7,7 +7,7 @@ class Job
   attribute :uuid, String
   attribute :user, String
   attribute :repo, String
-  attribute :treeish, String, default: 'master'
+  attribute :branch, String, default: 'master'
   attribute :config, Hash, default: { 'ENVIRONMENT' => 'production' }
   attribute :output, String, default: ''
   attribute :status, Integer
@@ -79,7 +79,7 @@ private
     delegate \
       :uuid,
       :repo,
-      :treeish,
+      :branch,
       :config,
       to: :job
 
@@ -107,9 +107,9 @@ private
 
     def env
       config.merge \
-        'REPO'        => repo,
-        'TREEISH'     => treeish,
-        'SSH_KEY'     => ENV['SSH_KEY']
+        'REPO'     => repo,
+        'BRANCH'   => branch,
+        'SSH_KEY'  => ENV['SSH_KEY']
     end
 
   end
