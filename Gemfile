@@ -21,6 +21,7 @@ gem 'sinatra'
 
 # Frontend
 gem 'sinatra_auth_github'
+gem 'haml'
 
 # API
 gem 'grape',        '~> 0.4.1'

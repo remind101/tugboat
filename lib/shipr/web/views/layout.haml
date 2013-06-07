@@ -1,0 +1,33 @@
+!!!
+%html
+  %head
+    :css
+      body {
+        margin: 0;
+        padding: 0;
+        background: #000;
+        color: #fff;
+      }
+
+      code {
+        display: block;
+        background: #000;
+        color: #fff;
+        padding: 40px;
+      }
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+
+    :javascript
+      $(function() {
+        var $code = $('code')
+        var source = new EventSource($code.data('stream'))
+
+        source.addEventListener('output', function(e) {
+          var data = JSON.parse(e.data)
+          var line = data.line
+          $code.html($code.html() + line)
+        })
+      })
+  %body
+    = yield

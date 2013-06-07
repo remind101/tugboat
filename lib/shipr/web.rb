@@ -2,13 +2,14 @@ require 'sinatra/base'
 
 module Shipr
   class Web < Sinatra::Base
+    set :root, File.join(File.dirname(__FILE__), 'web')
+    set :github_options, { }
+    register Sinatra::Auth::Github
+
     configure :test do
       set :show_exceptions, false
       set :raise_errors, true
     end
-    
-    set :github_options, { }
-    register Sinatra::Auth::Github
 
     before do
       github_organization_authenticate!(ENV['GITHUB_ORGANIZATION'])
@@ -18,7 +19,12 @@ module Shipr
       'ok'
     end
 
-    get '/:id/stream', provides: 'text/event-stream' do |id|
+    get '/deploy/:id' do |id|
+      @job = Job.find(id)
+      haml :job
+    end
+
+    get '/deploy/:id/stream', provides: 'text/event-stream' do |id|
       job = Job.find(id)
       stream :keep_open do |out|
 
@@ -29,6 +35,7 @@ module Shipr
         end
 
         job.on_output do |line|
+          line = { line: line }.to_json
           out << "event: output\ndata: #{line}\n\n"
         end
         loop { sleep 1 }
