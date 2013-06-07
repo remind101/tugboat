@@ -40,9 +40,13 @@ module Shipr
     end
 
     def setup
-      config = YAML.load Pathname('../../config/database.yml').expand_path(__FILE__).read
-      ActiveRecord::Base.configurations = config
-      ActiveRecord::Base.establish_connection(ENV['RACK_ENV'])
+      if ENV['RACK_ENV'] == 'production'
+        ActiveRecord::Base.establish_connection
+      else
+        config = YAML.load Pathname('../../config/database.yml').expand_path(__FILE__).read
+        ActiveRecord::Base.configurations = config
+        ActiveRecord::Base.establish_connection(ENV['RACK_ENV'])
+      end
     end
 
     def app
