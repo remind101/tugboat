@@ -4,8 +4,7 @@ module Shipr
       job = Job.find params['uuid']
 
       if output = params['output']
-        job.output << output
-        job.save
+        job.append_output(output)
       elsif status = params['status']
         job.complete(status)
       end

@@ -9,6 +9,7 @@ autoload :Job, 'shipr/models/job'
 
 module Shipr
   autoload :API,   'shipr/api'
+  autoload :Web,   'shipr/web'
   autoload :Hooks, 'shipr/hooks'
 
   class << self
@@ -50,7 +51,7 @@ module Shipr
           run Hooks
         end
 
-        map '/' do
+        map '/api' do
           use Warden::Manager do |manager|
             manager.default_strategies :basic
             manager.failure_app = lambda do |env|
@@ -66,6 +67,10 @@ module Shipr
           end
 
           run API
+        end
+
+        map '/' do
+          run Web
         end
       end
     end

@@ -18,6 +18,9 @@ gem 'iron_worker_ng', '~> 0.16.4'
 gem 'iron_mq', '~> 4.0.3'
 gem 'sinatra'
 
+# Frontend
+gem 'sinatra_auth_github'
+
 # API
 gem 'grape',        '~> 0.4.1'
 gem 'grape-entity', '~> 0.3.0'

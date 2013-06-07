@@ -66,6 +66,16 @@ class Job
     end
   end
 
+  def append_output(line)
+    redis.publish pubsub_key, line
+    self.output << line
+    save
+  end
+
+  def on_output(&block)
+    redis.subscribe pubsub_key, &block
+  end
+
 private
 
   def self.key(uuid)
@@ -74,6 +84,10 @@ private
 
   def key
     self.class.key(uuid)
+  end
+
+  def pubsub_key
+    "#{key}:pubsub"
   end
 
   class DeployTask < Struct.new(:job)
