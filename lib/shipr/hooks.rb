@@ -5,11 +5,10 @@ module Shipr
 
       if output = params['output']
         job.output << output
+        job.save
       elsif status = params['status']
-        job.status = status
+        job.complete(status)
       end
-
-      job.save
 
       'Ok'
     end

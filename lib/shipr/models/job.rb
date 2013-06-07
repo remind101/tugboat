@@ -26,7 +26,7 @@ class Job
   # = Callbacks =
   # =============
 
-  define_model_callbacks :save, :create
+  define_model_callbacks :save, :create, :complete
 
   before_create do
     self.uuid ||= UUID.new.generate
@@ -56,6 +56,13 @@ class Job
   def save
     run_callbacks :save do
       redis.set key, attributes.to_json
+    end
+  end
+
+  def complete(status)
+    run_callbacks :complete do
+      job.status = status
+      job.save
     end
   end
 
