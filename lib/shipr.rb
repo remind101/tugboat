@@ -8,8 +8,8 @@ require 'shipr/warden'
 autoload :Job, 'shipr/models/job'
 
 module Shipr
-  autoload :API,    'shipr/api'
-  autoload :Update, 'shipr/update'
+  autoload :API,   'shipr/api'
+  autoload :Hooks, 'shipr/hooks'
 
   class << self
 
@@ -31,7 +31,7 @@ module Shipr
 
     def setup
       subscribers = [
-        { url: "https://#{ENV['DOMAIN']}/_update" }
+        { url: "https://#{ENV['DOMAIN']}/_hooks" }
       ]
       messages.queue('update').update \
         subscribers: subscribers,
@@ -44,10 +44,10 @@ module Shipr
 
         use Rack::Session::Cookie, key: '_shipr_session'
 
-        map '/_update' do
+        map '/_hooks' do
           use Rack::ForceJSON
           use Rack::PostBodyContentTypeParser
-          run Update
+          run Hooks
         end
 
         map '/' do

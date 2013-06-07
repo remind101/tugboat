@@ -1,5 +1,5 @@
 module Shipr
-  class Update < Sinatra::Base
+  class Hooks < Sinatra::Base
     post '/' do
       job = Job.find params['uuid']
 
