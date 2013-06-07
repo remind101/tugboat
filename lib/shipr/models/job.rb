@@ -22,6 +22,12 @@ class Job < ActiveRecord::Base
 
   serialize :config
 
+  # ===============
+  # = Validations =
+  # ===============
+
+  validates :repo, presence: true
+
   # ===========
   # = Methods =
   # ===========

@@ -25,12 +25,12 @@ module Shipr
       'ok'
     end
 
-    get '/deploy/:id' do |id|
+    get '/deploys/:id' do |id|
       @job = Job.find(id)
       haml :job
     end
 
-    get '/deploy/:id/stream', provides: 'text/event-stream' do |id|
+    get '/deploys/:id/stream', provides: 'text/event-stream' do |id|
       job = Job.find(id)
       stream :keep_open do |out|
 

@@ -24,7 +24,7 @@ module Shipr
       end
     end
 
-    namespace :deploy do
+    namespace :deploys do
       before do
         authenticate!
       end
