@@ -3,7 +3,16 @@ require 'spec_helper'
 describe Shipr::API do
   include Rack::Test::Methods
 
-  let(:app) { Shipr.app }
+  def app
+    Rack::Builder.new do
+      use Rack::Session::Cookie
+      use Warden::Manager do |manager|
+        manager.default_strategies :basic
+      end
+      run Shipr::API
+    end
+  end
+
   let(:current_user) { 'foo@bar.com' }
   let(:body) { JSON.parse(last_response.body) }
 

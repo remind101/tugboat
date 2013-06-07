@@ -1,15 +1,18 @@
 module Shipr
-  class Hooks < Sinatra::Base
-    post '/' do
-      job = Job.find params['uuid']
+  class Hooks < Grape::API
+    params do
+      optional :output, type: String
+      optional :exit_status, type: Integer
+    end
+    post do
+      job = Job.find params.id
 
-      if output = params['output']
-        job.append_output(output)
-      elsif status = params['status']
-        job.complete(status)
-      end
+      job.append_output!(params.output) if params.output
+      job.complete!(params.exit_status) if params.exit_status
 
-      'Ok'
+      status 200
+
+      { }
     end
   end
 end

@@ -6,7 +6,6 @@ gem 'unicorn', '~> 4.6.2'
 # Support
 gem 'rack-contrib'
 gem 'json',           '~> 1.8.0'
-gem 'uuid'
 gem 'virtus',         '~> 0.5.4'
 gem 'activesupport',  '~> 3.2.13', require: 'active_support'
 gem 'activemodel',    '~> 3.2.13', require: 'active_model'
@@ -30,15 +29,19 @@ gem 'rack-ssl'
 
 # Persistence
 gem 'redis'
+gem 'activerecord', '~> 3.2.13', require: 'active_record'
+gem 'pg',           '~> 0.15.1'
 
 # Authentication
 gem 'warden'
 
 group :development do
-  gem 'rails', '~> 3.2.13'
+  gem 'rails', '~> 3.2.13', require: false
+  gem 'micro_migrations', git: 'https://gist.github.com/2087829.git'
   gem 'dotenv'
   gem 'shotgun'
   gem 'foreman'
+  gem 'guard-rspec'
 end
 
 group :test do

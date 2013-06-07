@@ -1,17 +1,4 @@
-require 'uuid'
-
-class Job
-  extend ActiveModel::Callbacks
-  include Virtus
-
-  attribute :uuid, String
-  attribute :user, String
-  attribute :repo, String
-  attribute :branch, String, default: 'master'
-  attribute :config, Hash, default: { 'ENVIRONMENT' => 'production' }
-  attribute :output, String, default: ''
-  attribute :status, Integer
-
+class Job < ActiveRecord::Base
   # ==============
   # = Delegation =
   # ==============
@@ -26,72 +13,77 @@ class Job
   # = Callbacks =
   # =============
 
-  define_model_callbacks :save, :create, :complete
+  after_initialize :set_defaults
+  after_create :queue_task
 
-  before_create do
-    self.uuid ||= UUID.new.generate
-  end
+  # =================
+  # = Serialization =
+  # =================
 
-  after_create do
-    DeployTask.create(self)
-  end
+  serialize :config
 
   # ===========
   # = Methods =
   # ===========
-
-  def self.find(uuid)
-    params = redis.get(key(uuid))
-    new(JSON.parse(params))
+  
+  # Public: Mark the job is complete, with the exit status of the process.
+  #
+  # exit_status - Integer exit status of the deploy command.
+  #
+  # Examples
+  #
+  #   job.complete!(0)
+  #   # => true
+  def complete!(exit_status)
+    self.exit_status = exit_status
+    self.save!
   end
 
-  def self.create(*args)
-    new(*args).tap do |job|
-      job.run_callbacks :create do
-        job.save
-      end
-    end
+  # Public: Append lines of output from the process.
+  #
+  # output - String of text to append. Can 
+  #
+  # Examples
+  #
+  #   job.append_output!("hello world")!
+  #   # => true
+  def append_output!(output)
+    redis.publish channel, output
+    self.output << output
+    self.save!
   end
 
-  def save
-    run_callbacks :save do
-      redis.set key, attributes.to_json
-    end
-  end
-
-  def complete(status)
-    run_callbacks :complete do
-      job.status = status
-      job.save
-    end
-  end
-
-  def append_output(line)
-    redis.publish pubsub_key, line
-    self.output << line
-    save
-  end
-
+  # Public: Subscribe to the processes output.
+  #
+  # &block - A block to run when there's new output.
+  #
+  # Examples
+  #
+  #   job.on_output do |output|
+  #     puts output
+  #   end
   def on_output(&block)
-    redis.subscribe pubsub_key do |on|
-      on.message do |channel, line|
-        block.call(line)
+    redis.subscribe channel do |on|
+      on.message do |channel, output|
+        block.call(output)
       end
     end
   end
 
 private
-
-  def self.key(uuid)
-    "#{self.to_s}:#{uuid}"
+  
+  def channel
+    "#{self.class.to_s.downcase}:#{id}:output"
   end
 
-  def key
-    self.class.key(uuid)
+  def set_defaults
+    self.branch ||= 'master'
+    self.config ||= { 'ENVIRONMENT' => 'production' }
+    self.output ||= ''
   end
 
-  def pubsub_key
-    "#{key}:pubsub"
+  def queue_task
+    DeployTask.create(self)
   end
 
   class DeployTask < Struct.new(:job)
@@ -102,7 +94,7 @@ private
     delegate :workers, to: Shipr
     delegate :tasks, to: :workers
     delegate \
-      :uuid,
+      :id,
       :repo,
       :branch,
       :config,
@@ -121,7 +113,7 @@ private
   private
 
     def params
-      { uuid: uuid, iron_mq: iron_mq, env: env }
+      { id: id, iron_mq: iron_mq, env: env }
     end
 
     def iron_mq
