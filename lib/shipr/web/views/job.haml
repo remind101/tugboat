@@ -8,7 +8,7 @@
         %span.text-error Error deploying
     - else
       %span.text-info Deploying
-    #{@job.repo}
+    #{@job.branch} to #{@job.repo}
 
 #environment
   %h3 Environment
