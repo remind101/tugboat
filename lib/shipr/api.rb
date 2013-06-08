@@ -1,23 +1,18 @@
 module Shipr
   class API < Grape::API
     logger Shipr.logger
+
     version 'v1', using: :header, vendor: 'shipr'
     format :json
 
     helpers do
-      delegate \
-        :user,
-        :authenticate!,
-        :authenticate?,
+      delegate :authenticate!, to: :warden
 
-        to: :warden
+      def warden; env['warden'] end
 
       def deploy(*args)
         Job.create(*args)
       end
-
-      def session; env['rack.session'] end
-      def warden; env['warden'] end
 
       def declared(params)
         super(params).select { |_, val| !val.nil? }
