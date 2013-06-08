@@ -1,7 +1,15 @@
 .page-header
   %h1 Shipr
-  %p.lead Deploying #{@job.repo}
-  %code#config= @job.config
+  %p.lead
+    - if @job.done?
+      - if @job.success?
+        %span.text-success Deployed
+      - else
+        %span.text-error Error deploying
+    - else
+      %span.text-info Deploying
+    #{@job.repo}
+  %code#config= @job.config.to_yaml
 
 %pre#logs
   %code{ 'data-stream' => stream_url }= @job.output
