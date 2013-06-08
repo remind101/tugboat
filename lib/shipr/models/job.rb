@@ -78,11 +78,31 @@ class Job < ActiveRecord::Base
     end
   end
 
-  def done
+  # Public: Wether the job has completed or not.
+  #
+  # Examples
+  #
+  #   job.done?
+  #   # => true
+  def done?
     exit_status.present?
   end
 
-  entity :id, :repo, :branch, :user, :config, :exit_status, :done
+  # Public: Wether the job is successful or not. In other words, whether or not
+  # the exit status is 0.
+  #
+  # Examples
+  #
+  #   job.success?
+  #   # => false
+  def success?
+    exit_status == 0
+  end
+
+  entity :id, :repo, :branch, :user, :config, :exit_status do
+    expose :done?, as: :done
+    expose :success?, as: :success
+  end
 
 private
   

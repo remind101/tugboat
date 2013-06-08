@@ -33,8 +33,8 @@ describe Job do
     its(:output) { should eq 'helloworld' }
   end
 
-  describe '.done' do
-    subject { job.done }
+  describe '.done?' do
+    subject { job.done? }
 
     context 'when the exit status is present' do
       before do
@@ -46,6 +46,18 @@ describe Job do
 
     context 'when the exit status is not present' do
       it { should be_false }
+    end
+  end
+
+  describe '.success?' do
+    subject { job.success? }
+
+    context "when the exit_status is 0" do
+      before do
+        job.exit_status = 0
+      end
+
+      it { should be_true }
     end
   end
 end

@@ -51,7 +51,7 @@ module Shipr
 
     def setup
       connect!
-      setup_queues
+      setup_queues unless ENV['RACK_ENV'] = 'test'
     end
 
     def app
