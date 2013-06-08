@@ -3,7 +3,7 @@ module Shipr::Hooks
   #
   # TODO: Authenticate this.
   class IronMQ < Grape::API
-    logger Shipper.logger
+    logger Shipr.logger
 
     # We don't want Iron.io to keep ping us, so send it back a 200 response.
     rescue_from ActiveRecord::RecordNotFound do |e|

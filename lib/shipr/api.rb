@@ -26,20 +26,16 @@ module Shipr
 
       desc 'Deploy.'
       params do
-        requires :repo,
-          type: String
-        optional :config,
-          type: Hash
-        optional :branch,
-          type: String
+        requires :repo, type: String
+        optional :config, type: Hash
+        optional :branch, type: String
       end
       post do
         present deploy(declared params)
       end
 
       params do
-        requires :id,
-          type: Integer
+        requires :id, type: Integer
       end
       get ':id' do
         present Job.find(params.id)
