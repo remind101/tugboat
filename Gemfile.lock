@@ -120,6 +120,9 @@ GEM
       coderay (~> 1.0.5)
       method_source (~> 0.8)
       slop (~> 3.4)
+    pusher (0.11.2)
+      multi_json (~> 1.0)
+      signature (~> 0.1.6)
     rack (1.4.5)
     rack-accept (0.4.5)
       rack (>= 0.4)
@@ -159,7 +162,6 @@ GEM
       ffi (>= 0.5.0)
     rdoc (3.12.2)
       json (~> 1.4)
-    redis (3.0.4)
     rest (2.6.2)
       net-http-persistent
       rest-client (>= 0.3.0)
@@ -176,6 +178,7 @@ GEM
     rubyzip (0.9.9)
     shotgun (0.9)
       rack (>= 1.0)
+    signature (0.1.6)
     sinatra (1.3.6)
       rack (~> 1.4)
       rack-protection (~> 1.3)
@@ -230,17 +233,16 @@ DEPENDENCIES
   json (~> 1.8.0)
   micro_migrations!
   pg (~> 0.15.1)
+  pusher (~> 0.11.2)
   rack-contrib
   rack-ssl
   rack-test
   rails (~> 3.2.13)
   rake
-  redis
   rspec
   shotgun
   sinatra
   sinatra_auth_github
   unicorn (~> 4.6.2)
-  virtus (~> 0.5.4)
   warden
   webmock

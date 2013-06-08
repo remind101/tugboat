@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Job do
-  let(:redis) { Redis.any_instance }
   let(:iron_worker) { Shipr.workers }
   subject(:job) { described_class.create(repo: 'git@github.com:ejholmes/shipr.git') }
 

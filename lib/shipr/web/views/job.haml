@@ -18,4 +18,4 @@
 #logs
   %h3 Logs
   %pre
-    %code{ 'data-stream' => stream_url(@job) }= @job.output
+    %code{ 'data-id' => @job.id }= @job.output

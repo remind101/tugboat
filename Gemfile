@@ -6,10 +6,10 @@ gem 'unicorn', '~> 4.6.2'
 # Support
 gem 'rack-contrib'
 gem 'json',           '~> 1.8.0'
-gem 'virtus',         '~> 0.5.4'
 gem 'activesupport',  '~> 3.2.13', require: 'active_support'
 gem 'activemodel',    '~> 3.2.13', require: 'active_model'
 gem 'eventmachine',   '~> 1.0.0.beta'
+gem 'pusher',         '~> 0.11.2'
 
 # Workers
 gem 'iron_worker_ng', '~> 0.16.4'
@@ -28,7 +28,6 @@ gem 'grape-entity', '~> 0.3.0'
 gem 'rack-ssl'
 
 # Persistence
-gem 'redis'
 gem 'activerecord', '~> 3.2.13', require: 'active_record'
 gem 'pg',           '~> 0.15.1'
 
