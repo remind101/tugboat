@@ -4,7 +4,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
 
     <meta charset="utf-8">
-    <title>Flat UI</title>
+    <title>Shipr</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Loading Bootstrap -->
@@ -20,17 +20,18 @@
     <script src="js/html5shiv.js"></script>
     <![endif]-->
 
+    <script src="http://js.pusher.com/2.0/pusher.min.js"></script>
     :javascript
       $(function() {
-        var $code = $('code[data-stream]')
-        var source = new EventSource($code.data('stream'))
-
-        source.addEventListener('output', function(e) {
-          var data = JSON.parse(e.data)
-          var line = data.line
-          $code.html($code.html() + line)
-          $(document).scrollTop($(document).height())
-        })
+        var $code = $('#logs code')
+        var id = $code.data('id')
+        var pusher = new Pusher('#{Shipr.pusher.key}'); // uses your API KEY
+        var channel = pusher.subscribe('private-job');
+        channel.bind('output', function(data) {
+          if (data.id == id) {
+            $code.html($code.html() + data.output);
+          }
+        });
       })
 
     :css

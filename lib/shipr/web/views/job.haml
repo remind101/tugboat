@@ -1,13 +1,13 @@
 .page-header
-  %h1 Shipr
   %p.lead
-    - if @job.done?
-      - if @job.success?
-        %span.text-success Deployed
+    %strong
+      - if @job.done?
+        - if @job.success?
+          %span.text-success Deployed
+        - else
+          %span.text-error Error deploying
       - else
-        %span.text-error Error deploying
-    - else
-      %span.text-info Deploying
+        %span.text-info Deploying
     #{@job.branch} to #{@job.repo}
 
 #environment
@@ -18,4 +18,4 @@
 #logs
   %h3 Logs
   %pre
-    %code{ 'data-stream' => stream_url }= @job.output
+    %code{ 'data-id' => @job.id }= @job.output

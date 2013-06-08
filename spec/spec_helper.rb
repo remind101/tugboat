@@ -10,5 +10,6 @@ RSpec.configure do |config|
   config.before do
     IronWorkerNG::Client.stub new: double(IronWorkerNG::Client).as_null_object
     IronMQ::Client.stub new: double(IronMQ::Client).as_null_object
+    Pusher.stub trigger: double('Pusher Trigger').as_null_object
   end
 end

@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe Shipr::Hooks do
+describe Shipr::Hooks::IronMQ do
   include Rack::Test::Methods
 
   def app
-    Shipr::Hooks
+    Shipr::Hooks::IronMQ
   end
 
   describe 'POST /' do
