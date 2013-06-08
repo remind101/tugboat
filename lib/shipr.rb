@@ -1,7 +1,6 @@
 require 'pathname'
 require 'active_support/core_ext'
 require 'rack/force_json'
-require 'rack/contrib/post_body_content_type_parser'
 
 require 'shipr/warden'
 
