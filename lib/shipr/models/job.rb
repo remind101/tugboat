@@ -14,11 +14,17 @@ class Job < ActiveRecord::Base
   # = Callbacks =
   # =============
 
+  define_model_callbacks :complete
+
   before_validation :set_defaults
   after_create :queue_task
 
   after_create do
     trigger 'create', entity
+  end
+
+  after_complete do
+    trigger 'complete', entity
   end
 
   # =================
@@ -46,9 +52,10 @@ class Job < ActiveRecord::Base
   #   job.complete!(0)
   #   # => true
   def complete!(exit_status)
-    self.exit_status = exit_status
-    trigger 'complete', entity
-    save!
+    run_callbacks :complete do
+      self.exit_status = exit_status
+      save!
+    end
   end
 
   # Public: Append lines of output from the process.
