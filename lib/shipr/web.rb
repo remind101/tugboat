@@ -12,8 +12,8 @@ module Shipr
     end
 
     helpers do
-      def stream_url
-        "#{request.scheme}://#{request.host_with_port}#{request.fullpath}/stream"
+      def stream_url(job)
+        "#{request.scheme}://#{request.host_with_port}/deploys/#{job.id}/stream"
       end
     end
 
