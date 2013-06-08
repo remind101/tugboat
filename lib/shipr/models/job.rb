@@ -17,6 +17,10 @@ class Job < ActiveRecord::Base
   before_validation :set_defaults
   after_create :queue_task
 
+  after_create do
+    trigger 'create', entity
+  end
+
   # =================
   # = Serialization =
   # =================
