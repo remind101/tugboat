@@ -9,7 +9,13 @@
     - else
       %span.text-info Deploying
     #{@job.repo}
-  %code#config= @job.config.to_yaml
 
-%pre#logs
-  %code{ 'data-stream' => stream_url }= @job.output
+#environment
+  %h3 Environment
+  %pre
+    %code= @job.config.map { |key, val| "#{key}=#{val}" }.join("\n")
+
+#logs
+  %h3 Logs
+  %pre
+    %code{ 'data-stream' => stream_url }= @job.output

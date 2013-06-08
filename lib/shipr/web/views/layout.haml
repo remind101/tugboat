@@ -22,7 +22,7 @@
 
     :javascript
       $(function() {
-        var $code = $('code')
+        var $code = $('code[data-stream]')
         var source = new EventSource($code.data('stream'))
 
         source.addEventListener('output', function(e) {
@@ -32,6 +32,12 @@
           $(document).scrollTop($(document).height())
         })
       })
+
+    :css
+      #environment,
+      #logs {
+        margin: 40px 0;
+      }
   %body
     .container
       = yield
