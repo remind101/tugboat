@@ -43,7 +43,8 @@ class Job < ActiveRecord::Base
   #   # => true
   def complete!(exit_status)
     self.exit_status = exit_status
-    self.save!
+    trigger 'complete', entity
+    save!
   end
 
   # Public: Append lines of output from the process.
@@ -55,9 +56,9 @@ class Job < ActiveRecord::Base
   #   job.append_output!("hello world")!
   #   # => true
   def append_output!(output)
-    pusher.trigger channel, 'output', id: id, output: output
     self.output += output
-    self.save!
+    trigger 'output', id: id, output: output
+    save!
   end
 
   # Public: Wether the job has completed or not.
@@ -87,6 +88,10 @@ class Job < ActiveRecord::Base
   end
 
 private
+
+  def trigger(*args)
+    pusher.trigger channel, *args
+  end
 
   def channel
     "private-#{self.class.to_s.downcase}"
