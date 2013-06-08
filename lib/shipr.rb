@@ -14,6 +14,17 @@ module Shipr
   module Hooks
     autoload :IronMQ, 'shipr/hooks/iron_mq'
     autoload :Pusher, 'shipr/hooks/pusher'
+    autoload :GitHub, 'shipr/hooks/github'
+  end
+
+  module Helpers
+    delegate :authenticate!, to: :warden
+
+    def warden; env['warden'] end
+
+    def deploy(*args)
+      Job.create(*args)
+    end
   end
 
   class << self
@@ -77,6 +88,10 @@ module Shipr
 
         map '/pusher/auth' do
           run Hooks::Pusher
+        end
+
+        map '/_github' do
+          run Hooks::GitHub
         end
 
         map '/_iron_mq' do
