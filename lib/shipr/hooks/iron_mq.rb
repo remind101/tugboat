@@ -1,8 +1,8 @@
-module Shipr
+module Shipr::Hooks
   # Internal: Receives hooks from Iron.io
   #
   # TODO: Authenticate this.
-  class Hooks < Grape::API
+  class IronMQ < Grape::API
     # We don't want Iron.io to keep ping us, so send it back a 200 response.
     rescue_from ActiveRecord::RecordNotFound do |e|
       Rack::Response.new('', 200)

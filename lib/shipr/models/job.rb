@@ -6,10 +6,9 @@ class Job < ActiveRecord::Base
   # ==============
 
   class << self
-    delegate :redis, to: Shipr
+    delegate :pusher, to: :'Shipr'
   end
-
-  delegate :redis, to: self
+  delegate :pusher, to: :'self.class'
 
   # =============
   # = Callbacks =
@@ -56,26 +55,9 @@ class Job < ActiveRecord::Base
   #   job.append_output!("hello world")!
   #   # => true
   def append_output!(output)
-    redis.publish channel, output
+    pusher.trigger channel, 'output', id: id, output: output
     self.output += output
     self.save!
-  end
-
-  # Public: Subscribe to the processes output.
-  #
-  # &block - A block to run when there's new output.
-  #
-  # Examples
-  #
-  #   job.on_output do |output|
-  #     puts output
-  #   end
-  def on_output(&block)
-    redis.subscribe channel do |on|
-      on.message do |channel, output|
-        block.call(output)
-      end
-    end
   end
 
   # Public: Wether the job has completed or not.
@@ -99,15 +81,15 @@ class Job < ActiveRecord::Base
     exit_status == 0
   end
 
-  entity :id, :repo, :branch, :user, :config, :exit_status do
+  entity :id, :repo, :branch, :user, :config, :exit_status, :output do
     expose :done?, as: :done
     expose :success?, as: :success
   end
 
 private
-  
+
   def channel
-    "#{self.class.to_s.downcase}:#{id}:output"
+    "private-#{self.class.to_s.downcase}"
   end
 
   def set_defaults

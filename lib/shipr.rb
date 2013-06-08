@@ -8,15 +8,16 @@ require 'shipr/warden'
 autoload :Job, 'shipr/models/job'
 
 module Shipr
-  autoload :API,   'shipr/api'
-  autoload :Web,   'shipr/web'
-  autoload :Hooks, 'shipr/hooks'
+  autoload :API,        'shipr/api'
+  autoload :Web,        'shipr/web'
+  autoload :FailureApp, 'shipr/failure_app'
+
+  module Hooks
+    autoload :IronMQ, 'shipr/hooks/iron_mq'
+    autoload :Pusher, 'shipr/hooks/pusher'
+  end
 
   class << self
-
-    def redis
-      Redis.current
-    end
 
     def workers
       @workers ||= IronWorkerNG::Client.new
@@ -24,6 +25,16 @@ module Shipr
 
     def messages
       @messages ||= IronMQ::Client.new
+    end
+
+    def pusher
+      @pusher ||= begin
+        uri = URI.parse(ENV['PUSHER_URL'])
+        Pusher.key = uri.user
+        Pusher.secret = uri.password
+        Pusher.app_id = uri.path.gsub '/apps/', ''
+        Pusher
+      end
     end
 
     def logger
@@ -42,7 +53,7 @@ module Shipr
 
     def setup_queues
       subscribers = [
-        { url: "https://#{ENV['DOMAIN']}/_hooks" }
+        { url: "https://#{ENV['DOMAIN']}/_iron_mq" }
       ]
       messages.queue('update').update \
         subscribers: subscribers,
@@ -60,26 +71,21 @@ module Shipr
 
         use Rack::Session::Cookie, key: '_shipr_session'
 
-        map '/_hooks' do
+        use Warden::Manager do |manager|
+          manager.default_strategies :basic
+          manager.failure_app = FailureApp
+        end
+
+        map '/pusher/auth' do
+          run Hooks::Pusher
+        end
+
+        map '/_iron_mq' do
           use Rack::ForceJSON
-          run Hooks
+          run Hooks::IronMQ
         end
 
         map '/api' do
-          use Warden::Manager do |manager|
-            manager.default_strategies :basic
-            manager.failure_app = lambda do |env|
-              [
-                401,
-                {
-                  'Content-Type' => 'application/json',
-                  'WWW-Authenticate' => %(Basic realm="API Authentication")
-                },
-                [ { error: '401 Unauthorized' }.to_json ]
-              ]
-            end
-          end
-
           run API
         end
 
