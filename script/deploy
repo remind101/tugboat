@@ -2,4 +2,4 @@
 
 echo "Deploying to $ENVIRONMENT"
 
-git push git@heroku.com:shipr.git HEAD:master
+git push git@heroku.com:r101-shipr.git HEAD:master
