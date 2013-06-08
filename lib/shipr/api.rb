@@ -5,15 +5,9 @@ module Shipr
     version 'v1', using: :header, vendor: 'shipr'
     format :json
 
+    helpers Helpers
+
     helpers do
-      delegate :authenticate!, to: :warden
-
-      def warden; env['warden'] end
-
-      def deploy(*args)
-        Job.create(*args)
-      end
-
       def declared(params)
         super(params).select { |_, val| !val.nil? }
       end
