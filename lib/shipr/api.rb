@@ -1,7 +1,5 @@
 module Shipr
   class API < Grape::API
-    autoload :FailureApp, 'shipr/api/failure_app'
-
     logger Shipr.logger
 
     version 'v1', using: :header, vendor: 'shipr'
@@ -23,7 +21,13 @@ module Shipr
 
     use Warden::Manager do |manager|
       manager.default_strategies :basic
-      manager.failure_app = FailureApp
+      manager.failure_app = self
+    end
+
+    get :unauthenticated do
+      header 'WWW-Authenticate', %(Basic realm="API Authentication")
+      status 401
+      { error: 'Unauthorized' }
     end
 
     namespace :deploys do
