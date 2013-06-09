@@ -20,6 +20,7 @@ gem 'sinatra'
 
 # Frontend
 gem 'sinatra_auth_github'
+gem 'sinatra-asset-pipeline', github: 'ejholmes/sinatra-asset-pipeline'
 gem 'haml'
 
 # API

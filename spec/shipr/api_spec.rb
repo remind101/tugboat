@@ -12,7 +12,15 @@ describe Shipr::API do
   end
 
   let(:current_user) { 'foo@bar.com' }
-  let(:body) { JSON.parse(last_response.body) }
+
+  describe 'GET /deploys' do
+    with_authenticated_user
+
+    it 'returns all jobs' do
+      get '/deploys'
+      expect(last_response.status).to eq 200
+    end
+  end
 
   describe 'GET /unauthenticated' do
     it 'does something' do

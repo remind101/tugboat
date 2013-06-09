@@ -1,50 +1,19 @@
 !!!
 %html
   %head
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+    %script{ :src => '//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js' }
+    %script{ :src => 'https://d3dy5gmtp8yhk7.cloudfront.net/2.0/pusher.min.js' }
 
-    <meta charset="utf-8">
-    <title>Shipr</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    %meta{ :charset => 'utf-8' }
+    %title Shipr
+    %meta{ :name => 'viewport', :content => 'width=device-width, initial-scale=1.0' }
+    %meta{ :name => 'pusher.key', :content => Shipr.pusher.key }
 
-    <!-- Loading Bootstrap -->
-    <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+    %link{ :href => '/bootstrap/css/bootstrap.css', :rel => 'stylesheet' }
 
-    <!-- Loading Flat UI -->
-    <link href="/css/flat-ui.css" rel="stylesheet">
+    %link{ :href => '/assets/app.css', :rel => 'stylesheet' }
+    %script{ :src => '/assets/app.js' }
 
-    <link rel="shortcut icon" href="images/favicon.ico">
-
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
-    <!--[if lt IE 9]>
-    <script src="js/html5shiv.js"></script>
-    <![endif]-->
-
-    <script src="https://d3dy5gmtp8yhk7.cloudfront.net/2.0/pusher.min.js"></script>
-    :javascript
-      $(function() {
-        var $code = $('#log')
-        var id = $code.data('id')
-        var pusher = new Pusher('#{Shipr.pusher.key}'); // uses your API KEY
-        var channel = pusher.subscribe('private-job');
-        channel.bind('output', function(data) {
-          if (data.id == id) {
-            $code.html($code.html() + data.output);
-          }
-        });
-      })
-
-    :css
-      #log {
-        color: #f1f1f1;
-        background: #000;
-        font-family: monospace;
-        font-size: 12px;
-        line-height: 18px;
-        white-space: pre-wrap;
-        word-break: break-word;
-        border: 1px solid #ddd;
-      }
   %body
     .container
       = yield

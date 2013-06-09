@@ -10,4 +10,4 @@
         %span.text-info Deploying
     #{@job.branch} to #{@job.repo}
 
-%pre#log{ 'data-id' => @job.id }= @job.output
+%pre#log{ 'data-id' => @job.id, 'data-channel' => 'private-job' }= @job.output
