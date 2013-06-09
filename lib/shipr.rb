@@ -7,13 +7,18 @@ require 'shipr/warden'
 autoload :Job, 'shipr/models/job'
 
 module Shipr
-  autoload :API,        'shipr/api'
-  autoload :Web,        'shipr/web'
-  autoload :FailureApp, 'shipr/failure_app'
+  autoload :API,          'shipr/api'
+  autoload :Web,          'shipr/web'
+  autoload :QueueHandler, 'shipr/queue_handler'
+  autoload :FailureApp,   'shipr/failure_app'
 
   module Hooks
-    autoload :IronMQ, 'shipr/hooks/iron_mq'
     autoload :Pusher, 'shipr/hooks/pusher'
+  end
+
+  module Queues
+    autoload :Base,   'shipr/queues/base'
+    autoload :Update, 'shipr/queues/update'
   end
 
   class << self
@@ -50,18 +55,8 @@ module Shipr
       end
     end
 
-    def setup_queues
-      subscribers = [
-        { url: "https://#{ENV['DOMAIN']}/_iron_mq" }
-      ]
-      messages.queue('update').update \
-        subscribers: subscribers,
-        push_type: :multicast
-    end
-
     def setup
       connect!
-      setup_queues unless ENV['RACK_ENV'] = 'test'
     end
 
     def app
@@ -73,11 +68,6 @@ module Shipr
         map '/pusher/auth' do
           use Warden::Manager
           run Hooks::Pusher
-        end
-
-        map '/_iron_mq' do
-          use Rack::ForceJSON
-          run Hooks::IronMQ
         end
 
         map '/api' do
