@@ -1,5 +1,5 @@
 module Shipr
-  class FailureApp
+  class API::FailureApp
     def self.call(env)
       new.call(env)
     end

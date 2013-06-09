@@ -12,6 +12,8 @@ module Shipr::Hooks
       def warden; env['warden'] end
     end
 
+    use Warden::Manager
+
     params do
       requires :socket_id, type: String
       requires :channel_name, type: String

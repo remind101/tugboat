@@ -10,7 +10,6 @@ module Shipr
   autoload :API,          'shipr/api'
   autoload :Web,          'shipr/web'
   autoload :QueueHandler, 'shipr/queue_handler'
-  autoload :FailureApp,   'shipr/failure_app'
 
   module Hooks
     autoload :Pusher, 'shipr/hooks/pusher'
@@ -66,16 +65,10 @@ module Shipr
         use Rack::Session::Cookie, key: '_shipr_session'
 
         map '/pusher/auth' do
-          use Warden::Manager
           run Hooks::Pusher
         end
 
         map '/api' do
-          use Warden::Manager do |manager|
-            manager.default_strategies :basic
-            manager.failure_app = FailureApp
-          end
-
           run API
         end
 

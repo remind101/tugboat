@@ -7,9 +7,6 @@ describe Shipr::API do
   def app
     Rack::Builder.new do
       use Rack::Session::Cookie, secret: SecureRandom.hex
-      use Warden::Manager do |manager|
-        manager.default_strategies :basic
-      end
       run Shipr::API
     end
   end

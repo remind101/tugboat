@@ -1,5 +1,7 @@
 module Shipr
   class API < Grape::API
+    autoload :FailureApp, 'shipr/api/failure_app'
+
     logger Shipr.logger
 
     version 'v1', using: :header, vendor: 'shipr'
@@ -17,6 +19,11 @@ module Shipr
       def declared(params)
         super(params).select { |_, val| !val.nil? }
       end
+    end
+
+    use Warden::Manager do |manager|
+      manager.default_strategies :basic
+      manager.failure_app = FailureApp
     end
 
     namespace :deploys do
