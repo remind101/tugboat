@@ -8,8 +8,8 @@ Dir[File.join(File.dirname(__FILE__), "support/**/*.rb")].each {|f| require f}
 
 RSpec.configure do |config|
   config.before do
-    IronWorkerNG::Client.stub new: double(IronWorkerNG::Client).as_null_object
-    IronMQ::Client.stub new: double(IronMQ::Client).as_null_object
-    Pusher.stub trigger: double('Pusher Trigger').as_null_object
+    Shipr.stub workers:  double(IronWorkerNG::Client).as_null_object
+    Shipr.stub messages: double(IronMQ::Client).as_null_object
+    Shipr.stub pusher:   double(Pusher).as_null_object
   end
 end
