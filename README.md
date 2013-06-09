@@ -28,16 +28,31 @@ this means deploying from Hipchat.
    $ heroku create
    ```
 
-2. Add an ssh key to the app
+2. Add the required addons
 
    ```bash
-   $ heroku config:set SSH_KEY="$(cat ~/.ssh/id_rsa)"
+   $ heroku addons:add pusher:sandbox
+   $ heroku addons:add iron_mq:developer
+   $ heroku addons:add iron_worker:developer
+   $ heroku addons:add heroku-postgresql:dev
    ```
 
-3. Add an auth token
+3. Update heroku config
 
    ```bash
+   $ heroku config:set RACK_ENV=production
+   $ heroku config:set SSH_KEY="$(cat ~/.ssh/id_rsa)"
    $ heroku config:set AUTH_TOKEN="$(pwgen 32 1)"
+   $ heroku config:set DOMAIN="<app name>.herokuapp.com"
+   ```
+
+4. Deploy the app
+
+   ```bash
+   $ export $(heroku config -s | grep IRON)
+   $ iron_worker upload workers/deploy
+   $ git push heroku master
+   $ bundle exec rake db:migrate DATABASE_URL=$(heroku config:get DATABASE_URL)
    ```
 
 ## Hacking on Shipr
