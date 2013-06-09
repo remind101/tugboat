@@ -23,7 +23,7 @@
     <script src="http://js.pusher.com/2.0/pusher.min.js"></script>
     :javascript
       $(function() {
-        var $code = $('#logs code')
+        var $code = $('#log')
         var id = $code.data('id')
         var pusher = new Pusher('#{Shipr.pusher.key}'); // uses your API KEY
         var channel = pusher.subscribe('private-job');

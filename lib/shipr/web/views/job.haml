@@ -17,5 +17,4 @@
 
 #logs
   %h3 Logs
-  %pre
-    %code{ 'data-id' => @job.id }= @job.output
+  %pre#log{ 'data-id' => @job.id }= @job.output
