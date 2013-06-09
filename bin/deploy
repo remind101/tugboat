@@ -9,6 +9,9 @@
 echo "$SSH_KEY" > "$HOME/id_rsa"
 chmod 0600 "$HOME/id_rsa"
 
+# We don't really want our private key in logs.
+unset SSH_KEY
+
 # Use a shimmed ssh command.
 export GIT_SSH="$HOME/bin/ssh"
 
