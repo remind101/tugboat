@@ -71,6 +71,7 @@ module Shipr
         use Rack::Session::Cookie, key: '_shipr_session'
 
         map '/pusher/auth' do
+          use Warden::Manager
           run Hooks::Pusher
         end
 
