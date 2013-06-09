@@ -11,7 +11,7 @@ module Shipr
       def warden; env['warden'] end
 
       def jobs
-        Job.order('created_at asc')
+        Job.order('id asc')
       end
 
       def deploy(*args)
