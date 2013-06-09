@@ -17,7 +17,6 @@ describe Shipr::API do
   describe 'GET /unauthenticated' do
     it 'does something' do
       get '/unauthenticated' do
-        puts last_response.headers
         expect(last_response.status).to eq 401
         expect(last_response.headers['WWW-Authenticate']).to eq %(Basic realm="API Authentication")
       end
