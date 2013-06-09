@@ -70,11 +70,6 @@ module Shipr
 
         use Rack::Session::Cookie, key: '_shipr_session'
 
-        use Warden::Manager do |manager|
-          manager.default_strategies :basic
-          manager.failure_app = FailureApp
-        end
-
         map '/pusher/auth' do
           run Hooks::Pusher
         end
@@ -85,6 +80,11 @@ module Shipr
         end
 
         map '/api' do
+          use Warden::Manager do |manager|
+            manager.default_strategies :basic
+            manager.failure_app = FailureApp
+          end
+
           run API
         end
 
