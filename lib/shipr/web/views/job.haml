@@ -10,11 +10,4 @@
         %span.text-info Deploying
     #{@job.branch} to #{@job.repo}
 
-#environment
-  %h3 Environment
-  %pre
-    %code= @job.config.map { |key, val| "#{key}=#{val}" }.join("\n")
-
-#logs
-  %h3 Logs
-  %pre#log{ 'data-id' => @job.id }= @job.output
+%pre#log{ 'data-id' => @job.id }= @job.output
