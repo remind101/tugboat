@@ -10,6 +10,10 @@ module Shipr
 
       def warden; env['warden'] end
 
+      def jobs
+        Job.order('id asc')
+      end
+
       def deploy(*args)
         Job.create(*args)
       end
@@ -35,6 +39,11 @@ module Shipr
         authenticate!
       end
 
+      desc 'Returns all deploys.'
+      get do
+        present jobs
+      end
+
       desc 'Deploy.'
       params do
         requires :repo, type: String
@@ -45,11 +54,12 @@ module Shipr
         present deploy(declared params)
       end
 
+      desc 'Get the JSON representation of a deploy.'
       params do
         requires :id, type: Integer
       end
       get ':id' do
-        present Job.find(params.id)
+        present jobs.find(params.id)
       end
     end
   end
