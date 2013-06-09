@@ -1,5 +1,5 @@
 #!/bin/bash
 
-echo "Deploying to $ENVIRONMENT"
+export
 
 git push git@heroku.com:r101-shipr.git HEAD:master
