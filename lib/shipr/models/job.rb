@@ -123,7 +123,7 @@ private
     # = Delegation =
     # ==============
 
-    delegate :workers, to: Shipr
+    delegate :workers, to: :'Shipr'
     delegate :tasks, to: :workers
     delegate \
       :id,
