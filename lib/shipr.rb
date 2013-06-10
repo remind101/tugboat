@@ -9,7 +9,6 @@ autoload :Job, 'shipr/models/job'
 module Shipr
   autoload :API,          'shipr/api'
   autoload :Web,          'shipr/web'
-  autoload :QueueHandler, 'shipr/queue_handler'
 
   module Hooks
     autoload :Pusher, 'shipr/hooks/pusher'
