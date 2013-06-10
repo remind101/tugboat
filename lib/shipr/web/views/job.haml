@@ -1,13 +1,15 @@
 .page-header
   %p.lead
-    %strong
-      - if @job.done?
-        - if @job.success?
-          %span.text-success Deployed
-        - else
-          %span.text-error Error deploying
+    - if @job.done?
+      - if @job.success?
+        %strong.text-success Deployed
       - else
-        %span.text-info Deploying
-    #{@job.branch} to #{@job.repo}
+        %strong.text-error Error
+        deploying
+    - else
+      %strong.text-info Deploying
+    %strong.text-info= @job.branch
+    branch to
+    = @job.repo
 
 %pre#log{ 'data-id' => @job.id, 'data-channel' => 'private-job' }= @job.output
