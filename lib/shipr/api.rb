@@ -5,6 +5,10 @@ module Shipr
     version 'v1', using: :header, vendor: 'shipr'
     format :json
 
+    rescue_from ActiveRecord::RecordNotFound do |e|
+      Rack::Response.new({ error: e.message }.to_json, 404)
+    end
+
     helpers do
       delegate :authenticate!, to: :warden
 
