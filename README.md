@@ -9,7 +9,7 @@ variables.
 
 ## What happens?
 
-1. You send a post request to `/deploy` with the repo and the config vars
+1. You send a post request to `/api/deploys` with the repo and the config vars
 2. The app spins up a [deploy worker](./workers/deploy.worker) on Iron.io
 3. The worker runs the [deploy script](./bin/deploy), which:
    1. Clones the repo
