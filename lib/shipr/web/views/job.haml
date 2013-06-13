@@ -1,5 +1,7 @@
 .page-header
   %p.lead
+    - unless @job.done?
+      %img.loader{ :src => asset_path('loader.gif') }
     - if @job.done?
       - if @job.success?
         %strong.text-success Deployed

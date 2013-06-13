@@ -9,4 +9,6 @@ class @Log extends Backbone.View
 
   # Internal: Called when there's new log output to append.
   output: (data) =>
+    sticky = $(document).scrollTop() + $(window).height() >= $(document).height() - 100
     @$el.html(@$el.html() + data.output) if data.id == @id
+    $(document).scrollTop($(document).height()) if sticky
