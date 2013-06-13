@@ -7,8 +7,8 @@ require 'shipr/warden'
 autoload :Job, 'shipr/models/job'
 
 module Shipr
-  autoload :API,          'shipr/api'
-  autoload :Web,          'shipr/web'
+  autoload :API,      'shipr/api'
+  autoload :Web,      'shipr/web'
 
   module Hooks
     autoload :Pusher, 'shipr/hooks/pusher'
