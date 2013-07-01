@@ -1,6 +1,7 @@
 module Shipr::Queues
   class Base
     delegate :messages, to: :'Shipr'
+    delegate :info, to: :'Shipr.logger'
 
     class << self
       # Factory method process the queue. Blocking call, since it will loop
@@ -43,6 +44,10 @@ module Shipr::Queues
     def run
       queue.poll do |message|
         process Hashie::Mash.new(JSON.parse(message.body))
+      rescue => e
+        # TODO: Should probably actually handle errors, but I don't really care
+        # right now.
+        info e.inspect
       end
     end
 
