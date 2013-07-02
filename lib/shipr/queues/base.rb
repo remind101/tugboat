@@ -43,11 +43,13 @@ module Shipr::Queues
     # Never returns.
     def run
       queue.poll do |message|
-        process Hashie::Mash.new(JSON.parse(message.body))
-      rescue => e
-        # TODO: Should probably actually handle errors, but I don't really care
-        # right now.
-        info e.inspect
+        begin
+          process Hashie::Mash.new(JSON.parse(message.body))
+        rescue => e
+          # TODO: Should probably actually handle errors, but I don't really care
+          # right now.
+          info e.inspect
+        end
       end
     end
 
