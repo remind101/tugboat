@@ -13,6 +13,7 @@ describe Job do
     its(:branch) { should eq 'master' }
     its(:config) { should eq('ENVIRONMENT' => 'production') }
     its(:output) { should eq '' }
+    its(:script) { should eq nil }
   end
 
   describe '.complete!' do

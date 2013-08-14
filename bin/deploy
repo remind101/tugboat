@@ -2,9 +2,10 @@
 
 # Expects the following environment variables to be set:
 #
-# $SSH_KEY: Private key to use when deploying.
-# $REPO:    The repo to deploy.
-# $BRANCH: The branch, tag, or sha to checkout.
+# $SSH_KEY:       Private key to use when deploying.
+# $REPO:          The repo to deploy.
+# $BRANCH:        The branch, tag, or sha to checkout.
+# $DEPLOY_SCRIPT: The content of a deploy script to use if the repo doesn't define one.
 
 echo "$SSH_KEY" > "$HOME/id_rsa"
 chmod 0600 "$HOME/id_rsa"
@@ -25,5 +26,10 @@ git fetch -q origin
 
 git reset -q --hard "origin/$BRANCH"
 
-# Run the projects deploy script.
-./script/deploy
+if [ -e ./script/deploy ]; then
+    ./script/deploy
+elif [ -n "$DEPLOY_SCRIPT" ]; then
+    eval "$DEPLOY_SCRIPT"
+else
+    exit -1
+fi

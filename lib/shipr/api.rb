@@ -53,6 +53,7 @@ module Shipr
         requires :repo, type: String
         optional :config, type: Hash
         optional :branch, type: String
+        optional :script, type: String
       end
       post do
         present deploy(declared params)

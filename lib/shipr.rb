@@ -1,4 +1,5 @@
 require 'pathname'
+require 'open-uri'
 require 'active_support/core_ext'
 require 'rack/force_json'
 
@@ -61,6 +62,23 @@ module Shipr
         Pusher.secret = uri.password
         Pusher.app_id = uri.path.gsub '/apps/', ''
         Pusher
+      end
+    end
+
+    # Public: An easy way to configure and fetch a default deploy script to
+    # use. Works great for hosting a deploy script in a gist.
+    #
+    # Examples
+    #
+    #   Shipr.default_script
+    #   # => "git push git@heroku.com:app.git HEAD:master"
+    #
+    # Returns the String content of the deploy script.
+    def default_script
+      @default_script ||= begin
+        uri = URI.parse(ENV['DEPLOY_SCRIPT_URL']) rescue nil
+        return nil unless uri
+        open(uri).read
       end
     end
 
