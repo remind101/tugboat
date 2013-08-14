@@ -27,3 +27,9 @@ begin
 rescue LoadError
   # The gem shouldn't be installed in a production environment
 end
+
+namespace :jobs do
+  task :test do
+    Job.create(repo: 'git@github.com:ejholmes/shipr.git')
+  end
+end
