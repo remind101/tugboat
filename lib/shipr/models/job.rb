@@ -93,6 +93,10 @@ class Job < ActiveRecord::Base
     exit_status == 0
   end
 
+  def script
+    super || Shipr.default_script
+  end
+
   entity :id, :repo, :branch, :user, :config, :exit_status, :output do
     expose :done?, as: :done
     expose :success?, as: :success
@@ -130,6 +134,7 @@ private
       :repo,
       :branch,
       :config,
+      :script,
       to: :job
 
     # ===========
@@ -156,9 +161,10 @@ private
 
     def env
       config.merge \
-        'REPO'     => repo,
-        'BRANCH'   => branch,
-        'SSH_KEY'  => ENV['SSH_KEY']
+        'REPO'          => repo,
+        'BRANCH'        => branch,
+        'SSH_KEY'       => ENV['SSH_KEY'],
+        'DEPLOY_SCRIPT' => script
     end
 
   end
