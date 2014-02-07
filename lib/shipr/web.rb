@@ -13,6 +13,10 @@ module Shipr
     configure :test do
       set :show_exceptions, false
       set :raise_errors, true
+
+      Sprockets::Helpers.configure do |config|
+        config.debug = true
+      end
     end
 
     helpers do
