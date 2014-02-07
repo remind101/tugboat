@@ -16,13 +16,21 @@ task :console do
   IRB.start
 end
 
-task :default => [:spec]
-
 begin
   require 'rspec/core/rake_task'
   desc "Run specs"
   RSpec::Core::RakeTask.new do |t|
     t.pattern = 'spec/**/*_spec.rb'
+  end
+
+  require 'cucumber/rake/task'
+  Cucumber::Rake::Task.new(:features) do |t|
+    t.cucumber_opts = "features --format pretty"
+  end
+
+  task :default do
+    Rake::Task['spec'].invoke
+    Rake::Task['features'].invoke
   end
 rescue LoadError
   # The gem shouldn't be installed in a production environment
