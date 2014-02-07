@@ -2,6 +2,9 @@ language: ruby
 rvm:
 - 1.9.3
 script: bundle exec rake
+before_install:
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
 before_script: RACK_ENV=test bundle exec rake db:create:all db:migrate
 env:
   global:
