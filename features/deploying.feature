@@ -5,7 +5,8 @@ Feature: Deploying
 
     Scenario: Deploying a git repo
         When I deploy the following:
-            | repo | git@github.com:ejholmes/shipr-test.git |
+            | repo   | https://gist.github.com/8857858.git |
+            | script | echo "Deployed repo"                     |
         And I authenticate with github
         And I view the deploy
-        Then the deploy should finish
+        Then the repo should eventually be deployed

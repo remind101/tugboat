@@ -1,5 +1,16 @@
 language: ruby
 rvm:
-  - 1.9.3
+- 1.9.3
 script: bundle exec rake
 before_script: RACK_ENV=test bundle exec rake db:create:all db:migrate
+env:
+  global:
+  - secure: MmlHoobFHjVSm3pPwTwWcO5zZ15Y+wkjnNusOyrhFbe7z0//M3UYqq5W2Wy3ZNwe8VZ85oAZC1wZg0w8ewx+I15NXrnGCbP+/W7tPOvhuAWB1Jo8fBCUSWjcD27ru4NQscaAW4oGd+jadDP1QdaiyjYy/o/I/xu/O87zGdWhluk=
+  - secure: d141MbTTysPbfDwGUnn0ZL95POVH775MmxM2ur1UpEU2xmAPHaOjpss7xE4yM7wjOZlNMDPKzPakaPaeeek54aJ8Ivl045xF3p36guVB49OEiEMwD824FYgOM7UawjGrq5EXlvMCD0NUQ0w9k6da3LlXJDgpZ01AKIHzyma1jWM=
+  - secure: TGfQj20K+NAbvA+v38ENVLuvww2daA7QY8LCVNRyBKQDuIEy6VJ/QRPGbxxeW9ASygDDfXTCXGTRJuPv1YGetaeZpfe5lTAVeS31x5re05u0xsFyxqRYF2s9Dfr3cjL1cWVSY56VEVrq8uF8JK/9GVWqwgCo3fy5DUitXVhERJE=
+  - secure: HAy1/vDYcN9Ui0rv5Nr/z6xJb35jU08H9vh02KRi2CQ+QDjbS6/mKW7VvkJwdMiXntnrFu+9t5nyU77/FVWjMuzlwTQCXANFKG52NEBR6CX5q9CsyrrEEL0mfELTT53mFUWP7JTH//227EMg1yPcgrpip64pGSn/VgUkqihNoh4=
+  - secure: WoItePusQM187AMo0nLHL/1OWD3Hlbp9np7XSnPhPEjqPYq1sKl83mjlIZCjf0oX5y3pYuJ8Vw1pPsE+1IiQtzQISD9eNnjdSwod1V+NVEBGIDjjuQZ4X2ja8FF+EnrFxbkUOOnFP2AiTxkvX51MvGHmPOjmKPNSrswCaCccnjg=
+  - secure: UqHyIwZ2jRjnPuUzvSP1i4VgTHM+ojMys8650V1BH7F2PHYnMfUnTRhlmIl6atm3k7vFuNBCAHd4/DWxWFjDaYUJx5ExzQmlUvJLVh2nXh3kUDmnFb2jEvjjL/OxXAkTaUjlIkBVWrdU2trNXsqq4AOmTGtvtlbpiXEd0OFs70Y=
+  - secure: nh5k9wrp8fpnReU817XFISMKpysFCE/1A/EOP0VM11/qJpLsexKyYXGSp6cjq2KfyrcLTxQHcwFQMxqi0hTtc2FaMStxdEMXmyOZhKxGIqIn6m7E1NTzc69NsnitePMMH2dJmwrxFjj4J6N94hcTn6rPnE1O1YjDjssyt9IUci4=
+  - secure: dYH5qi0uzUveIsKJac0ecMEVQA34/nM4uPi/Q4vUbrXqKWc7ZMV42YBgQ/dIZpHxLaLPLIt0cQiRBiuQCtnZRcgiXw+vXJTtnrBNglpnUOvHOpc2keflNnOjoBGWCdVO4jctgI3uYiNf+yYpq6J9LEFoGsFkPXTTe9Wy2SoWnAs=
+  - secure: Va+Wj7h5F88/pr4u3jwQLRINPf31+w78CCSMV+S+L8Ny4Xrh2Lg8DP6xpVR5gwML/NxnRt3Fqekndmhe5zjJ7zmZ+X7sPzGw2/bop4QZetrbrk9TEpbEdKPt369Uh9BS261i93xrgSCBCImcKNBLo4WgEIwi9GQyiOHWJ7q9Cg8=

@@ -5,8 +5,8 @@ When(/^I view the deploy$/) do
   visit "/deploys/#{id}"
 end
 
-Then(/^the deploy should finish$/) do
+Then(/^the repo should eventually be deployed$/) do
   Capybara.using_wait_time(300) do
-    expect(page).to have_content "Use '--' to separate paths from revisions"
+    expect(page).to have_content "Deployed repo"
   end
 end
