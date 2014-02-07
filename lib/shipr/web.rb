@@ -37,5 +37,13 @@ module Shipr
       @job = jobs.find(id)
       haml :job
     end
+
+    configure :test, :development do
+      get '/assets/*' do |path|
+        env_sprockets = request.env.dup
+        env_sprockets['PATH_INFO'] = path
+        settings.sprockets.call env_sprockets
+      end
+    end
   end
 end

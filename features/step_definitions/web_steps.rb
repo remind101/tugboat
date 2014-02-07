@@ -1,14 +1,12 @@
-When(/^I tail the log output$/) do
+When(/^I view the deploy$/) do
   response = JSON.parse(last_response.body)
   id = response['id']
 
   visit "/deploys/#{id}"
 end
 
-Then(/^I should see "(.*?)"$/) do |content|
-  expect(page).to have_content content
-end
-
-When(/^I sleep$/) do
-  sleep 50
+Then(/^the deploy should finish$/) do
+  Capybara.using_wait_time(300) do
+    expect(page).to have_content "Use '--' to separate paths from revisions"
+  end
 end
