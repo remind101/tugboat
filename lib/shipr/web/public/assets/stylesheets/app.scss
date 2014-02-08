@@ -1,6 +1,15 @@
-.status {
+.job-header {
   margin: 40px;
   text-align: center;
+
+  .destination {
+    color: #999;
+    font-size: 20px;
+  }
+
+  .spinner {
+    margin-left: -10px;
+  }
 }
 
 .gravatar {

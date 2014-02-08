@@ -37,7 +37,8 @@
             %a.navbar-brand(href="" ui-sref="app.jobs.list") Shipr
           .navbar-collapse.collapse
             %ul.nav.navbar-nav.navbar-right
-              %img.gravatar(ng-src="{{user.gravatar}}")
+              %li
+                %img.gravatar(ng-src="{{user.gravatar}}")
 
     %script(type="text/ng-template" id="content.html")
       .container(ui-view)
@@ -66,17 +67,22 @@
           %a(href="" ui-sref="app.jobs.list") Deploys
         %li.active
           %strong(ng-bind="job.repo")
-      %h1.status
-        %span.text-info(ng-if="!job.done")
-          .spinner
-            .rect1
-            .rect2
-            .rect3
-            .rect4
-          %span(ng-if="!job.output.length") Queued
-          %span(ng-if="job.output.length") Deploying
-        %span.text-success(ng-if="job.done && job.success") Deployed
-        %span.text-danger(ng-if="job.done && !job.success") Failed
+      %header.job-header
+        %h1
+          %span.text-info(ng-if="!job.done")
+            .spinner
+              .rect1
+              .rect2
+              .rect3
+              .rect4
+            %span(ng-if="!job.output.length") Queued
+            %span(ng-if="job.output.length") Deploying
+          %span.text-success(ng-if="job.done && job.success") Deployed
+          %span.text-danger(ng-if="job.done && !job.success") Failed
+        %p.destination
+          %strong(ng-bind="job.branch")
+          &#8674;
+          %strong(ng-bind="job.config.ENVIRONMENT")
       .panel.panel-primary
         .panel-heading Environment Variables
         .panel-body
