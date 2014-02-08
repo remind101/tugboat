@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+ruby '2.1.0'
+
 gem 'rake'
 gem 'unicorn', '~> 4.6.2'
 
