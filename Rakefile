@@ -33,3 +33,7 @@ namespace :jobs do
     p Job.create(repo: 'git@github.com:remind101/shipr.git')
   end
 end
+
+Rake::Task['assets:precompile'].enhance do
+  system 'bundle exec iron_worker upload workers/deploy'
+end

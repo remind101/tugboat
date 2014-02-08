@@ -1,5 +1,5 @@
 runtime 'ruby'
 exec 'deploy.rb'
 dir '../bin'
-gem 'iron_mq'
+gemfile '../Gemfile', 'worker'
 name 'Deploy'

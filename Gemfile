@@ -16,13 +16,10 @@ gem 'pusher',         '~> 0.11.2'
 # Workers
 gem 'iron_worker_ng', '~> 0.16.4'
 
-# Messages
-gem 'iron_mq', '~> 4.0.3'
-gem 'sinatra'
-
 # Frontend
+gem 'sinatra'
 gem 'sinatra_auth_github'
-gem 'sinatra-asset-pipeline', github: 'ejholmes/sinatra-asset-pipeline'
+gem 'sinatra-asset-pipeline'
 gem 'haml'
 
 # API
@@ -36,6 +33,11 @@ gem 'mongoid'
 # Authentication
 gem 'warden'
 
+group :worker do
+  gem 'iron_mq', '~> 4.0.3'
+  gem 'thread'
+end
+
 group :development do
   gem 'dotenv'
   gem 'shotgun'
@@ -48,6 +50,6 @@ group :test do
   gem 'rack-test'
   gem 'webmock'
   gem 'timecop'
-  gem 'approvals', github: 'kytrinyx/approvals'
+  gem 'approvals'
   gem 'database_cleaner'
 end

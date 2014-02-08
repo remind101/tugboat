@@ -2,6 +2,7 @@ require 'pathname'
 require 'open-uri'
 require 'active_support/core_ext'
 require 'rack/force_json'
+require 'iron_mq'
 
 require 'shipr/warden'
 
