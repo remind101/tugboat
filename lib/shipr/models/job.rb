@@ -109,7 +109,7 @@ private
   end
 
   def channel
-    "private-#{self.class.to_s.downcase}"
+    "private-#{self.class.to_s.downcase}-#{id}"
   end
 
   def set_defaults
