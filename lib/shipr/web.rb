@@ -19,12 +19,14 @@ module Shipr
       github_organization_authenticate!(ENV['GITHUB_ORGANIZATION'])
     end
 
-    get '/' do
-      haml :index
-    end
-
-    get '/:id' do
-      haml :index
+    %w[/ /:id].each do |path|
+      get path do
+        @user = {
+          username: github_user['attribs']['login'],
+          gravatar: "http://www.gravatar.com/avatar/#{github_user['attribs']['gravatar_id']}"
+        }
+        haml :index
+      end
     end
   end
 end

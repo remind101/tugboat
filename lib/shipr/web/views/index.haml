@@ -7,6 +7,7 @@
     %script{ src: '//ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular-resource.js' }
     %script{ src: '//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.0/angular-ui-router.min.js' }
     %script{ src: '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js' }
+    %script{ src: '//cdnjs.cloudflare.com/ajax/libs/jq-console/2.7.7/jqconsole.min.js' }
 
     %meta{ charset: 'utf-8' }
     %title Shipr
@@ -18,7 +19,7 @@
     %link{ href: asset_path('app.css'), rel: 'stylesheet' }
     %script{ src: asset_path('app.js') }
 
-  %body(id="app" ng-app="app")
+  %body(id="app" ng-app="app" ng-init="user = #{@user.to_json}")
     %div(ui-view="header")
     %div(ui-view="content")
 
@@ -27,6 +28,9 @@
         .container
           .navbar-header
             %a.navbar-brand(href="" ui-sref="app.jobs.list") Shipr
+          .navbar-collapse.collapse
+            %ul.nav.navbar-nav.navbar-right
+              %img.gravatar(ng-src="{{user.gravatar}}")
 
     %script(type="text/ng-template" id="content.html")
       .container(ui-view)
@@ -41,18 +45,24 @@
           %tr
             %th #
             %th Repo
+            %th Branch
         %tbody
           %tr(ng-repeat="job in jobs | orderBy:'id':true")
             %td(ng-bind="job.id")
             %td
               %a(href="" ui-sref="app.jobs.detail({ jobId: job.id })" ng-bind="job.repo")
+            %td(ng-bind="job.branch")
 
     %script(type="text/ng-template" id="jobs/detail.html")
       %h2.page-header
-        %span.text-info(ng-if="!done") Deploying
-        %span.text-success(ng-if="done && success") Deployed
-        %span.text-danger(ng-if="done && !success") Failed to deploy
+        %span.text-info(ng-if="!job.done") Deploying
+        %span.text-success(ng-if="job.done && job.success") Deployed
+        %span.text-danger(ng-if="job.done && !job.success") Failed to deploy
         %span(ng-bind="job.branch")
         branch of
         %span(ng-bind="job.repo")
-      #logs(ng-bind="job.output")
+      .panel.panel-primary
+        .panel-heading Environment Variables
+        .panel-body
+          {{ job.config }}
+      #log(ng-bind="job.output")
