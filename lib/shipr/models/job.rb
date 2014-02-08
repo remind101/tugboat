@@ -97,9 +97,10 @@ class Job < ActiveRecord::Base
     super || Shipr.default_script
   end
 
-  entity :id, :repo, :branch, :user, :config, :exit_status, :output do
+  entity :id, :repo, :branch, :user, :config, :exit_status do
     expose :done?, as: :done
     expose :success?, as: :success
+    expose :output, if: :include_output
   end
 
 private
@@ -109,7 +110,7 @@ private
   end
 
   def channel
-    "private-#{self.class.to_s.downcase}"
+    "private-#{self.class.to_s.downcase}-#{id}"
   end
 
   def set_defaults

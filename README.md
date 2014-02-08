@@ -5,7 +5,7 @@ and some config vars to set, and it will clone the repo, then run
 ./script/deploy within that repo, passing along the config vars as environment
 variables.
 
-![](https://s3.amazonaws.com/ejholmes.github.com/hkOZh.png)
+![](https://s3.amazonaws.com/ejholmes.github.com/Sl3ye.png)
 
 ## What happens?
 

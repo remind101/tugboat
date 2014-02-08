@@ -15,7 +15,7 @@ module Shipr
       def warden; env['warden'] end
 
       def jobs
-        Job.order('id asc')
+        Job.order('id desc')
       end
 
       def deploy(*args)
@@ -45,7 +45,7 @@ module Shipr
 
       desc 'Returns all deploys.'
       get do
-        present jobs
+        present jobs.limit(30)
       end
 
       desc 'Deploy.'
@@ -64,7 +64,7 @@ module Shipr
         requires :id, type: Integer
       end
       get ':id' do
-        present jobs.find(params.id)
+        present jobs.find(params.id), include_output: true
       end
     end
   end

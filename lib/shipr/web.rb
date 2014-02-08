@@ -15,23 +15,18 @@ module Shipr
       set :raise_errors, true
     end
 
-    helpers do
-      def jobs
-        Job.order('id asc')
-      end
-    end
-
     before do
       github_organization_authenticate!(ENV['GITHUB_ORGANIZATION'])
     end
 
-    get '/' do
-      'ok'
-    end
-
-    get '/deploys/:id' do |id|
-      @job = jobs.find(id)
-      haml :job
+    %w[/ /deploys/:id].each do |path|
+      get path do
+        @user = {
+          username: github_user['attribs']['login'],
+          gravatar: "http://www.gravatar.com/avatar/#{github_user['attribs']['gravatar_id']}"
+        }
+        haml :index
+      end
     end
   end
 end

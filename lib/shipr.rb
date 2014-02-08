@@ -123,6 +123,8 @@ module Shipr
     # Returns a Rack compatible app.
     def app
       @app ||= Rack::Builder.app do
+        use Rack::Deflater
+
         use Rack::SSL if ENV['RACK_ENV'] == 'production'
 
         use Rack::Session::Cookie, key: '_shipr_session'
