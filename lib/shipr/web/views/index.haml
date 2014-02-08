@@ -77,8 +77,7 @@
           .panel-heading
             %span Environment Variables
             %span.pull-right(ng-bind="job.repo")
-          .panel-body
-            {{ job.config }}
+          .panel-body(environment-variables="job.config")
 
         .alert.alert-success(ng-if="!job.isStarted()")
           %strong Hang Tight!
