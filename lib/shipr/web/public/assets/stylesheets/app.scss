@@ -72,3 +72,18 @@
     -webkit-transform: scaleY(1.0);
   }
 }
+
+#loading {
+  text-align: center;
+  padding-top: 40px;
+
+  img {
+    display: block;
+    margin: 0 auto;
+  }
+
+  .spinner > div {
+    background-color: #000;
+  }
+}
+

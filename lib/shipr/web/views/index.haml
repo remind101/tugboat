@@ -22,6 +22,13 @@
   %body(id="app" ng-app="app" ng-init="user = #{@user.to_json}")
     %div(ui-view="header")
     %div(ui-view="content")
+      #loading
+        %img(src="https://s3.amazonaws.com/ejholmes.github.com/doitlive.jpg")
+        .spinner
+          .rect1
+          .rect2
+          .rect3
+          .rect4
 
     %script(type="text/ng-template" id="header.html")
       .navbar.navbar-default.navbar-static-top
