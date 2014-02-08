@@ -25,10 +25,6 @@
       #loading
         %img(src="https://s3.amazonaws.com/ejholmes.github.com/doitlive.jpg")
         .spinner
-          .rect1
-          .rect2
-          .rect3
-          .rect4
 
     %script(type="text/ng-template" id="header.html")
       #header.navbar.navbar-default.navbar-static-top
@@ -63,32 +59,29 @@
             %td(ng-bind="job.branch")
 
     %script(type="text/ng-template" id="jobs/detail.html")
-      %header.job-header
-        %h1
-          %span.text-info(ng-if="!job.done")
-            .spinner
-              .rect1
-              .rect2
-              .rect3
-              .rect4
-            %span(ng-if="!job.output.length") Queued
-            %span(ng-if="job.output.length") Deploying
-          %span.text-success(ng-if="job.done && job.success") Deployed
-          %span.text-danger(ng-if="job.done && !job.success") Failed
-        %p.destination
-          %strong(ng-bind="job.branch")
-          &#8674;
-          %strong(ng-bind="job.config.ENVIRONMENT")
+      .job
+        %header.job-header
+          %h1.status
+            %span(ng-class="{ 'is-queued': job.isQueued(), 'is-deploying': job.isDeploying() }" ng-if="job.isQueued() || job.isDeploying()")
+              .spinner
+              %span(ng-if="job.isQueued()") Queued
+              %span(ng-if="job.isDeploying()") Deploying
+            %span.is-done(ng-if="job.isDeployed()") Deployed
+            %span.is-failed(ng-if="job.isFailed()") Failed
+          %p.destination
+            %strong(ng-bind="job.branch")
+            &#8674;
+            %strong(ng-bind="job.config.ENVIRONMENT")
 
-      .panel.panel-primary
-        .panel-heading
-          %span Environment Variables
-          %span.pull-right(ng-bind="job.repo")
-        .panel-body
-          {{ job.config }}
+        .panel.panel-primary
+          .panel-heading
+            %span Environment Variables
+            %span.pull-right(ng-bind="job.repo")
+          .panel-body
+            {{ job.config }}
 
-      .alert.alert-success(ng-if="!job.output.length")
-        %strong Hang Tight!
-        Your logs should be showing up shortly
+        .alert.alert-success(ng-if="!job.isStarted()")
+          %strong Hang Tight!
+          Your logs should be showing up shortly
 
-      #log(ng-if="job.output.length" ng-bind="job.output")
+        #log.log(ng-if="job.isStarted()" ng-bind="job.output")

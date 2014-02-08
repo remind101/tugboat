@@ -1,95 +1,6 @@
-#header .navbar-right {
-  margin-right: 0;
-
-  .user a {
-    display: inline-block;
-  }
-
-  .user .gravatar {
-    border-radius: 100px;
-    max-width: 45px;
-    margin-top: -3px;
-  }
-}
-
-.job-header {
-  margin: 40px;
-  text-align: center;
-
-  .destination {
-    color: #999;
-    font-size: 20px;
-  }
-
-  .spinner {
-    margin-left: -10px;
-  }
-}
-
-#log {
-  padding: 10px;
-  color: #f1f1f1;
-  background: #000;
-  font-family: monospace;
-  font-size: 12px;
-  line-height: 18px;
-  white-space: pre-wrap;
-  word-break: break-work;
-  border-radius: 5px;
-}
-
-.spinner {
-  display: inline-block;
-  width: 50px;
-  height: 30px;
-  text-align: center;
-  font-size: 10px;
-}
-
-.spinner > div {
-  background-color: #3498db;
-  height: 100%;
-  width: 6px;
-  display: inline-block;
-  
-  -webkit-animation: stretchdelay 1.2s infinite ease-in-out;
-  animation: stretchdelay 1.2s infinite ease-in-out;
-}
-
-.spinner .rect2 {
-  -webkit-animation-delay: -1.1s;
-  animation-delay: -1.1s;
-}
-
-.spinner .rect3 {
-  -webkit-animation-delay: -1.0s;
-  animation-delay: -1.0s;
-}
-
-.spinner .rect4 {
-  -webkit-animation-delay: -0.9s;
-  animation-delay: -0.9s;
-}
-
-.spinner .rect5 {
-  -webkit-animation-delay: -0.8s;
-  animation-delay: -0.8s;
-}
-
-@-webkit-keyframes stretchdelay {
-  0%, 40%, 100% { -webkit-transform: scaleY(0.4) }  
-  20% { -webkit-transform: scaleY(1.0) }
-}
-
-@keyframes stretchdelay {
-  0%, 40%, 100% { 
-    transform: scaleY(0.4);
-    -webkit-transform: scaleY(0.4);
-  }  20% { 
-    transform: scaleY(1.0);
-    -webkit-transform: scaleY(1.0);
-  }
-}
+@import
+  'spinner',
+  'job';
 
 #loading {
   text-align: center;
@@ -105,3 +16,16 @@
   }
 }
 
+#header .navbar-right {
+  margin-right: 0;
+
+  .user a {
+    display: inline-block;
+  }
+
+  .user .gravatar {
+    border-radius: 100px;
+    max-width: 45px;
+    margin-top: -3px;
+  }
+}
