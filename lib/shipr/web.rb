@@ -19,7 +19,7 @@ module Shipr
       github_organization_authenticate!(ENV['GITHUB_ORGANIZATION'])
     end
 
-    %w[/ /:id].each do |path|
+    %w[/ /deploys/:id].each do |path|
       get path do
         @user = {
           username: github_user['attribs']['login'],
