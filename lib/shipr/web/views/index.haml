@@ -10,7 +10,7 @@
     %script{ src: '//cdnjs.cloudflare.com/ajax/libs/jq-console/2.7.7/jqconsole.min.js' }
 
     %meta{ charset: 'utf-8' }
-    %title Shipr
+    %title Shipr - We'll do it live!
     %meta{ name: 'viewport', content: 'width=device-width, initial-scale=1.0' }
     %meta{ name: 'pusher.key', content: Shipr.pusher.key }
 
@@ -60,7 +60,13 @@
         %li.active
           %strong(ng-bind="job.repo")
       %h1.status
-        %span.text-info(ng-if="!job.done") Deploying
+        %span.text-info(ng-if="!job.done")
+          .spinner
+            .rect1
+            .rect2
+            .rect3
+            .rect4
+          Deploying
         %span.text-success(ng-if="job.done && job.success") Deployed
         %span.text-danger(ng-if="job.done && !job.success") Failed
       .panel.panel-primary
