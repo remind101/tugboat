@@ -93,25 +93,6 @@ module Shipr
       @logger ||= Logger.new(STDOUT)
     end
 
-    # Internal: Establishes the ActiveRecord connection.
-    #
-    # Examples
-    #
-    #   Shipr.connect!
-    def connect!
-      if ENV['DATABASE_URL']
-        ActiveRecord::Base.establish_connection
-      else
-        config = YAML.load Pathname('../../config/database.yml').expand_path(__FILE__).read
-        ActiveRecord::Base.configurations = config
-        ActiveRecord::Base.establish_connection(ENV['RACK_ENV'])
-      end
-    end
-
-    def setup
-      connect!
-    end
-
     # Public: The app itself. The app is split up into many smaller components.
     #
     # Examples

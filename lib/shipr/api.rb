@@ -4,10 +4,7 @@ module Shipr
 
     version 'v1', using: :header, vendor: 'shipr'
     format :json
-
-    rescue_from ActiveRecord::RecordNotFound do |e|
-      Rack::Response.new({ error: e.message }.to_json, 404)
-    end
+    default_format :json
 
     helpers do
       delegate :authenticate!, to: :warden
@@ -15,7 +12,7 @@ module Shipr
       def warden; env['warden'] end
 
       def jobs
-        Job.order('id desc')
+        Job.desc(:id)
       end
 
       def deploy(*args)
@@ -59,12 +56,14 @@ module Shipr
         present deploy(declared params)
       end
 
-      desc 'Get the JSON representation of a deploy.'
       params do
-        requires :id, type: Integer
+        requires :id, type: String
       end
-      get ':id' do
-        present jobs.find(params.id), include_output: true
+      namespace ':id' do
+        desc 'Get the JSON representation of a deploy.'
+        get do
+          present jobs.find(params.id), include_output: true
+        end
       end
     end
   end

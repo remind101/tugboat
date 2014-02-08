@@ -1,5 +1,18 @@
-class Job < ActiveRecord::Base
+class Job
+  include Mongoid::Document
   include Grape::Entity::DSL
+  store_in collection: 'jobs'
+
+  field :repo, type: String
+  field :branch, type: String, default: 'master'
+  field :config, type: Hash, default: { 'ENVIRONMENT' => 'production' }
+  field :output, type: String, default: ''
+  field :exit_status, type: Integer
+  field :script, type: String
+
+  def id
+    _id.to_s
+  end
 
   # ==============
   # = Delegation =
@@ -16,7 +29,6 @@ class Job < ActiveRecord::Base
 
   define_model_callbacks :complete
 
-  before_validation :set_defaults
   after_create :queue_task
 
   after_create do
@@ -26,18 +38,6 @@ class Job < ActiveRecord::Base
   after_complete do
     trigger 'complete', entity
   end
-
-  # =================
-  # = Serialization =
-  # =================
-
-  serialize :config
-
-  # ===============
-  # = Validations =
-  # ===============
-
-  validates :repo, presence: true
 
   # ===========
   # = Methods =
@@ -111,12 +111,6 @@ private
 
   def channel
     "private-#{self.class.to_s.downcase}-#{id}"
-  end
-
-  def set_defaults
-    self.branch ||= 'master'
-    self.config ||= { 'ENVIRONMENT' => 'production' }
-    self.output ||= ''
   end
 
   def queue_task

@@ -44,16 +44,4 @@ describe Shipr::API do
       expect(last_response.status).to eq 201
     end
   end
-
-  describe 'GET /deploys/:id' do
-    with_authenticated_user
-
-    context 'when the job does not exist' do
-      it 'rescues activerecord errors' do
-        Job.stub(:find).and_raise(ActiveRecord::RecordNotFound)
-        get '/deploys/1234'
-        expect(last_response.status).to eq 404
-      end
-    end
-  end
 end
