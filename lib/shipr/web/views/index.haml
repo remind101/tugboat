@@ -63,11 +63,6 @@
             %td(ng-bind="job.branch")
 
     %script(type="text/ng-template" id="jobs/detail.html")
-      %ul.breadcrumb
-        %li
-          %a(href="" ui-sref="app.jobs.list") Deploys
-        %li.active
-          %strong(ng-bind="job.repo")
       %header.job-header
         %h1
           %span.text-info(ng-if="!job.done")
