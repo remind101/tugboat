@@ -2,9 +2,11 @@ module Shipr::Queues
   class Update < Base
     queue 'update'
 
-    def processor
-      Processor
+    def process(message)
+      Processor.new(message).process
     end
+
+  private
 
     class Processor < Struct.new(:message)
 
@@ -14,8 +16,6 @@ module Shipr::Queues
         elsif exit_status?
           job.complete!(exit_status)
         end
-      rescue ActiveRecord::RecordNotFound
-        # Record was deleted or something.
       end
 
     private

@@ -45,35 +45,20 @@ module Shipr::Queues
     # Never returns.
     def run
       queue.poll do |message|
-        pool.process {
-          begin
-            process Hashie::Mash.new(JSON.parse(message.body))
-          rescue => e
-            # TODO: Should probably actually handle errors, but I don't really care
-            # right now.
-            info e.inspect
-          end
-        }
+        begin
+          process Hashie::Mash.new(JSON.parse(message.body))
+        rescue => e
+          # TODO: Should probably actually handle errors, but I don't really care
+          # right now.
+          info e.inspect
+        end
       end
     end
 
   private
 
-    def pool
-      @pool ||= Thread.pool(50)
-    end
-
-    # Internal: Called by .run to process the message.
-    #
-    # message - JSON decoded message body.
-    #
-    # Returns nothing.
-    def process(message)
-      processor.new(message).process
-    end
-
     def queue
-      messages.queue(self.class.queue)
+      @queue ||= messages.queue(self.class.queue)
     end
 
   end
