@@ -47,4 +47,7 @@ group :test do
   gem 'rspec'
   gem 'rack-test'
   gem 'webmock'
+  gem 'timecop'
+  gem 'approvals', github: 'kytrinyx/approvals'
+  gem 'database_cleaner'
 end

@@ -12,4 +12,13 @@ RSpec.configure do |config|
     Shipr.stub messages: double(IronMQ::Client).as_null_object
     Shipr.stub pusher:   double(Pusher).as_null_object
   end
+
+  config.before :suite do
+    DatabaseCleaner.strategy = :truncation
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
+  config.after :each do
+    DatabaseCleaner.clean
+  end
 end

@@ -18,14 +18,14 @@ describe Shipr::API do
 
     it 'returns all jobs' do
       get '/deploys'
-      expect(last_response.status).to eq 200
+      verify_response 200
     end
   end
 
   describe 'GET /unauthenticated' do
     it 'does something' do
       get '/unauthenticated' do
-        expect(last_response.status).to eq 401
+        verify_response 401
         expect(last_response.headers['WWW-Authenticate']).to eq %(Basic realm="API Authentication")
       end
     end
@@ -39,9 +39,8 @@ describe Shipr::API do
     end
 
     it 'creates a job' do
-      Job.should_receive(:create).with(attrs)
       post '/deploys', attrs
-      expect(last_response.status).to eq 201
+      verify_response 201
     end
   end
 end
