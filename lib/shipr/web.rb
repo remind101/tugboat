@@ -15,23 +15,16 @@ module Shipr
       set :raise_errors, true
     end
 
-    helpers do
-      def jobs
-        Job.order('id asc')
-      end
-    end
-
     before do
       github_organization_authenticate!(ENV['GITHUB_ORGANIZATION'])
     end
 
     get '/' do
-      'ok'
+      haml :index
     end
 
-    get '/deploys/:id' do |id|
-      @job = jobs.find(id)
-      haml :job
+    get '/:id' do
+      haml :index
     end
   end
 end

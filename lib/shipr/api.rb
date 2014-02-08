@@ -45,7 +45,7 @@ module Shipr
 
       desc 'Returns all deploys.'
       get do
-        present jobs
+        present jobs.limit(30)
       end
 
       desc 'Deploy.'

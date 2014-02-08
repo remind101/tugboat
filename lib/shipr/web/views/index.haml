@@ -1,0 +1,58 @@
+!!!
+%html
+  %head
+    %script{ src: '//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js' }
+    %script{ src: 'https://d3dy5gmtp8yhk7.cloudfront.net/2.0/pusher.min.js' }
+    %script{ src: '//ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular.js' }
+    %script{ src: '//ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular-resource.js' }
+    %script{ src: '//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.0/angular-ui-router.min.js' }
+    %script{ src: '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js' }
+
+    %meta{ charset: 'utf-8' }
+    %title Shipr
+    %meta{ name: 'viewport', content: 'width=device-width, initial-scale=1.0' }
+    %meta{ name: 'pusher.key', content: Shipr.pusher.key }
+
+    %link{ href: 'http://bootswatch.com/flatly/bootstrap.min.css', rel: 'stylesheet' }
+
+    %link{ href: asset_path('app.css'), rel: 'stylesheet' }
+    %script{ src: asset_path('app.js') }
+
+  %body(id="app" ng-app="app")
+    %div(ui-view="header")
+    %div(ui-view="content")
+
+    %script(type="text/ng-template" id="header.html")
+      .navbar.navbar-default.navbar-static-top
+        .container
+          .navbar-header
+            %a.navbar-brand(href="" ui-sref="app.jobs.list") Shipr
+
+    %script(type="text/ng-template" id="content.html")
+      .container(ui-view)
+
+    %script(type="text/ng-template" id="jobs.html")
+      %div(ui-view)
+    
+    %script(type="text/ng-template" id="jobs/list.html")
+      %h2.page-header Deploys
+      %table.table.table-striped
+        %thead
+          %tr
+            %th #
+            %th Repo
+        %tbody
+          %tr(ng-repeat="job in jobs | orderBy:'id':true")
+            %td(ng-bind="job.id")
+            %td
+              %a(href="" ui-sref="app.jobs.detail({ jobId: job.id })" ng-bind="job.repo")
+
+    %script(type="text/ng-template" id="jobs/detail.html")
+      %h2.page-header
+        %span.text-info(ng-if="!done") Deploying
+        %span.text-success(ng-if="done && success") Deployed
+        %span.text-danger(ng-if="done && !success") Failed to deploy
+        %span(ng-bind="job.branch")
+        branch of
+        %span(ng-bind="job.repo")
+      #logs(ng-bind="job.output")
