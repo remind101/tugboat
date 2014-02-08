@@ -64,7 +64,7 @@ module Shipr
         requires :id, type: Integer
       end
       get ':id' do
-        present jobs.find(params.id)
+        present jobs.find(params.id), include_output: true
       end
     end
   end
