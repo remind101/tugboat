@@ -54,13 +54,15 @@
             %td(ng-bind="job.branch")
 
     %script(type="text/ng-template" id="jobs/detail.html")
-      %h2.page-header
+      %ul.breadcrumb
+        %li
+          %a(href="" ui-sref="app.jobs.list") Deploys
+        %li.active
+          %strong(ng-bind="job.repo")
+      %h1.status
         %span.text-info(ng-if="!job.done") Deploying
         %span.text-success(ng-if="job.done && job.success") Deployed
-        %span.text-danger(ng-if="job.done && !job.success") Failed to deploy
-        %span(ng-bind="job.branch")
-        branch of
-        %span(ng-bind="job.repo")
+        %span.text-danger(ng-if="job.done && !job.success") Failed
       .panel.panel-primary
         .panel-heading Environment Variables
         .panel-body
