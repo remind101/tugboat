@@ -79,7 +79,7 @@
             %span.pull-right(ng-bind="job.repo")
           .panel-body(environment-variables="job.config")
 
-        .alert.alert-success(ng-if="!job.isStarted()")
+        .not-started(ng-if="!job.isStarted()")
           %strong Hang Tight!
           Your logs should be showing up shortly
 
