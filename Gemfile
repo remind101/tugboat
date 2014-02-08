@@ -29,15 +29,12 @@ gem 'grape-entity', '~> 0.3.0'
 gem 'rack-ssl'
 
 # Persistence
-gem 'activerecord', '~> 3.2.13', require: 'active_record'
-gem 'pg',           '~> 0.15.1'
+gem 'mongoid'
 
 # Authentication
 gem 'warden'
 
 group :development do
-  gem 'rails', '~> 3.2.13', require: false
-  gem 'micro_migrations', git: 'https://gist.github.com/2087829.git'
   gem 'dotenv'
   gem 'shotgun'
   gem 'foreman'
