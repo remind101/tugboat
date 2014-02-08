@@ -1,3 +1,5 @@
+require 'thread/pool'
+
 module Shipr::Queues
   class Base
     delegate :messages, to: :'Shipr'
@@ -43,17 +45,23 @@ module Shipr::Queues
     # Never returns.
     def run
       queue.poll do |message|
-        begin
-          process Hashie::Mash.new(JSON.parse(message.body))
-        rescue => e
-          # TODO: Should probably actually handle errors, but I don't really care
-          # right now.
-          info e.inspect
-        end
+        pool.process {
+          begin
+            process Hashie::Mash.new(JSON.parse(message.body))
+          rescue => e
+            # TODO: Should probably actually handle errors, but I don't really care
+            # right now.
+            info e.inspect
+          end
+        }
       end
     end
 
   private
+
+    def pool
+      @pool ||= Thread.pool(50)
+    end
 
     # Internal: Called by .run to process the message.
     #
