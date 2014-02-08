@@ -1,5 +1,6 @@
 language: ruby
+services:
+  - mongodb
 rvm:
-  - 1.9.3
+  - 2.1.0
 script: bundle exec rake
-before_script: RACK_ENV=test bundle exec rake db:create:all db:migrate
