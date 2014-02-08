@@ -66,11 +66,15 @@
             .rect2
             .rect3
             .rect4
-          Deploying
+          %span(ng-if="!job.output.length") Queued
+          %span(ng-if="job.output.length") Deploying
         %span.text-success(ng-if="job.done && job.success") Deployed
         %span.text-danger(ng-if="job.done && !job.success") Failed
       .panel.panel-primary
         .panel-heading Environment Variables
         .panel-body
           {{ job.config }}
-      #log(ng-bind="job.output")
+      .alert.alert-success(ng-if="!job.output.length")
+        %strong Hang Tight!
+        Your logs should be showing up shortly
+      #log(ng-if="job.output.length" ng-bind="job.output")
