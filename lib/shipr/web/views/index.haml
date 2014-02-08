@@ -79,11 +79,16 @@
           %strong(ng-bind="job.branch")
           &#8674;
           %strong(ng-bind="job.config.ENVIRONMENT")
+
       .panel.panel-primary
-        .panel-heading Environment Variables
+        .panel-heading
+          %span Environment Variables
+          %span.pull-right(ng-bind="job.repo")
         .panel-body
           {{ job.config }}
+
       .alert.alert-success(ng-if="!job.output.length")
         %strong Hang Tight!
         Your logs should be showing up shortly
+
       #log(ng-if="job.output.length" ng-bind="job.output")
