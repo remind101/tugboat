@@ -31,13 +31,14 @@
           .rect4
 
     %script(type="text/ng-template" id="header.html")
-      .navbar.navbar-default.navbar-static-top
+      #header.navbar.navbar-default.navbar-static-top
         .container
           .navbar-header
             %a.navbar-brand(href="" ui-sref="app.jobs.list") Shipr
           .navbar-collapse.collapse
             %ul.nav.navbar-nav.navbar-right
-              %li
+              %li.user
+                %a(href="" ng-bind="user.username")
                 %img.gravatar(ng-src="{{user.gravatar}}")
 
     %script(type="text/ng-template" id="content.html")

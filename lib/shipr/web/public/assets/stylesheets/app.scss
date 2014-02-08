@@ -1,3 +1,17 @@
+#header .navbar-right {
+  margin-right: 0;
+
+  .user a {
+    display: inline-block;
+  }
+
+  .user .gravatar {
+    border-radius: 100px;
+    max-width: 45px;
+    margin-top: -3px;
+  }
+}
+
 .job-header {
   margin: 40px;
   text-align: center;
@@ -10,12 +24,6 @@
   .spinner {
     margin-left: -10px;
   }
-}
-
-.gravatar {
-  border-radius: 100px;
-  max-width: 50px;
-  margin-top: 4px;
 }
 
 #log {
