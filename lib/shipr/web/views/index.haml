@@ -5,6 +5,7 @@
     %script{ src: 'https://d3dy5gmtp8yhk7.cloudfront.net/2.0/pusher.min.js' }
     %script{ src: '//ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular.js' }
     %script{ src: '//ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular-resource.js' }
+    %script{ src: '//ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular-sanitize.js' }
     %script{ src: '//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.0/angular-ui-router.min.js' }
     %script{ src: '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js' }
     %script{ src: '//cdnjs.cloudflare.com/ajax/libs/jq-console/2.7.7/jqconsole.min.js' }
@@ -84,4 +85,4 @@
           %strong Hang Tight!
           Your logs should be showing up shortly
 
-        #log.log(ng-if="job.isStarted()" sticky="job.output" ng-bind="job.output")
+        #log.log(ng-if="job.isStarted()" sticky="job.output" ng-bind-html="job.output | ansi")
