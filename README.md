@@ -56,13 +56,3 @@ this means deploying from Hipchat.
    $ git push heroku master
    $ bundle exec rake db:migrate DATABASE_URL=$(heroku config:get DATABASE_URL)
    ```
-
-## Hacking on Shipr
-
-### Generating a migration
-
-Kinda hackish, but gets the job done:
-
-```
-RACK_ENV=production ./script/rails g migration
-```
