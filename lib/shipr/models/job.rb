@@ -145,13 +145,11 @@ private
   private
 
     def params
-      { id: id, iron_mq: iron_mq, env: env }
+      { id: id, rabbitmq: rabbitmq, env: env }
     end
 
-    def iron_mq
-      { credentials: {
-          token: ENV['IRON_MQ_TOKEN'],
-          project_id: ENV['IRON_MQ_PROJECT_ID'] } }
+    def rabbitmq
+      { url: ENV['RABBITMQ_URL'], exchange: 'hutch' }
     end
 
     def env

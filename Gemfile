@@ -15,6 +15,7 @@ gem 'pusher',         '~> 0.11.2'
 
 # Workers
 gem 'iron_worker_ng', '~> 0.16.4'
+gem 'hutch'
 
 # Frontend
 gem 'sinatra'
@@ -34,8 +35,7 @@ gem 'mongoid'
 gem 'warden'
 
 group :worker do
-  gem 'iron_mq', '~> 4.0.3'
-  gem 'thread'
+  gem 'bunny'
 end
 
 group :development do
