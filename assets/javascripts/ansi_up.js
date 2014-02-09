@@ -86,6 +86,8 @@
           self.bright = 1;
         } else if ((num >= 30) && (num < 38)) {
           self.fg = "rgb(" + ANSI_COLORS[self.bright][(num % 10)] + ")";
+        } else if (num === 39) {
+          self.fg = null;
         } else if ((num >= 40) && (num < 48)) {
           self.bg = "rgb(" + ANSI_COLORS[0][(num % 10)] + ")";
         }
