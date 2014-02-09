@@ -4,20 +4,18 @@ require 'active_support/core_ext'
 require 'rack/force_json'
 
 require 'shipr/warden'
+require 'shipr/consumers/output_consumer'
+require 'shipr/consumers/completion_consumer'
+require 'shipr/consumers/pusher_consumer'
 
 autoload :Job, 'shipr/models/job'
 
 module Shipr
-  autoload :API,      'shipr/api'
-  autoload :Web,      'shipr/web'
+  autoload :API,       'shipr/api'
+  autoload :Web,       'shipr/web'
 
   module Hooks
     autoload :Pusher, 'shipr/hooks/pusher'
-  end
-
-  module Queues
-    autoload :Base,   'shipr/queues/base'
-    autoload :Update, 'shipr/queues/update'
   end
 
   class << self
@@ -33,19 +31,6 @@ module Shipr
     # Returns an IronWorkerNG::Client instance.
     def workers
       @workers ||= IronWorkerNG::Client.new
-    end
-
-    # Public: Global Iron MQ client for queueing and processing messages. Iron
-    # MQ is used by the deploy worker when new output is received from the
-    # deploy process.
-    #
-    # Examples
-    #
-    #   Shipr.messages.queue('update').poll { |msg| puts } msg
-    #
-    # Returns an IronMQ::Client instance.
-    def messages
-      @messages ||= IronMQ::Client.new
     end
 
     # Public: Global Pusher client for pushing events to the frontend client.

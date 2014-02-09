@@ -14,15 +14,6 @@ class Job
     _id.to_s
   end
 
-  # ==============
-  # = Delegation =
-  # ==============
-
-  class << self
-    delegate :pusher, to: :'Shipr'
-  end
-  delegate :pusher, to: :'self.class'
-
   # =============
   # = Callbacks =
   # =============
@@ -105,8 +96,8 @@ class Job
 
 private
 
-  def trigger(*args)
-    pusher.trigger channel, *args
+  def trigger(event, data)
+    Hutch.publish('pusher.push', channel: channel, event: event, data: data)
   end
 
   def channel
@@ -145,13 +136,11 @@ private
   private
 
     def params
-      { id: id, iron_mq: iron_mq, env: env }
+      { id: id, rabbitmq: rabbitmq, env: env }
     end
 
-    def iron_mq
-      { credentials: {
-          token: ENV['IRON_MQ_TOKEN'],
-          project_id: ENV['IRON_MQ_PROJECT_ID'] } }
+    def rabbitmq
+      { url: ENV['RABBITMQ_URL'], exchange: 'hutch' }
     end
 
     def env
