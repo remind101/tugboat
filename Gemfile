@@ -48,7 +48,6 @@ end
 group :test do
   gem 'rspec'
   gem 'rack-test'
-  gem 'webmock'
   gem 'timecop'
   gem 'approvals'
   gem 'database_cleaner'
