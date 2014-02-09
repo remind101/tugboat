@@ -7,6 +7,7 @@ require 'cargo_queue'
 require 'shipr/warden'
 require 'shipr/consumers/output_consumer'
 require 'shipr/consumers/completion_consumer'
+require 'shipr/consumers/pusher_consumer'
 
 autoload :Job, 'shipr/models/job'
 

@@ -14,15 +14,6 @@ class Job
     _id.to_s
   end
 
-  # ==============
-  # = Delegation =
-  # ==============
-
-  class << self
-    delegate :pusher, to: :'Shipr'
-  end
-  delegate :pusher, to: :'self.class'
-
   # =============
   # = Callbacks =
   # =============
@@ -105,8 +96,8 @@ class Job
 
 private
 
-  def trigger(*args)
-    pusher.trigger channel, *args
+  def trigger(event, data)
+    Hutch.publish('pusher.push', channel: channel, event: event, data: data)
   end
 
   def channel

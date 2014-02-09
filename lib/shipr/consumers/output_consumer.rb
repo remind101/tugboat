@@ -5,7 +5,8 @@ module Shipr
       consume 'job.output'
 
       def process(message)
-        p message
+        job = Job.find(message[:id])
+        job.append_output!(message[:output])
       end
     end
   end
