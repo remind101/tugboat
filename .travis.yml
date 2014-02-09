@@ -1,6 +1,7 @@
 language: ruby
 services:
   - mongodb
+  - rabbitmq
 rvm:
   - 2.1.0
 script: bundle exec rake
