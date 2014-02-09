@@ -88,6 +88,13 @@ class Job
     super || Shipr.default_script
   end
 
+  # Public: Restart this job.
+  #
+  # Returns new Job.
+  def restart!
+    Job.create(repo: repo, branch: branch, config: config)
+  end
+
   entity :id, :repo, :branch, :user, :config, :exit_status do
     expose :done?, as: :done
     expose :success?, as: :success

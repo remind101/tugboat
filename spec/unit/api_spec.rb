@@ -34,13 +34,20 @@ describe Shipr::API do
   describe 'POST /deploys' do
     with_authenticated_user
 
-    let(:attrs) do
-      { repo: 'git@github.com:foo/bar.git' }
-    end
-
     it 'creates a job' do
-      post '/deploys', attrs
+      post '/deploys', repo: 'git@github.com:foo/bar.git'
       verify_response 201
+    end
+  end
+
+  describe 'POST /deploys/:id/restart' do
+    with_authenticated_user
+
+    let(:job) { Job.create(repo: 'git@github.com:foo/bar.git') }
+
+    it 'restarts the job' do
+      post "/deploys/#{job.id}/restart"
+      verify_response 200
     end
   end
 end

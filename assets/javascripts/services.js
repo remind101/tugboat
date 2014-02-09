@@ -15,10 +15,34 @@
     return new Pusher(api_key);
   });
 
-  module.factory('Job', function(jobEvents) {
+  module.factory('Job', function($resource, jobEvents) {
+    var resource = $resource(
+      '/api/deploys/:jobId',
+      { jobId: '@id' },
+      { restart: { method: 'POST', url: '/api/deploys/:jobId/restart' } }
+    );
+
     function Job(attributes){
       this.setAttributes(attributes);
+
+      this.restart = attributes.$restart;
     }
+
+    /**
+     * Get a single job.
+     */
+    Job.find = function(id) {
+      return resource.get({ jobId: id }).$promise.then(function(job) {
+        return new Job(job);
+      });
+    };
+
+    /**
+     * Get all jobs.
+     */
+    Job.all = function() {
+      return resource.query().$promise;
+    };
 
     _.extend(Job.prototype, {
       /**
@@ -118,36 +142,6 @@
 
     return {
       subscribe: subscribe
-    };
-  });
-
-  /**
-   * A service for retrieving jobs.
-   */
-  module.factory('Jobs', function($resource, $q, Job) {
-    var resource = $resource('/api/deploys/:jobId', { jobId: '@id' });
-
-    function initJob(job) {
-      return new Job(job);
-    };
-
-    /**
-     * Get a single job.
-     */
-    function find(id) {
-      return resource.get({ jobId: id }).$promise.then(initJob);
-    };
-
-    /**
-     * Get all jobs.
-     */
-    function all() {
-      return resource.query().$promise;
-    };
-
-    return {
-      find: find,
-      all: all
     };
   });
 

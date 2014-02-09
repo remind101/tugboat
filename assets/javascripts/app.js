@@ -36,8 +36,8 @@
         controller: 'JobsListCtrl',
         templateUrl: 'jobs/list.html',
         resolve: {
-          jobs: function(Jobs) {
-            return Jobs.all();
+          jobs: function(Job) {
+            return Job.all();
           }
         }
       })
@@ -47,8 +47,8 @@
         controller: 'JobsDetailCtrl',
         templateUrl: 'jobs/detail.html',
         resolve: {
-          job: function($stateParams, Jobs) {
-            return Jobs.find($stateParams.jobId);
+          job: function($stateParams, Job) {
+            return Job.find($stateParams.jobId);
           }
         }
       });
