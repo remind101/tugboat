@@ -2,7 +2,6 @@ require 'pathname'
 require 'open-uri'
 require 'active_support/core_ext'
 require 'rack/force_json'
-require 'cargo_queue'
 
 require 'shipr/warden'
 require 'shipr/consumers/output_consumer'
