@@ -64,6 +64,13 @@ module Shipr
         get do
           present jobs.find(params.id), include_output: true
         end
+
+        desc 'Restart a job.'
+        post :restart do
+          job = jobs.find(params.id).restart!
+          status 200
+          present job
+        end
       end
     end
   end

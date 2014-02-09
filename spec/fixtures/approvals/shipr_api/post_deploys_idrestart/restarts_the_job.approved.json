@@ -1,0 +1,11 @@
+{
+  "id": "<id>",
+  "repo": "git@github.com:foo/bar.git",
+  "branch": "master",
+  "config": {
+    "ENVIRONMENT": "production"
+  },
+  "exit_status": null,
+  "done": false,
+  "success": false
+}
