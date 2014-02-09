@@ -1,5 +1,7 @@
+//= require ./ansi_up
 //= require ./directives
 //= require ./services
+//= require ./filters
 //= require ./controllers
 //= require_self
 
@@ -8,9 +10,11 @@
 
   var module = angular.module('app', [
     'ng',
+    'ngSanitize',
     'ui.router',
     'app.directives',
     'app.services',
+    'app.filters',
     'app.controllers'
   ]);
 
