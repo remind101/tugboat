@@ -28,5 +28,10 @@ module Shipr
         haml :index
       end
     end
+
+    get '/logout' do
+      warden.logout
+      redirect '/'
+    end
   end
 end
