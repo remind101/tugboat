@@ -8,7 +8,12 @@ module Shipr::Queues
 
   private
 
-    class Processor < Struct.new(:message)
+    class Processor
+      attr_reader :message
+
+      def initialize(message)
+        @message = message
+      end
 
       def process
         if output?

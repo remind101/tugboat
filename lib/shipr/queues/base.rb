@@ -44,7 +44,7 @@ module Shipr::Queues
     #
     # Never returns.
     def run
-      queue.poll do |message|
+      message_queue.poll do |message|
         begin
           process Hashie::Mash.new(JSON.parse(message.body))
         rescue => e
@@ -57,8 +57,8 @@ module Shipr::Queues
 
   private
 
-    def queue
-      @queue ||= messages.queue(self.class.queue)
+    def message_queue
+      @message_queue ||= messages.queue(self.class.queue)
     end
 
   end

@@ -3,14 +3,15 @@ require 'open-uri'
 require 'active_support/core_ext'
 require 'rack/force_json'
 require 'iron_mq'
+require 'cargo_queue'
 
 require 'shipr/warden'
 
 autoload :Job, 'shipr/models/job'
 
 module Shipr
-  autoload :API,      'shipr/api'
-  autoload :Web,      'shipr/web'
+  autoload :API,       'shipr/api'
+  autoload :Web,       'shipr/web'
 
   module Hooks
     autoload :Pusher, 'shipr/hooks/pusher'
