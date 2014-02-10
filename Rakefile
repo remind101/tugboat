@@ -1,12 +1,8 @@
 #!/usr/bin/env rake
 
 require File.expand_path('../config/environment', __FILE__)
-
-begin
-  require 'micro_migrations'
-rescue LoadError
-  # Not used in production
-end
+require 'sinatra/asset_pipeline/task'
+Sinatra::AssetPipeline::Task.define! Shipr::Web
 
 desc 'Start an irb session'
 task :console do
