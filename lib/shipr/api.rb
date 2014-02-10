@@ -16,7 +16,7 @@ module Shipr
       end
 
       def deploy(*args)
-        Job.create(*args)
+        JobCreator.create(*args)
       end
 
       def declared(params)
