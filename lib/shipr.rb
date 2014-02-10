@@ -12,6 +12,7 @@ module Shipr
   autoload :API,        'shipr/api'
   autoload :Web,        'shipr/web'
   autoload :Job,        'shipr/job'
+  autoload :JobCreator, 'shipr/job_creator'
   autoload :DeployTask, 'shipr/deploy_task'
 
   module Hooks
@@ -48,6 +49,20 @@ module Shipr
         Pusher.app_id = uri.path.gsub '/apps/', ''
         Pusher
       end
+    end
+
+    # Public: Publish a rabbitmq message.
+    #
+    # Returns nothing.
+    def publish(*args)
+      Hutch.publish(*args)
+    end
+
+    # Public: Trigger a pusher event.
+    #
+    # Returns nothing.
+    def push(channel, event, data)
+      publish('pusher.push', channel: channel, event: event, data: data)
     end
 
     # Public: An easy way to configure and fetch a default deploy script to

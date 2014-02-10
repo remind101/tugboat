@@ -21,12 +21,6 @@ module Shipr
 
     define_model_callbacks :complete
 
-    after_create :queue_task
-
-    after_create do
-      trigger 'create', entity
-    end
-
     after_complete do
       trigger 'complete', entity
     end
@@ -96,6 +90,13 @@ module Shipr
       Job.create(repo: repo, branch: branch, config: config)
     end
 
+    # Public: Channel where pusher messages should be sent.
+    # 
+    # Returns String.
+    def channel
+      "private-#{self.class.to_s.downcase}-#{id}"
+    end
+
     entity :id, :repo, :branch, :user, :config, :exit_status do
       expose :done?, as: :done
       expose :success?, as: :success
@@ -105,16 +106,7 @@ module Shipr
   private
 
     def trigger(event, data)
-      Hutch.publish('pusher.push', channel: channel, event: event, data: data)
+      Shipr.push(channel, event, data)
     end
-
-    def channel
-      "private-#{self.class.to_s.downcase}-#{id}"
-    end
-
-    def queue_task
-      DeployTask.create(self)
-    end
-
   end
 end
