@@ -66,4 +66,12 @@ describe Shipr::Job do
 
     it { should eq "private-job-#{job.id}" }
   end
+
+  describe '#webhooks' do
+    subject { job.notify }
+
+    context 'by default' do
+      it { should eq [] }
+    end
+  end
 end

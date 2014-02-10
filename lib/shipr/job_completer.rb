@@ -14,6 +14,7 @@ module Shipr
     def complete
       job.update_attributes!(exit_status: exit_status)
       trigger
+      Shipr.publish('job.complete', id: job.id)
     end
 
   private
@@ -21,6 +22,5 @@ module Shipr
     def trigger
       Shipr.push(job.channel, 'complete', job.entity)
     end
-
   end
 end

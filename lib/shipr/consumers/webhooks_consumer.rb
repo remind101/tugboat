@@ -1,12 +1,14 @@
 module Shipr
   module Consumers
-    class OutputConsumer
+    class WebhooksConsumer
       include Hutch::Consumer
-      consume 'job.output'
+      consume 'job.complete'
 
       def process(message)
         job = Job.find(message[:id])
-        job.append_output!(message[:output])
+        job.notify.each do |url|
+          WebhookNotifier.notify(url, job)
+        end
       end
     end
   end

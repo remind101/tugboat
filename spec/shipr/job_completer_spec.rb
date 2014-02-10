@@ -14,5 +14,11 @@ describe Shipr::JobCompleter do
       Shipr.should_receive(:push).with(kind_of(String), 'complete', kind_of(Shipr::Job::Entity))
       job_completer.complete
     end
+
+    it 'publishes a message' do
+      Shipr.stub(:push)
+      Shipr.should_receive(:publish).with('job.complete', id: job.id)
+      job_completer.complete
+    end
   end
 end
