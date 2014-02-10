@@ -9,9 +9,10 @@ require 'shipr/consumers/completion_consumer'
 require 'shipr/consumers/pusher_consumer'
 
 module Shipr
-  autoload :API, 'shipr/api'
-  autoload :Web, 'shipr/web'
-  autoload :Job, 'shipr/job'
+  autoload :API,        'shipr/api'
+  autoload :Web,        'shipr/web'
+  autoload :Job,        'shipr/job'
+  autoload :DeployTask, 'shipr/deploy_task'
 
   module Hooks
     autoload :Pusher, 'shipr/hooks/pusher'
