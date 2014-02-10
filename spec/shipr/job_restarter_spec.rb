@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Shipr::JobRestarter do
-  let(:job) { Shipr::Job.create repo: 'foo', branch: 'bar', config: { foo: 'bar' } }
+  let(:job) { Shipr::Job.create repo: 'foo', branch: 'bar', config: { foo: 'bar' }, notify: ['http://webhook.test'] }
   subject(:job_restarter) { described_class.new(job) }
 
   describe '#restart' do
@@ -11,5 +11,6 @@ describe Shipr::JobRestarter do
     its(:repo) { should eq job.repo }
     its(:branch) { should eq job.branch }
     its(:config) { should eq job.config }
+    its(:notify) { should eq job.notify }
   end
 end
