@@ -8,7 +8,7 @@ describe Shipr::Job do
     iron_worker.stub_chain :tasks, :create
   end
 
-  describe '#create' do
+  describe '.create' do
     it { should be_valid }
     its(:branch) { should eq 'master' }
     its(:config) { should eq('ENVIRONMENT' => 'production') }
@@ -16,7 +16,7 @@ describe Shipr::Job do
     its(:script) { should eq nil }
   end
 
-  describe '.complete!' do
+  describe '#complete!' do
     before do
       job.complete!(-1)
     end
@@ -24,7 +24,7 @@ describe Shipr::Job do
     its(:exit_status) { should eq -1 }
   end
 
-  describe '.append_output!' do
+  describe '#append_output!' do
     before do
       job.append_output!('hello')
       job.append_output!('world')
@@ -33,7 +33,7 @@ describe Shipr::Job do
     its(:output) { should eq 'helloworld' }
   end
 
-  describe '.done?' do
+  describe '#done?' do
     subject { job.done? }
 
     context 'when the exit status is present' do
@@ -49,7 +49,7 @@ describe Shipr::Job do
     end
   end
 
-  describe '.success?' do
+  describe '#success?' do
     subject { job.success? }
 
     context "when the exit_status is 0" do
@@ -59,5 +59,11 @@ describe Shipr::Job do
 
       it { should be_true }
     end
+  end
+
+  describe '#channel' do
+    subject { job.channel }
+
+    it { should eq "private-job-#{job.id}" }
   end
 end

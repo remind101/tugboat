@@ -79,7 +79,7 @@ module Shipr
     # 
     # Returns String.
     def channel
-      "private-#{self.class.to_s.downcase}-#{id}"
+      "private-job-#{id}"
     end
 
     entity :id, :repo, :branch, :user, :config, :exit_status do
