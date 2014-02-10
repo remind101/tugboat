@@ -123,18 +123,17 @@
     var channels = {};
 
     function subscribe(scope, job) {
-      var channel = channels[job.id] = channels[job.id] || pusher.subscribe('private-job-' + job.id);
+      var channel = channels[job.id] = channels[job.id] || pusher.subscribe('private-job-' + job.id),
+          apply = _.throttle(scope.$apply, 100);
 
       channel.bind('output', function(data) {
-        scope.$apply(function() {
-          job.appendOutput(data.output);
-        });
+        job.appendOutput(data.output);
+        apply();
       });
 
       channel.bind('complete', function(data) {
-        scope.$apply(function() {
-          job.setAttributes(data);
-        });
+        job.setAttributes(data);
+        scope.$apply();
       });
 
       return job;
