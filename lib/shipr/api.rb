@@ -51,6 +51,7 @@ module Shipr
         optional :config, type: Hash
         optional :branch, type: String
         optional :script, type: String
+        optional :notify, type: Array[String]
       end
       post do
         present deploy(declared params)

@@ -1,12 +1,12 @@
 module Shipr
   module Consumers
-    class CompletionConsumer
+    class WorkerOutputConsumer
       include Hutch::Consumer
-      consume 'job.complete'
+      consume 'worker.output'
 
       def process(message)
         job = Job.find(message[:id])
-        job.complete!(message[:exit_status])
+        job.append_output!(message[:output])
       end
     end
   end

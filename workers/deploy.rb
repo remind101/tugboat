@@ -19,10 +19,10 @@ class Deploy
     Open3.popen2e(options['env'], 'deploy') do |stdin, output, wait_thr|
       output.each do |line|
         puts line
-        publish('job.output', output: line)
+        publish('worker.output', output: line)
       end
       exit_status = wait_thr.value
-      publish('job.complete', exit_status: exit_status.to_i)
+      publish('worker.complete', exit_status: exit_status.to_i)
     end
   end
 

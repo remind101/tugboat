@@ -25,6 +25,6 @@ end
 
 namespace :jobs do
   task :test do
-    p Job.create(repo: 'git@github.com:remind101/shipr.git')
+    p Shipr::JobCreator.create(repo: 'git@github.com:remind101/shipr.git', notify: ['http://requestb.in/wdzpnuwe'])
   end
 end

@@ -4,8 +4,9 @@ require 'active_support/core_ext'
 require 'rack/force_json'
 
 require 'shipr/warden'
-require 'shipr/consumers/output_consumer'
-require 'shipr/consumers/completion_consumer'
+require 'shipr/consumers/worker_output_consumer'
+require 'shipr/consumers/worker_completion_consumer'
+require 'shipr/consumers/webhooks_consumer'
 require 'shipr/consumers/pusher_consumer'
 
 module Shipr
@@ -17,6 +18,7 @@ module Shipr
   autoload :JobOutputAppender, 'shipr/job_output_appender'
   autoload :JobRestarter,      'shipr/job_restarter'
   autoload :DeployTask,        'shipr/deploy_task'
+  autoload :WebhookNotifier,   'shipr/webhook_notifier'
 
   module Hooks
     autoload :Pusher, 'shipr/hooks/pusher'
