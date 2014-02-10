@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Job do
+describe Shipr::Job do
   let(:iron_worker) { Shipr.workers }
   subject(:job) { described_class.create(repo: 'git@github.com:ejholmes/shipr.git') }
 

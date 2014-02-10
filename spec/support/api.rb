@@ -24,6 +24,6 @@ module ApiExampleGroup
   end
 
   RSpec.configure do |config|
-    config.include self, example_group: { file_path: /unit\/api_spec/ }
+    config.include self, example_group: { file_path: /shipr\/api_spec/ }
   end
 end

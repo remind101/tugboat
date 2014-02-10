@@ -8,11 +8,10 @@ require 'shipr/consumers/output_consumer'
 require 'shipr/consumers/completion_consumer'
 require 'shipr/consumers/pusher_consumer'
 
-autoload :Job, 'shipr/models/job'
-
 module Shipr
-  autoload :API,       'shipr/api'
-  autoload :Web,       'shipr/web'
+  autoload :API, 'shipr/api'
+  autoload :Web, 'shipr/web'
+  autoload :Job, 'shipr/job'
 
   module Hooks
     autoload :Pusher, 'shipr/hooks/pusher'
