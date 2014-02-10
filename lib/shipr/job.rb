@@ -15,16 +15,6 @@ module Shipr
       _id.to_s
     end
 
-    # =============
-    # = Callbacks =
-    # =============
-
-    define_model_callbacks :complete
-
-    after_complete do
-      trigger 'complete', entity
-    end
-
     # ===========
     # = Methods =
     # ===========
@@ -38,10 +28,7 @@ module Shipr
     #   job.complete!(0)
     #   # => true
     def complete!(exit_status)
-      run_callbacks :complete do
-        self.exit_status = exit_status
-        save!
-      end
+      JobCompleter.complete(self, exit_status)
     end
 
     # Public: Append lines of output from the process.
@@ -53,9 +40,7 @@ module Shipr
     #   job.append_output!("hello world")!
     #   # => true
     def append_output!(output)
-      self.output += output
-      trigger 'output', id: id, output: output
-      save!
+      JobOutputAppender.append(self, output)
     end
 
     # Public: Wether the job has completed or not.
@@ -87,7 +72,7 @@ module Shipr
     #
     # Returns new Job.
     def restart!
-      Job.create(repo: repo, branch: branch, config: config)
+      JobRestarter.restart(self)
     end
 
     # Public: Channel where pusher messages should be sent.
@@ -101,12 +86,6 @@ module Shipr
       expose :done?, as: :done
       expose :success?, as: :success
       expose :output, if: :include_output
-    end
-
-  private
-
-    def trigger(event, data)
-      Shipr.push(channel, event, data)
     end
   end
 end

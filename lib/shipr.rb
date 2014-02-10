@@ -9,11 +9,14 @@ require 'shipr/consumers/completion_consumer'
 require 'shipr/consumers/pusher_consumer'
 
 module Shipr
-  autoload :API,        'shipr/api'
-  autoload :Web,        'shipr/web'
-  autoload :Job,        'shipr/job'
-  autoload :JobCreator, 'shipr/job_creator'
-  autoload :DeployTask, 'shipr/deploy_task'
+  autoload :API,               'shipr/api'
+  autoload :Web,               'shipr/web'
+  autoload :Job,               'shipr/job'
+  autoload :JobCreator,        'shipr/job_creator'
+  autoload :JobCompleter,      'shipr/job_completer'
+  autoload :JobOutputAppender, 'shipr/job_output_appender'
+  autoload :JobRestarter,      'shipr/job_restarter'
+  autoload :DeployTask,        'shipr/deploy_task'
 
   module Hooks
     autoload :Pusher, 'shipr/hooks/pusher'
