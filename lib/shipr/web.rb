@@ -3,7 +3,7 @@ require 'sinatra/asset_pipeline'
 
 module Shipr
   class Web < Sinatra::Base
-    set :root, File.join(File.dirname(__FILE__), 'web')
+    set :root, File.dirname(File.expand_path('../..', __FILE__))
 
     register Sinatra::AssetPipeline
 

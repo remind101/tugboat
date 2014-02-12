@@ -61,15 +61,15 @@
 
     %script(type="text/ng-template" id="jobs/detail.html")
       .job
-        %header.job-header
-          %h1.status
+        %header.job__header
+          %h1.job__status
             %span(ng-class="{ 'is-queued': job.isQueued(), 'is-deploying': job.isDeploying() }" ng-if="job.isQueued() || job.isDeploying()")
               .spinner
               %span(ng-if="job.isQueued()") Queued
               %span(ng-if="job.isDeploying()") Deploying
             %span.is-done(ng-if="job.isDeployed()") Deployed
             %span.is-failed(ng-if="job.isFailed()") Failed
-          %p.destination
+          %p.job__destination
             %strong(ng-bind="job.branch")
             &#8674;
             %strong(ng-bind="job.config.ENVIRONMENT")
@@ -81,8 +81,8 @@
           .panel-body
             %div(environment-variables="job.config")
 
-        .not-started(ng-if="!job.isStarted()")
+        .job__not-started(ng-if="!job.isStarted()")
           %strong Hang Tight!
           Your logs should be showing up shortly
 
-        #log.log(ng-if="job.isStarted()" sticky="job.output" ng-bind-html="job.output | ansi")
+        #log.job__log(ng-if="job.isStarted()" sticky="job.output" ng-bind-html="job.output | ansi")
