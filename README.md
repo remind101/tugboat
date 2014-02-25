@@ -1,6 +1,6 @@
 # Shipr
 
-Shipr is a rest api for deploying git repositories. You give it a url to a git repo
+Shipr is a rest api and anagularjs client for deploying git repositories. You give it a url to a git repo
 and some config vars to set, and it will clone the repo, then run
 ./script/deploy within that repo, passing along the config vars as environment
 variables.
@@ -33,10 +33,10 @@ this means deploying from Hipchat.
 2. Add the required addons
 
    ```bash
-   $ heroku addons:add pusher:sandbox
-   $ heroku addons:add iron_mq:developer
-   $ heroku addons:add iron_worker:developer
-   $ heroku addons:add heroku-postgresql:dev
+   $ heroku addons:add pusher
+   $ heroku addons:add cloudamqp
+   $ heroku addons:add iron_worker
+   $ heroku addons:add mongohq
    ```
 
 3. Update heroku config
