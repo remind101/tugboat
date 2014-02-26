@@ -19,8 +19,7 @@ variables.
 
 ## Why?
 
-The main goal is to make it easier to create tooling for deploying. For me,
-this means deploying from Hipchat. At Remind101, we use a [Robut
+The main goal is to make it easier to create tooling for deploying. At Remind101, we use a [Robut
 plugin](https://github.com/ejholmes/robut-shipr) for this. This could be done
 with Hubot just as easily.
 
