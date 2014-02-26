@@ -1,21 +1,21 @@
 # Shipr
 
-Shipr is a rest api and anagularjs client for deploying git repositories. You give it a url to a git repo
-and some config vars to set, and it will clone the repo, then run
-./script/deploy within that repo, passing along the config vars as environment
+Shipr is a REST API and AngularJS client for deploying Git repositories. You give it a url to a Git repository
+and some config vars to set, and it will clone the repository, then run
+./script/deploy within that repository, passing along the config vars as environment
 variables.
 
 ![](https://s3.amazonaws.com/ejholmes.github.com/Sl3ye.png)
 
 ## What happens?
 
-1. You send a post request to `/api/deploys` with the repo and the config vars
+1. You send a post request to `/api/deploys` with the repository and the config vars
 2. The app spins up a [deploy worker](./workers/deploy.worker) on Iron.io
 3. The worker runs the [deploy script](./bin/deploy), which:
-   1. Clones the repo
+   1. Clones the repository
    2. Checks out the appropriate branch/tag/SHA
    3. Exports your config vars as environment variables
-   4. Runs ./script/deploy within the cloned repo
+   4. Runs ./script/deploy within the cloned repository
 
 ## Why?
 
