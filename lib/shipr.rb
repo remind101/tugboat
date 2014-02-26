@@ -19,9 +19,10 @@ module Shipr
   autoload :JobRestarter,      'shipr/job_restarter'
   autoload :DeployTask,        'shipr/deploy_task'
   autoload :WebhookNotifier,   'shipr/webhook_notifier'
+  autoload :PusherAuth,        'shipr/pusher_auth'
 
   module Hooks
-    autoload :Pusher, 'shipr/hooks/pusher'
+    autoload :GitHub, 'shipr/hooks/github'
   end
 
   class << self
@@ -116,7 +117,11 @@ module Shipr
         use Rack::Session::Cookie, key: '_shipr_session'
 
         map '/pusher/auth' do
-          run Hooks::Pusher
+          run PusherAuth
+        end
+
+        map '/_github' do
+          run Hooks::GitHub
         end
 
         map '/api' do

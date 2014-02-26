@@ -1,6 +1,6 @@
 module Shipr::Hooks
   # Internal: Used to authenticate pusher channels.
-  class Pusher < Grape::API
+  class PusherAuth < Grape::API
     logger Shipr.logger
 
     format :json

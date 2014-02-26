@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'securerandom'
 
 describe Shipr::API do
-  include Rack::Test::Methods
+  include ApiExampleGroup
 
   def app
     Rack::Builder.new do

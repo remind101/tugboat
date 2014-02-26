@@ -22,8 +22,4 @@ module ApiExampleGroup
       last_response.body
     end
   end
-
-  RSpec.configure do |config|
-    config.include self, example_group: { file_path: /shipr\/api_spec/ }
-  end
 end
