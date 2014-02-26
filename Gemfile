@@ -51,5 +51,5 @@ group :test do
   gem 'timecop'
   gem 'approvals'
   gem 'database_cleaner'
-  gem 'webmock'
+  gem 'webmock', require: false
 end

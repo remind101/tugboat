@@ -9,6 +9,8 @@ require File.expand_path('../../config/environment', __FILE__)
 # in spec/support/ and its subdirectories.
 Dir[File.join(File.dirname(__FILE__), "support/**/*.rb")].each {|f| require f}
 
+require 'webmock/rspec'
+
 RSpec.configure do |config|
   config.before do
     Shipr.stub workers:  double(IronWorkerNG::Client).as_null_object
