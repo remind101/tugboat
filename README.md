@@ -47,6 +47,11 @@ with Hubot just as easily.
    $ heroku config:set SSH_KEY="$(cat ~/.ssh/id_rsa)"
    $ heroku config:set AUTH_TOKEN="$(pwgen 32 1)"
    $ heroku config:set DOMAIN="<app name>.herokuapp.com"
+   $ heroku config:set GITHUB_CLIENT_ID="<client id>"
+   $ heroku config:set GITHUB_CLIENT_SECRET="<client secret>"
+   $ heroku config:set GITHUB_ORGANIZATION="<github org>"
+   $ heroku config:set RABBITMQ_URL="<cloud amqp url>"
+   $ heroku config:set RABBITMQ_MANAGEMENT_URL="<cloud amqp management url>"
    ```
 
 4. Deploy the app
@@ -57,3 +62,10 @@ with Hubot just as easily.
    $ git push heroku master
    $ bundle exec rake db:migrate DATABASE_URL=$(heroku config:get DATABASE_URL)
    ```
+
+## Deploy Script
+
+By default, Shipr will try to run `./script/deploy` inside your repository if
+it exists. You can also specify a default script to use if none is provided via
+the `DEPLOY_SCRIPT_URL` environment variable. We keep [our default deploy script](https://gist.github.com/ejholmes/474068635673c7f5c413/raw/deploy.sh)
+in a gist.
