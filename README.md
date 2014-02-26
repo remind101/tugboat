@@ -60,7 +60,6 @@ with Hubot just as easily.
    $ export $(heroku config -s | grep IRON)
    $ iron_worker upload workers/deploy
    $ git push heroku master
-   $ bundle exec rake db:migrate DATABASE_URL=$(heroku config:get DATABASE_URL)
    ```
 
 ## Deploy Script
