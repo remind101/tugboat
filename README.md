@@ -68,3 +68,8 @@ By default, Shipr will try to run `./script/deploy` inside your repository if
 it exists. You can also specify a default script to use if none is provided via
 the `DEPLOY_SCRIPT_URL` environment variable. We keep [our default deploy script](https://gist.github.com/ejholmes/474068635673c7f5c413/raw/deploy.sh)
 in a gist.
+
+---
+
+Want to work on awesome stuff like this? You should probably [come work with
+us](https://www.remind101.com/careers).
