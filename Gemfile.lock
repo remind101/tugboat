@@ -31,6 +31,8 @@ GEM
     dotenv (0.8.0)
     eventmachine (1.0.3)
     execjs (2.0.2)
+    factory_girl (4.4.0)
+      activesupport (>= 3.0.0)
     faraday (0.8.8)
       multipart-post (~> 1.2.0)
     faraday_middleware (0.9.0)
@@ -211,6 +213,7 @@ DEPENDENCIES
   database_cleaner
   dotenv
   eventmachine (~> 1.0.0.beta)
+  factory_girl
   foreman
   grape (~> 0.4.1)
   grape-entity (~> 0.3.0)

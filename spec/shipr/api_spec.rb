@@ -34,8 +34,7 @@ describe Shipr::API do
   describe 'POST /deploys/:id/restart' do
     with_authenticated_user
 
-    let(:repo) { Shipr::Repo.create! name: 'remind101/shipr' }
-    let(:job) { Shipr::Job.create!(repo: repo) }
+    let(:job) { create :job, sha: '1234' }
 
     it 'restarts the job' do
       post "/deploys/#{job.id}/restart"

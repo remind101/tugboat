@@ -1,8 +1,7 @@
 require 'spec_helper'
 
 describe Shipr::JobOutputAppender do
-  let(:repo) { Shipr::Repo.create! name: 'remind101/shipr' }
-  let(:job) { Shipr::Job.create! repo: repo }
+  let(:job) { create :job }
   let(:output) { "Foobar\n" }
   subject(:job_output_appender) { described_class.new(job, output) }
 

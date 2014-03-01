@@ -52,4 +52,5 @@ group :test do
   gem 'approvals'
   gem 'database_cleaner'
   gem 'webmock', require: false
+  gem 'factory_girl'
 end

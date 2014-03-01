@@ -1,6 +1,6 @@
 {
   "id": "<id>",
-  "sha": null,
+  "sha": "1234",
   "force": false,
   "environment": "production",
   "config": {

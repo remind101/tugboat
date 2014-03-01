@@ -1,8 +1,7 @@
 require 'spec_helper'
 
 describe Shipr::JobRestarter do
-  let(:repo) { Shipr::Repo.create name: 'remind101/shipr' }
-  let(:job) { Shipr::Job.create repo: repo, sha: 'abc', config: { foo: 'bar' }, notify: ['http://webhook.test'] }
+  let(:job) { create :job, sha: 'abc', config: { foo: 'bar' }, notify: ['http://webhook.test'] }
   subject(:job_restarter) { described_class.new(job) }
 
   describe '#restart' do
