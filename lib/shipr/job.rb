@@ -4,9 +4,13 @@ module Shipr
     include Grape::Entity::DSL
     store_in collection: 'jobs'
 
-    field :repo, type: String
-    field :branch, type: String, default: 'master'
-    field :config, type: Hash, default: { 'ENVIRONMENT' => 'production' }
+    belongs_to :repo
+
+    field :sha, type: String
+    field :environment, type: String, default: 'production'
+    field :force, type: Boolean, default: false
+    field :description, type: String, default: ''
+    field :config, type: Hash, default: {}
     field :output, type: String, default: ''
     field :exit_status, type: Integer
     field :script, type: String
@@ -83,7 +87,7 @@ module Shipr
       "private-job-#{id}"
     end
 
-    entity :id, :repo, :branch, :user, :config, :exit_status do
+    entity :id, :name, :sha, :force, :environment, :user, :config, :exit_status do
       expose :done?, as: :done
       expose :success?, as: :success
       expose :output, if: :include_output

@@ -11,9 +11,9 @@ module Shipr
     end
 
     def restart
-      JobCreator.create(
-        repo: job.repo,
-        branch: job.branch,
+      JobCreator.create(job.repo.name,
+        sha: job.sha,
+        environment: job.environment,
         config: job.config.dup,
         notify: job.notify.dup
       )

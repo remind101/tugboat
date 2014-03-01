@@ -1,8 +1,10 @@
 module Shipr
   class JobCreator
+    attr_reader :name
     attr_reader :attributes
 
-    def initialize(attributes)
+    def initialize(name, attributes)
+      @name = name
       @attributes = attributes
     end
 
@@ -18,8 +20,12 @@ module Shipr
 
   private
 
+    def repo
+      @repo ||= Repo.where(name: name).first_or_create
+    end
+
     def job
-      @job ||= Job.create(attributes)
+      @job ||= repo.jobs.create(attributes)
     end
 
     def start

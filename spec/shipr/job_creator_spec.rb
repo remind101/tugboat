@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Shipr::JobCreator do
   let(:attributes) { {} }
-  subject(:job_creator) { described_class.new(attributes) }
+  subject(:job_creator) { described_class.new('remind101/shipr', attributes) }
 
   describe '#create' do
     it 'creates a new job' do

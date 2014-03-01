@@ -1,7 +1,8 @@
 require 'spec_helper'
 
 describe Shipr::JobCompleter do
-  let(:job) { Shipr::Job.create }
+  let(:repo) { Shipr::Repo.create! name: 'remind101/shipr' }
+  let(:job) { Shipr::Job.create! repo: repo }
   let(:exit_status) { 1 }
   subject(:job_completer) { described_class.new(job, exit_status) }
 

@@ -29,7 +29,7 @@ gem 'grape-entity', '~> 0.3.0'
 gem 'rack-ssl'
 
 # Persistence
-gem 'mongoid'
+gem 'mongoid', '~> 3.1.6'
 
 # Authentication
 gem 'warden'

@@ -45,18 +45,6 @@ module Shipr
         present jobs.limit(30)
       end
 
-      desc 'Deploy.'
-      params do
-        requires :repo, type: String
-        optional :config, type: Hash
-        optional :branch, type: String
-        optional :script, type: String
-        optional :notify, type: Array[String]
-      end
-      post do
-        present deploy(declared params)
-      end
-
       params do
         requires :id, type: String
       end

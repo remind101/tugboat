@@ -8,11 +8,18 @@ module Shipr
     delegate :tasks, to: :workers
     delegate \
       :id,
-      :repo,
-      :branch,
+      :name,
+      :sha,
+      :environment,
+      :force,
       :config,
       :script,
+      :repo,
       to: :job
+
+    delegate \
+      :clone_url,
+      to: :repo
 
     # ===========
     # = Methods =
@@ -36,8 +43,10 @@ module Shipr
 
     def env
       config.merge \
-        'REPO'          => repo,
-        'BRANCH'        => branch,
+        'ENVIRONMENT'   => environment,
+        'FORCE'         => force ? '1' : '0',
+        'REPO'          => clone_url,
+        'SHA'           => sha,
         'SSH_KEY'       => ENV['SSH_KEY'],
         'DEPLOY_SCRIPT' => script
     end

@@ -1,9 +1,9 @@
 {
   "id": "<id>",
-  "repo": "git@github.com:foo/bar.git",
-  "branch": "master",
+  "sha": null,
+  "force": false,
+  "environment": "production",
   "config": {
-    "ENVIRONMENT": "production"
   },
   "exit_status": null,
   "done": false,

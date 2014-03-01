@@ -12,6 +12,7 @@ require 'shipr/consumers/pusher_consumer'
 module Shipr
   autoload :API,               'shipr/api'
   autoload :Web,               'shipr/web'
+  autoload :Repo,              'shipr/repo'
   autoload :Job,               'shipr/job'
   autoload :JobCreator,        'shipr/job_creator'
   autoload :JobCompleter,      'shipr/job_completer'

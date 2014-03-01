@@ -2,7 +2,8 @@ require 'spec_helper'
 
 describe Shipr::Job do
   let(:iron_worker) { Shipr.workers }
-  subject(:job) { described_class.create(repo: 'git@github.com:ejholmes/shipr.git') }
+  let(:repo) { Shipr::Repo.create(name: 'remind101/shipr') }
+  subject(:job) { described_class.create(repo: repo) }
 
   before do
     iron_worker.stub_chain :tasks, :create
@@ -10,10 +11,12 @@ describe Shipr::Job do
 
   describe '.create' do
     it { should be_valid }
-    its(:branch) { should eq 'master' }
-    its(:config) { should eq('ENVIRONMENT' => 'production') }
-    its(:output) { should eq '' }
-    its(:script) { should eq nil }
+    its(:force)       { should be_false }
+    its(:description) { should eq '' }
+    its(:config)      { should eq({}) }
+    its(:output)      { should eq '' }
+    its(:script)      { should eq nil }
+    its(:notify)      { should eq [] }
   end
 
   describe '#complete!' do

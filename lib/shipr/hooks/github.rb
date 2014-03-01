@@ -38,21 +38,26 @@ module Shipr
         optional :payload,
           type: Hash,
           desc: 'The payload (the config environment).'
+        optional :description,
+          type: String,
+          desc: 'The description of the deploy.'
       end
       post do
         if authenticated?
-          if deployment?
-            params.payload ||= { config: {}, notify: [] }
-            JobCreator.create(
-              repo: "git@github.com:#{params.name}",
-              branch: params.sha,
-              config: params.payload.config,
-              notify: params.payload.notify
-            )
-          end
-
           status 200
-          {}
+          if deployment?
+            params.payload ||= Hashie::Mash.new
+            attributes = {
+              sha: params.sha,
+              description: params.description,
+              environment: params.payload.environment,
+              config: params.payload.config
+            }
+            attributes.reject! { |k,v| v.nil? }
+            present JobCreator.create params.name, attributes
+          else
+            {}
+          end
         else
           error!('Forbidden', 403)
         end
