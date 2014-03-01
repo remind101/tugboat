@@ -2,8 +2,17 @@ module Shipr
   module Hooks
     class GitHub < Grape::API
       logger Shipr.logger
-
       format :json
+      default_format :json
+
+      # Payload is a string, so we need to parse it.
+      parser :json, -> (object, env) {
+        hash = MultiJson.load(object)
+        if payload = hash['payload']
+          hash['payload'] = MultiJson.load(payload)
+        end
+        hash
+      }
 
       helpers do
         def event
@@ -39,12 +48,14 @@ module Shipr
         requires :name,
           type: String,
           desc: 'The repo to deploy (<user>/<repo>).'
-        optional :payload,
-          type: String,
-          desc: 'The payload (the config environment).'
         optional :description,
           type: String,
           desc: 'The description of the deploy.'
+        group :payload do
+          optional :environment,
+            type: String,
+            desc: 'The environment to deploy to.'
+        end
       end
       post do
         if authenticated?

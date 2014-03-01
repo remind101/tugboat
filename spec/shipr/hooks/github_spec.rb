@@ -12,6 +12,10 @@ describe Shipr::Hooks::GitHub do
     end
   end
 
+  before do
+    header 'Content-Type', 'application/json'
+  end
+
   describe 'POST /' do
     context 'when authenticated' do
       with_authenticated_user
@@ -23,7 +27,7 @@ describe Shipr::Hooks::GitHub do
 
         it 'creates a deploy' do
           expect {
-            post '/', sha: '1234', name: 'my/repo', payload: JSON.dump(environment: 'staging')
+            post '/', { sha: '1234', name: 'my/repo', payload: JSON.dump(environment: 'staging') }.to_json
           }.to change { Shipr::Job.count }.by(1)
           verify_response 200
         end
@@ -36,7 +40,7 @@ describe Shipr::Hooks::GitHub do
 
         it 'does not create a deploy' do
           expect {
-            post '/', sha: '1234', name: 'my/repo', payload: JSON.dump(environment: 'staging')
+            post '/', { sha: '1234', name: 'my/repo', payload: JSON.dump(environment: 'staging') }.to_json
           }.to_not change { Shipr::Job.count }
           verify_response 200
         end
@@ -45,7 +49,7 @@ describe Shipr::Hooks::GitHub do
 
     context 'when not authenticated' do
       it 'returns a 403' do
-        post '/', sha: '1234', name: 'my/repo'
+        post '/', { sha: '1234', name: 'my/repo' }.to_json
         verify_response 403
       end
     end
