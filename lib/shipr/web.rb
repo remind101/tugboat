@@ -16,7 +16,7 @@ module Shipr
     end
 
     before do
-      github_organization_authenticate!(ENV['GITHUB_ORGANIZATION'])
+      github_organization_authenticate!(Shipr.configuration.github_organization)
     end
 
     %w[/ /deploys/:id].each do |path|

@@ -47,7 +47,7 @@ module Shipr
         'FORCE'         => force ? '1' : '0',
         'REPO'          => clone_url,
         'SHA'           => sha,
-        'SSH_KEY'       => ENV['SSH_KEY'],
+        'SSH_KEY'       => Shipr.configuration.ssh_key,
         'DEPLOY_SCRIPT' => script
     end
 

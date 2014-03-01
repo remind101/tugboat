@@ -10,6 +10,7 @@ require 'shipr/consumers/webhooks_consumer'
 require 'shipr/consumers/pusher_consumer'
 
 module Shipr
+  autoload :Configuration,     'shipr/configuration'
   autoload :API,               'shipr/api'
   autoload :Web,               'shipr/web'
   autoload :Repo,              'shipr/repo'
@@ -28,6 +29,10 @@ module Shipr
   end
 
   class << self
+    
+    def configuration
+      @configuration ||= Configuration.new
+    end
 
     # Public: Global Iron Worker client for queueing up new workers. Iron
     # Worker is used to queue new workers that do the heavy lifting when
