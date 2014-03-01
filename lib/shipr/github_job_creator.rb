@@ -1,4 +1,7 @@
 module Shipr
+  # Public: This class is responsible for taking the params provided by
+  # GitHub's deployment event and adapting it to the interface required by
+  # Shipr::JobCreator.
   class GitHubJobCreator
     def initialize(params)
       @params = Hashie::Mash.new(params)
