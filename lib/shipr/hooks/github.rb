@@ -42,6 +42,9 @@ module Shipr
       use Warden::Manager
 
       params do
+        requires :id,
+          type: Integer,
+          desc: 'The deployment id.'
         requires :sha,
           type: String,
           desc: 'The sha to deploy.'

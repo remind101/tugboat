@@ -6,6 +6,7 @@ module Shipr
 
     belongs_to :repo
 
+    field :guid, type: Integer
     field :sha, type: String
     field :environment, type: String, default: 'production'
     field :force, type: Boolean, default: false
@@ -78,6 +79,15 @@ module Shipr
     # Returns new Job.
     def restart!
       JobRestarter.restart(self)
+    end
+
+    # Public: Update the deployment status on github.
+    def update_status(status)
+      Shipr.github.update_deployment_status(
+        repo.name,
+        guid,
+        status: status
+      )
     end
 
     # Public: Channel where pusher messages should be sent.

@@ -15,6 +15,7 @@ module Shipr
     def create
       trigger
       start
+      update_status
       job
     end
 
@@ -30,6 +31,10 @@ module Shipr
 
     def start
       DeployTask.create(job)
+    end
+
+    def update_status
+      job.update_status(:pending)
     end
 
     def trigger

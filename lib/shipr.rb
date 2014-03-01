@@ -28,6 +28,10 @@ module Shipr
     autoload :GitHub, 'shipr/hooks/github'
   end
 
+  module GitHub
+    autoload :Client, 'shipr/github/client'
+  end
+
   class << self
     
     def configuration
@@ -62,6 +66,11 @@ module Shipr
         Pusher.app_id = uri.path.gsub '/apps/', ''
         Pusher
       end
+    end
+
+    # Public: A github client.
+    def github
+      @github ||= Shipr::GitHub::Client.new(token: configuration.github_deploy_token)
     end
 
     # Public: Publish a rabbitmq message.
