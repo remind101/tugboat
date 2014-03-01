@@ -23,7 +23,7 @@ describe Shipr::Hooks::GitHub do
 
         it 'creates a deploy' do
           expect {
-            post '/', sha: '1234', name: 'my/repo'
+            post '/', sha: '1234', name: 'my/repo', payload: JSON.dump(environment: 'staging')
           }.to change { Shipr::Job.count }.by(1)
           verify_response 200
         end
@@ -36,7 +36,7 @@ describe Shipr::Hooks::GitHub do
 
         it 'does not create a deploy' do
           expect {
-            post '/', sha: '1234', name: 'my/repo'
+            post '/', sha: '1234', name: 'my/repo', payload: JSON.dump(environment: 'staging')
           }.to_not change { Shipr::Job.count }
           verify_response 200
         end

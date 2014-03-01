@@ -31,7 +31,7 @@ module Shipr
     end
 
     def payload
-      params.payload || Hashie::Mash.new
+      @payload ||= Hashie::Mash.new(JSON.parse(params.payload || '{}'))
     end
   end
 end

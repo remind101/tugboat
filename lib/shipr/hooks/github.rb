@@ -40,7 +40,7 @@ module Shipr
           type: String,
           desc: 'The repo to deploy (<user>/<repo>).'
         optional :payload,
-          type: Hash,
+          type: String,
           desc: 'The payload (the config environment).'
         optional :description,
           type: String,

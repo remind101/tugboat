@@ -51,13 +51,13 @@
           %tr
             %th #
             %th Repo
-            %th Branch
+            %th Sha
         %tbody
           %tr(ng-repeat="job in jobs | orderBy:'id':true")
             %td(ng-bind="job.id")
             %td
               %a(href="" ui-sref="app.jobs.detail({ jobId: job.id })" ng-bind="job.repo")
-            %td(ng-bind="job.branch")
+            %td(ng-bind="job.sha")
 
     %script(type="text/ng-template" id="jobs/detail.html")
       .job
@@ -70,11 +70,11 @@
             %span.is-done(ng-if="job.isDeployed()") Deployed
             %span.is-failed(ng-if="job.isFailed()") Failed
           %p.job__destination
-            %strong(ng-bind="job.branch")
+            %strong(ng-bind="job.sha")
             &#8674;
-            %strong(ng-bind="job.config.ENVIRONMENT")
+            %strong(ng-bind="job.environment")
 
-        .panel.panel-primary
+        .panel.panel-primary(ng-if="job.config")
           .panel-heading
             %span(ng-bind="job.repo")
             %a.restart.btn.btn-info.btn-xs.pull-right(href="" ng-click="restart()" ng-if="job.done") Restart

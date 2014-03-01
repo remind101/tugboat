@@ -2,7 +2,7 @@
   "id": "<id>",
   "sha": "1234",
   "force": false,
-  "environment": "production",
+  "environment": "staging",
   "config": {
   },
   "exit_status": null,
