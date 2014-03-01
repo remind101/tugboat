@@ -24,8 +24,8 @@ gem 'sinatra-asset-pipeline'
 gem 'haml'
 
 # API
-gem 'grape',        '~> 0.4.1'
-gem 'grape-entity', '~> 0.3.0'
+gem 'grape',        '~> 0.6.0'
+gem 'grape-entity', '~> 0.4.1'
 gem 'rack-ssl'
 
 # Persistence

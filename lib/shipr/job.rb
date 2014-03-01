@@ -87,7 +87,7 @@ module Shipr
       "private-job-#{id}"
     end
 
-    entity :id, :name, :sha, :force, :environment, :user, :config, :exit_status do
+    entity :id, :sha, :force, :environment, :config, :exit_status do
       expose :done?, as: :done
       expose :success?, as: :success
       expose :output, if: :include_output
