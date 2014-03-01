@@ -1,5 +1,7 @@
 module Shipr
   class Repo
+    GIT = 'git@github.com:%s.git'.freeze
+
     include Mongoid::Document
     include Grape::Entity::DSL
     store_in collection: 'repos'
@@ -12,7 +14,7 @@ module Shipr
     #
     # Returns String.
     def clone_url
-      "git@github.com:#{name}"
+      GIT % name
     end
   end
 end

@@ -1,15 +1,13 @@
 # Shipr
 
-Shipr is a REST API and AngularJS client for deploying Git repositories. You give it a url to a Git repository
-and some config vars to set, and it will clone the repository, then run
-./script/deploy within that repository, passing along the config vars as environment
-variables.
+Shipr is a REST API and AngularJS client for deploying GitHub repositories using the [GitHub deployments api](http://developer.github.com/v3/repos/deployments/).
 
 ![](https://s3.amazonaws.com/ejholmes.github.com/Sl3ye.png)
 
 ## What happens?
 
-1. You send a post request to `/api/deploys` with the repository and the config vars
+1. You trigger a deploy via github (`POST https://api.github.com/repos/remind101/shipr/deployments`)
+2. GitHub sends Shipr a POST request with the deployment event.
 2. The app spins up a [deploy worker](./workers/deploy.worker) on Iron.io
 3. The worker runs the [deploy script](./bin/deploy), which:
    1. Clones the repository
@@ -19,8 +17,7 @@ variables.
 
 ## Why?
 
-The main goal is to make it easier to create tooling for deploying. We deploy via Hubot using the
-[hubot-shipr](https://github.com/remind101/hubot-shipr) script.
+The main goal is to make it easier to create tooling for deploying.
 
 ## Setup
 
