@@ -18,6 +18,7 @@ module Shipr
   autoload :JobCompleter,      'shipr/job_completer'
   autoload :JobOutputAppender, 'shipr/job_output_appender'
   autoload :JobRestarter,      'shipr/job_restarter'
+  autoload :GitHubJobCreator,  'shipr/github_job_creator'
   autoload :DeployTask,        'shipr/deploy_task'
   autoload :WebhookNotifier,   'shipr/webhook_notifier'
   autoload :PusherAuth,        'shipr/pusher_auth'

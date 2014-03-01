@@ -17,6 +17,10 @@ module Shipr
         def deployment?
           event == 'deployment'
         end
+
+        def deploy
+          deployment? ? GitHubJobCreator.create(params) : {}
+        end
       end
 
       helpers do
@@ -45,19 +49,7 @@ module Shipr
       post do
         if authenticated?
           status 200
-          if deployment?
-            params.payload ||= Hashie::Mash.new
-            attributes = {
-              sha: params.sha,
-              description: params.description,
-              environment: params.payload.environment,
-              config: params.payload.config
-            }
-            attributes.reject! { |k,v| v.nil? }
-            present JobCreator.create params.name, attributes
-          else
-            {}
-          end
+          present deploy
         else
           error!('Forbidden', 403)
         end
