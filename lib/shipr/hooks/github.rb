@@ -42,22 +42,12 @@ module Shipr
       use Warden::Manager
 
       params do
-        requires :id,
-          type: Integer,
-          desc: 'The deployment id.'
-        requires :sha,
-          type: String,
-          desc: 'The sha to deploy.'
-        requires :name,
-          type: String,
-          desc: 'The repo to deploy (<user>/<repo>).'
-        optional :description,
-          type: String,
-          desc: 'The description of the deploy.'
+        requires :id, type: Integer
+        requires :sha, type: String
+        requires :name, type: String
+        optional :description, type: String
         group :payload do
-          optional :environment,
-            type: String,
-            desc: 'The environment to deploy to.'
+          optional :environment, type: String
         end
       end
       post do

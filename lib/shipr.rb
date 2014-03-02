@@ -10,10 +10,14 @@ require 'shipr/consumers/webhooks_consumer'
 require 'shipr/consumers/pusher_consumer'
 
 module Shipr
-  autoload :Configuration,     'shipr/configuration'
-  autoload :API,               'shipr/api'
-  autoload :Web,               'shipr/web'
-  autoload :Repo,              'shipr/repo'
+  autoload :Configuration, 'shipr/configuration'
+  autoload :API,           'shipr/api'
+  autoload :Web,           'shipr/web'
+  autoload :PusherAuth,    'shipr/pusher_auth'
+
+  autoload :Repo,                 'shipr/repo'
+  autoload :RepoWebhookInstaller, 'shipr/repo_webhook_installer'
+
   autoload :Job,               'shipr/job'
   autoload :JobCreator,        'shipr/job_creator'
   autoload :JobCompleter,      'shipr/job_completer'
@@ -22,7 +26,6 @@ module Shipr
   autoload :GitHubJobCreator,  'shipr/github_job_creator'
   autoload :DeployTask,        'shipr/deploy_task'
   autoload :WebhookNotifier,   'shipr/webhook_notifier'
-  autoload :PusherAuth,        'shipr/pusher_auth'
 
   module Hooks
     autoload :GitHub, 'shipr/hooks/github'

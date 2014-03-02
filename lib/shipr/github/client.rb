@@ -11,6 +11,10 @@ module Shipr
         connection.post "/repos/#{repo}/deployments/#{id}/statuses", attributes
       end
 
+      def create_hook(repo, attributes)
+        connection.post "/repos/#{repo}/hooks", attributes
+      end
+
       private
 
       def connection

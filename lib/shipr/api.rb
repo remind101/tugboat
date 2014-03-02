@@ -15,10 +15,6 @@ module Shipr
         Job.desc(:id)
       end
 
-      def deploy(*args)
-        JobCreator.create(*args)
-      end
-
       def declared(params)
         super(params).select { |_, val| !val.nil? }
       end

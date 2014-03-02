@@ -42,12 +42,13 @@ The main goal is to make it easier to create tooling for deploying.
    $ heroku config:set RACK_ENV=production
    $ heroku config:set SSH_KEY="$(cat ~/.ssh/id_rsa)"
    $ heroku config:set AUTH_TOKEN="$(pwgen 32 1)"
-   $ heroku config:set DOMAIN="<app name>.herokuapp.com"
+   $ heroku config:set BASE_URL="https://<app name>.herokuapp.com"
    $ heroku config:set GITHUB_CLIENT_ID="<client id>"
    $ heroku config:set GITHUB_CLIENT_SECRET="<client secret>"
    $ heroku config:set GITHUB_ORGANIZATION="<github org>"
    $ heroku config:set RABBITMQ_URL="<cloud amqp url>"
    $ heroku config:set RABBITMQ_MANAGEMENT_URL="<cloud amqp management url>"
+   $ heroku config:set GITHUB_DEPLOY_TOKEN=""
    ```
 
 4. Deploy the app

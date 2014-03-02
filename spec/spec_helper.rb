@@ -13,9 +13,9 @@ require 'webmock/rspec'
 
 RSpec.configure do |config|
   config.before do
-    Shipr.stub workers:  double(IronWorkerNG::Client).as_null_object
-    Shipr.stub pusher:   double(Pusher).as_null_object
-    Shipr.stub github: double(Shipr::GitHub::Client).as_null_object
+    Shipr.stub workers: double(IronWorkerNG::Client).as_null_object
+    Shipr.stub pusher:  double(Pusher).as_null_object
+    Shipr.stub github:  double(Shipr::GitHub::Client).as_null_object
   end
 
   config.before :suite do

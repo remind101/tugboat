@@ -7,7 +7,7 @@ Warden::Strategies.add(:basic) do
     return fail! unless auth.provided?
     return fail!(:bad_request) unless auth.basic?
     username, password = auth.credentials
-    password == ENV['AUTH_TOKEN'] ? success!('root') : fail!
+    password == Shipr.configuration.auth_token ? success!('root') : fail!
   end
 
   def store?
