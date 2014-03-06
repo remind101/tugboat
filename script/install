@@ -1,0 +1,55 @@
+#!/bin/bash
+
+# Fail fast
+set -e
+
+# Don't ignore exit codes when piping output
+set -o pipefail
+
+# The name of the app
+APP="$1"
+
+read -p  "GitHub client id: "     GITHUB_CLIENT_ID
+read -p  "GitHub client secret: " GITHUB_CLIENT_SECRET
+read -p  "GitHub token: "         GITHUB_DEPLOY_TOKEN
+
+heroku create "$APP"
+
+# Run a heroku command against our app
+function hk {
+    heroku $@ -a $APP
+}
+
+# Install addons
+hk addons:add pusher
+hk addons:add cloudamqp:bunny
+hk addons:add iron_worker
+hk addons:add mongohq
+
+# Get app confi
+export $(hk config -s)
+
+RABBITMQ_URL="$CLOUDAMQP_URL"
+RABBITMQ_MANAGEMENT_URL="$(echo "$RABBITMQ_URL" | perl -i -pe 's/amqp/https/g' | perl -i -pe 's/(.*)\/.*/\1\/api/g')"
+
+# Set environment variables
+heroku config:set \
+  RACK_ENV="production" \
+  SSH_KEY="$(cat ~/.ssh/id_rsa)" \
+  AUTH_TOKEN="$(pwgen 32 1)" \
+  BASE_URL="https://$APP.heroku-app.com" \
+  MONGODB_URL="$MONGOHQ_URL" \
+  RABBITMQ_URL="$RABBITMQ_URL" \
+  RABBITMQ_MANAGEMENT_URL="$RABBITMQ_MANAGEMENT_URL" \
+  GITHUB_DEPLOY_TOKEN="$GITHUB_DEPLOY_TOKEN" \
+  GITHUB_CLIENT_ID="$GITHUB_CLIENT_ID" \
+  GITHUB_CLIENT_SECRET="$GITHUB_CLIENT_SECRET" \
+  GITHUB_ORGANIZATION="$GITHUB_ORGANIZATION" \
+  -a $APP
+
+# Upload the deploy worker
+iron_worker upload workers/deploy
+
+git push git@heroku.com:$APP.git HEAD:master
+
+hk ps:scale web=1 worker=1
