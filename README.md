@@ -19,9 +19,8 @@ variables.
 
 ## Why?
 
-The main goal is to make it easier to create tooling for deploying. At Remind101, we use a [Robut
-plugin](https://github.com/ejholmes/robut-shipr) for this. This could be done
-with Hubot just as easily.
+The main goal is to make it easier to create tooling for deploying. We deploy via Hubot using the
+[hubot-shipr](https://github/remind101/hubot-shipr) script.
 
 ## Setup
 
