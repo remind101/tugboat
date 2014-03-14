@@ -20,7 +20,7 @@ variables.
 ## Why?
 
 The main goal is to make it easier to create tooling for deploying. We deploy via Hubot using the
-[hubot-shipr](https://github/remind101/hubot-shipr) script.
+[hubot-shipr](https://github.com/remind101/hubot-shipr) script.
 
 ## Setup
 
