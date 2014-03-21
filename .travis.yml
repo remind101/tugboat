@@ -4,4 +4,7 @@ services:
   - rabbitmq
 rvm:
   - 2.1.0
+env:
+  global:
+    - secure: "lmVVP0lGUtwWzbWj5O9MBHOWs8aHeUKR0oSB7yG5lpQarBvjDbsV7HXdCXA6xLCWoUY/WI1pMGazcbyDMWLmFvo5XD+jomCKBJh2pPusomQ5f1iEWPH81fBCR1tlQc34m2KyfEKI19O5w9jSkccQNzmwzeDnIgF2eLZIlrUXSiM=" # GITHUB_DEPLOY_TOKEN
 script: bundle exec rake

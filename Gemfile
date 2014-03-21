@@ -43,6 +43,7 @@ group :development do
   gem 'shotgun'
   gem 'foreman'
   gem 'guard-rspec'
+  gem 'travis'
 end
 
 group :test do
