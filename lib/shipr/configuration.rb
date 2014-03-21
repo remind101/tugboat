@@ -36,9 +36,13 @@ module Shipr
       ENV['AUTH_TOKEN']
     end
 
+    def cookie_secret
+      ENV['COOKIE_SECRET']
+    end
+
     def github_hook
       uri = URI.parse(base_url)
-      uri.user, uri.password = auth_token.split(':')
+      uri.password = auth_token
       uri.path = '/_github'
       uri.to_s
     end

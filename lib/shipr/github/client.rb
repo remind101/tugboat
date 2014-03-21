@@ -18,7 +18,7 @@ module Shipr
       private
 
       def connection
-        @connection ||= Faraday.new('https://github.com') do |builder|
+        @connection ||= Faraday.new('https://api.github.com') do |builder|
           builder.request :authorization, :token, options[:token]
           builder.response :json
           builder.request :json

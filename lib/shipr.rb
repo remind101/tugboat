@@ -10,10 +10,11 @@ require 'shipr/consumers/webhooks_consumer'
 require 'shipr/consumers/pusher_consumer'
 
 module Shipr
-  autoload :Configuration, 'shipr/configuration'
-  autoload :API,           'shipr/api'
-  autoload :Web,           'shipr/web'
-  autoload :PusherAuth,    'shipr/pusher_auth'
+  autoload :Configuration,   'shipr/configuration'
+  autoload :API,             'shipr/api'
+  autoload :Web,             'shipr/web'
+  autoload :PusherAuth,      'shipr/pusher_auth'
+  autoload :Unauthenticated, 'shipr/unauthenticated'
 
   autoload :Repo,                 'shipr/repo'
   autoload :RepoWebhookInstaller, 'shipr/repo_webhook_installer'
@@ -133,7 +134,17 @@ module Shipr
 
         use Rack::SSL if ENV['RACK_ENV'] == 'production'
 
-        use Rack::Session::Cookie, key: '_shipr_session'
+        use Rack::Session::Cookie, key: '_shipr_session', secret: Shipr.configuration.cookie_secret
+
+        use Warden::Manager do |manager|
+          manager.default_scope = :user
+          manager.scope_defaults :api, strategies: [:basic]
+          manager.failure_app = self
+        end
+
+        map '/unauthenticated' do
+          run Unauthenticated
+        end
 
         map '/pusher/auth' do
           run PusherAuth

@@ -54,3 +54,7 @@ group :test do
   gem 'webmock', require: false
   gem 'factory_girl'
 end
+
+group :features do
+  gem 'cucumber'
+end

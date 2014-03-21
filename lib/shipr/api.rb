@@ -20,17 +20,6 @@ module Shipr
       end
     end
 
-    use Warden::Manager do |manager|
-      manager.default_strategies :basic
-      manager.failure_app = self
-    end
-
-    get :unauthenticated do
-      header 'WWW-Authenticate', %(Basic realm="API Authentication")
-      status 401
-      { error: 'Unauthorized' }
-    end
-
     namespace :deploys do
       before do
         authenticate!
