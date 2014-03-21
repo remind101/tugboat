@@ -26,7 +26,7 @@ module Shipr
 
     namespace :deploys do
       before do
-        authenticate!(scope: :api)
+        authenticate!
       end
 
       desc 'Deploy.'

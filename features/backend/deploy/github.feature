@@ -1,4 +1,4 @@
-@vcr @dev
+@vcr
 Feature: Deploying via a GitHub deployment event
 
     Shipr accepts POST requests for the GitHub `deployment` event

@@ -133,13 +133,10 @@ module Shipr
     def app
       @app ||= Rack::Builder.app do
         use Rack::Deflater
-
         use Rack::SSL if ENV['RACK_ENV'] == 'production'
-
         use Rack::Session::Cookie, key: '_shipr_session', secret: Shipr.configuration.cookie_secret
 
         use Warden::Manager do |manager|
-          manager.default_scope = :user
           manager.scope_defaults :api, strategies: [:basic]
           manager.failure_app = self
         end
@@ -157,6 +154,7 @@ module Shipr
         end
 
         map '/api' do
+
           run API
         end
 
@@ -165,6 +163,5 @@ module Shipr
         end
       end
     end
-
   end
 end

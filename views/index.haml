@@ -50,13 +50,11 @@
         %thead
           %tr
             %th #
-            %th Repo
             %th Sha
         %tbody
           %tr(ng-repeat="job in jobs | orderBy:'id':true")
-            %td(ng-bind="job.id")
             %td
-              %a(href="" ui-sref="app.jobs.detail({ jobId: job.id })" ng-bind="job.repo")
+              %a(href="" ui-sref="app.jobs.detail({ jobId: job.id })" ng-bind="job.id")
             %td(ng-bind="job.sha")
 
     %script(type="text/ng-template" id="jobs/detail.html")
