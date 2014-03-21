@@ -22,7 +22,7 @@ The main goal is to make it easier to create tooling for deploying.
 ## Setup
 
 1. Create an OAuth application on GitHub.
-2. Create an OAuth token with the `deployment_status` scope.
+2. Create an OAuth token with the `deployment_status` and `admin:repo_hook` scope.
 3. Install Shipr on a heroku app:
 
    ```bash

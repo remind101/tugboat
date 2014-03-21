@@ -1,0 +1,208 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.github.com/repos/shipr-test/test-repo/hooks
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Faraday v0.8.8
+      Accept:
+      - application/vnd.github.cannonball-preview+json
+      Authorization:
+      - token <GITHUB_DEPLOY_TOKEN>
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Fri, 21 Mar 2014 20:37:45 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Status:
+      - 200 OK
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4993'
+      X-Ratelimit-Reset:
+      - '1395437744'
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Etag:
+      - "\"9bbbda118b836077cea0ca5919204037\""
+      X-Oauth-Scopes:
+      - admin:repo_hook, repo_deployment
+      X-Accepted-Oauth-Scopes:
+      - admin:repo_hook, public_repo, read:repo_hook, repo, write:repo_hook
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      - Accept-Encoding
+      X-Github-Media-Type:
+      - github.cannonball-preview; format=json
+      X-Content-Type-Options:
+      - nosniff
+      Content-Length:
+      - '2'
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Github-Request-Id:
+      - 324FD279:5AA0:1FD5973:532CA318
+      X-Served-By:
+      - 6d7de9e645814cac34ea2a8d72ba3141
+    body:
+      encoding: UTF-8
+      string: "[]"
+    http_version: 
+  recorded_at: Fri, 21 Mar 2014 20:37:48 GMT
+- request:
+    method: post
+    uri: https://api.github.com/repos/shipr-test/test-repo/hooks
+    body:
+      encoding: UTF-8
+      string: "{\"name\":\"web\",\"events\":[\"deployment\"],\"active\":true,\"config\":{\"url\":\"http://:1234@localhost:5000/_github\",\"content_type\":\"json\"}}"
+    headers:
+      User-Agent:
+      - Faraday v0.8.8
+      Accept:
+      - application/vnd.github.cannonball-preview+json
+      Authorization:
+      - token <GITHUB_DEPLOY_TOKEN>
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 201
+      message: Created
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Fri, 21 Mar 2014 20:37:45 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Status:
+      - 201 Created
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4992'
+      X-Ratelimit-Reset:
+      - '1395437744'
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Etag:
+      - "\"8ad0d48ff877c8050c1d149492698296\""
+      X-Oauth-Scopes:
+      - admin:repo_hook, repo_deployment
+      X-Accepted-Oauth-Scopes:
+      - admin:repo_hook, public_repo, repo, write:repo_hook
+      Location:
+      - https://api.github.com/repos/shipr-test/test-repo/hooks/1985190
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      X-Github-Media-Type:
+      - github.cannonball-preview; format=json
+      X-Content-Type-Options:
+      - nosniff
+      Content-Length:
+      - '431'
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Github-Request-Id:
+      - 324FD279:5AA3:1484EFF:532CA319
+    body:
+      encoding: UTF-8
+      string: "{\"url\":\"https://api.github.com/repos/shipr-test/test-repo/hooks/1985190\",\"test_url\":\"https://api.github.com/repos/shipr-test/test-repo/hooks/1985190/test\",\"id\":1985190,\"name\":\"web\",\"active\":true,\"events\":[\"deployment\"],\"config\":{\"url\":\"http://:1234@localhost:5000/_github\",\"content_type\":\"json\"},\"last_response\":{\"code\":null,\"status\":\"unused\",\"message\":null},\"updated_at\":\"2014-03-21T20:37:45Z\",\"created_at\":\"2014-03-21T20:37:45Z\"}"
+    http_version: 
+  recorded_at: Fri, 21 Mar 2014 20:37:48 GMT
+- request:
+    method: post
+    uri: https://api.github.com/repos/shipr-test/test-repo/deployments
+    body:
+      encoding: UTF-8
+      string: "{\"ref\":\"master\"}"
+    headers:
+      User-Agent:
+      - Faraday v0.8.8
+      Accept:
+      - application/vnd.github.cannonball-preview+json
+      Authorization:
+      - token <GITHUB_DEPLOY_TOKEN>
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 201
+      message: Created
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Fri, 21 Mar 2014 20:37:46 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Status:
+      - 201 Created
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4991'
+      X-Ratelimit-Reset:
+      - '1395437744'
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Last-Modified:
+      - Fri, 21 Mar 2014 20:37:46 GMT
+      Etag:
+      - "\"d2d84d7850b5c15f666f315e8e1c252b\""
+      X-Oauth-Scopes:
+      - admin:repo_hook, repo_deployment
+      X-Accepted-Oauth-Scopes:
+      - ''
+      Location:
+      - https://api.github.com/repos/shipr-test/test-repo/deployments/2554
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      X-Github-Media-Type:
+      - github.cannonball-preview; format=json
+      X-Content-Type-Options:
+      - nosniff
+      Content-Length:
+      - '1268'
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Github-Request-Id:
+      - 324FD279:5AA1:2458C7C:532CA319
+    body:
+      encoding: UTF-8
+      string: "{\"url\":\"https://api.github.com/repos/shipr-test/test-repo/deployments/2554\",\"id\":2554,\"sha\":\"5f834de43d24c20ae761f8b4a6fd8a980928b96b\",\"payload\":{},\"description\":null,\"creator\":{\"login\":\"shipr-test\",\"id\":7026228,\"avatar_url\":\"https://avatars.githubusercontent.com/u/7026228?\",\"gravatar_id\":\"40ef4cb7b26339e19d42761568ae52df\",\"url\":\"https://api.github.com/users/shipr-test\",\"html_url\":\"https://github.com/shipr-test\",\"followers_url\":\"https://api.github.com/users/shipr-test/followers\",\"following_url\":\"https://api.github.com/users/shipr-test/following{/other_user}\",\"gists_url\":\"https://api.github.com/users/shipr-test/gists{/gist_id}\",\"starred_url\":\"https://api.github.com/users/shipr-test/starred{/owner}{/repo}\",\"subscriptions_url\":\"https://api.github.com/users/shipr-test/subscriptions\",\"organizations_url\":\"https://api.github.com/users/shipr-test/orgs\",\"repos_url\":\"https://api.github.com/users/shipr-test/repos\",\"events_url\":\"https://api.github.com/users/shipr-test/events{/privacy}\",\"received_events_url\":\"https://api.github.com/users/shipr-test/received_events\",\"type\":\"User\",\"site_admin\":false},\"created_at\":\"2014-03-21T20:37:46Z\",\"updated_at\":\"2014-03-21T20:37:46Z\",\"statuses_url\":\"https://api.github.com/repos/shipr-test/test-repo/deployments/2554/statuses\"}"
+    http_version: 
+  recorded_at: Fri, 21 Mar 2014 20:37:49 GMT
+recorded_with: VCR 2.8.0

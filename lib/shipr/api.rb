@@ -18,21 +18,27 @@ module Shipr
       def declared(params)
         super(params).select { |_, val| !val.nil? }
       end
+
+      def deploy
+        Shipr::GitHub::Deployment.create(params.name, declared(params).except(:name))
+      end
     end
 
     namespace :deploys do
       before do
-        authenticate!
+        authenticate!(scope: :api)
       end
 
       desc 'Deploy.'
       params do
-        requires :repo, type: String
+        requires :name, type: String
+        requires :ref, type: String
         optional :force, type: Boolean
         optional :environment, type: String
       end
       post do
-        present deploy(declared params)
+        deploy
+        present {}
       end
 
       desc 'Returns all deploys.'

@@ -15,9 +15,7 @@ module Shipr
   autoload :PusherAuth,      'shipr/pusher_auth'
   autoload :Unauthenticated, 'shipr/unauthenticated'
 
-  autoload :Repo,                 'shipr/repo'
-  autoload :RepoWebhookInstaller, 'shipr/repo_webhook_installer'
-
+  autoload :Repo,              'shipr/repo'
   autoload :Job,               'shipr/job'
   autoload :JobCreator,        'shipr/job_creator'
   autoload :JobCompleter,      'shipr/job_completer'
@@ -31,7 +29,9 @@ module Shipr
   end
 
   module GitHub
-    autoload :Client, 'shipr/github/client'
+    autoload :Client,         'shipr/github/client'
+    autoload :Deployment,     'shipr/github/deployment'
+    autoload :DeploymentHook, 'shipr/github/deployment_hook'
   end
 
   class << self

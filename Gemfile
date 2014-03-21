@@ -57,4 +57,5 @@ end
 
 group :features do
   gem 'cucumber'
+  gem 'vcr'
 end

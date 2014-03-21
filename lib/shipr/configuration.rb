@@ -41,10 +41,7 @@ module Shipr
     end
 
     def github_hook
-      uri = URI.parse(base_url)
-      uri.password = auth_token
-      uri.path = '/_github'
-      uri.to_s
+      base_url.gsub('://', "://:#{auth_token}@") + '/_github'
     end
   end
 end

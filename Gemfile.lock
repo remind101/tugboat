@@ -210,6 +210,7 @@ GEM
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
+    vcr (2.8.0)
     virtus (1.0.1)
       axiom-types (~> 0.0.5)
       coercible (~> 1.0)
@@ -258,5 +259,6 @@ DEPENDENCIES
   sinatra_auth_github
   timecop
   unicorn (~> 4.6.2)
+  vcr
   warden
   webmock
