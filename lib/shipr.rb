@@ -24,6 +24,11 @@ module Shipr
   autoload :GitHubJobCreator,  'shipr/github_job_creator'
   autoload :DeployTask,        'shipr/deploy_task'
 
+  module Entities
+    autoload :Repo, 'shipr/entities/repo'
+    autoload :Job,  'shipr/entities/job'
+  end
+
   module Hooks
     autoload :GitHub, 'shipr/hooks/github'
   end

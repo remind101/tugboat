@@ -95,11 +95,5 @@ module Shipr
     def channel
       "private-job-#{id}"
     end
-
-    entity :id, :sha, :force, :environment, :config, :exit_status do
-      expose :done?, as: :done
-      expose :success?, as: :success
-      expose :output, if: :include_output
-    end
   end
 end

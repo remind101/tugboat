@@ -74,7 +74,7 @@
 
         .panel.panel-primary(ng-if="job.config")
           .panel-heading
-            %span(ng-bind="job.repo")
+            %span(ng-bind="job.repo.name")
             %a.restart.btn.btn-info.btn-xs.pull-right(href="" ng-click="restart()" ng-if="job.done") Restart
           .panel-body
             %div(environment-variables="job.config")

@@ -6,6 +6,9 @@ module Shipr
     format :json
     default_format :json
 
+    represent Shipr::Job,  with: Entities::Job
+    represent Shipr::Repo, with: Entities::Repo
+
     helpers do
       delegate :authenticate!, to: :warden
 
