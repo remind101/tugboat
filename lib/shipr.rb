@@ -131,30 +131,28 @@ module Shipr
     #
     # Returns a Rack compatible app.
     def app
+      warden = proc do |manager|
+        manager.default_strategies :basic
+        manager.failure_app = Unauthenticated
+      end
+
       @app ||= Rack::Builder.app do
         use Rack::Deflater
         use Rack::SSL if ENV['RACK_ENV'] == 'production'
         use Rack::Session::Cookie, key: '_shipr_session', secret: Shipr.configuration.cookie_secret
 
-        use Warden::Manager do |manager|
-          manager.scope_defaults :api, strategies: [:basic]
-          manager.failure_app = self
-        end
-
-        map '/unauthenticated' do
-          run Unauthenticated
-        end
-
         map '/pusher/auth' do
+          use Warden::Manager
           run PusherAuth
         end
 
         map '/_github' do
+          use Warden::Manager, &warden
           run Hooks::GitHub
         end
 
         map '/api' do
-
+          use Warden::Manager, &warden
           run API
         end
 
