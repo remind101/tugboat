@@ -20,5 +20,5 @@ Feature: Deploying via a GitHub deployment event
         And a deploy task should have been created with env:
             | ENVIRONMENT | production                               |
             | FORCE       | 0                                        |
-            | REPO        | git@github.com:shipr-test/test-repo.git       |
+            | REPO        | git@github.com:shipr-test/test-repo.git  |
             | SHA         | 5f834de43d24c20ae761f8b4a6fd8a980928b96b |
