@@ -22,10 +22,14 @@ When(/^a deployment event is received$/) do
   post '/_github', fixture(:deployment_event)
 end
 
-When(/^I deploy "(.*?)" with:$/) do |name, table|
+When(/^I deploy "(.*?)"$/) do |name|
   authenticate!
-  fields = table.rows_hash
-  post '/api/deploys', fields.merge(name: name)
+  post '/api/deploys', name: name, ref: 'master'
+end
+
+When(/^I deploy "(.*?)" with the payload:$/) do |name, payload|
+  authenticate!
+  post '/api/deploys', name: name, ref: 'master', payload: JSON.parse(payload)
 end
 
 Then(/^the last response should be (\d+) with the content:$/) do |status, body|
