@@ -1,3 +1,4 @@
+@vcr @dev
 Feature: Deploying via a GitHub deployment event
 
     Shipr accepts POST requests for the GitHub `deployment` event
@@ -12,12 +13,12 @@ Feature: Deploying via a GitHub deployment event
     Scenario: A deployment event
         When a deployment event is received
         Then a job should have been created with:
-            | sha         | ccfd249999a77dc63a81e8b591122b4655eb69d5 |
+            | sha         | 5f834de43d24c20ae761f8b4a6fd8a980928b96b |
             | force       | false                                    |
             | environment | production                               |
             | config      | {}                                       |
         And a deploy task should have been created with env:
             | ENVIRONMENT | production                               |
             | FORCE       | 0                                        |
-            | REPO        | git@github.com:remind101/shipr.git       |
-            | SHA         | ccfd249999a77dc63a81e8b591122b4655eb69d5 |
+            | REPO        | git@github.com:shipr-test/test-repo.git       |
+            | SHA         | 5f834de43d24c20ae761f8b4a6fd8a980928b96b |
