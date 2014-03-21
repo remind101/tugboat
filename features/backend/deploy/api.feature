@@ -6,3 +6,7 @@ Feature: Deploying via the api
     Scenario: Deploying
         When I deploy "shipr-test/test-repo" with:
             | ref | master |
+
+    Scenario: Deploying when the webhook is already installed
+        When I deploy "shipr-test/test-repo" with:
+            | ref | master |
