@@ -2,20 +2,29 @@ module BackendSteps
   def fixture(name)
     JSON.parse File.read(File.expand_path("../../fixtures/#{name}.json", __FILE__))
   end
+  
+  def authenticate!
+    basic_authorize '', Shipr.configuration.auth_token
+  end
 end
 
 World(BackendSteps)
 
 When(/^a ping event is received$/) do
   header 'X-Github-Event', 'ping'
-  basic_authorize '', Shipr.configuration.auth_token
+  authenticate!
   post '/_github', fixture(:ping_event)
 end
 
 When(/^a deployment event is received$/) do
   header 'X-Github-Event', 'deployment'
-  basic_authorize '', Shipr.configuration.auth_token
+  authenticate!
   post '/_github', fixture(:deployment_event)
+end
+
+When(/^I deploy "(.*?)"$/) do |name|
+  authenticate!
+  post '/api/deploy'
 end
 
 Then(/^the last response should be (\d+) with the content:$/) do |status, body|

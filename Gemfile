@@ -47,7 +47,7 @@ end
 
 group :test do
   gem 'rspec'
-  gem 'rack-test'
+  gem 'rack-test', github: 'brynary/rack-test'
   gem 'timecop'
   gem 'approvals'
   gem 'database_cleaner'

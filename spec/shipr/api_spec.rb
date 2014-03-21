@@ -11,29 +11,18 @@ describe Shipr::API do
     end
   end
 
-  let(:current_user) { 'foo@bar.com' }
+  before do
+    warden.stub(authenticate!: true)
+  end
 
   describe 'GET /deploys' do
-    with_authenticated_user
-
     it 'returns all jobs' do
       get '/deploys'
       verify_response 200
     end
   end
 
-  describe 'GET /unauthenticated' do
-    it 'does something' do
-      get '/unauthenticated' do
-        verify_response 401
-        expect(last_response.headers['WWW-Authenticate']).to eq %(Basic realm="API Authentication")
-      end
-    end
-  end
-
   describe 'POST /deploys/:id/restart' do
-    with_authenticated_user
-
     let(:job) { create :job, sha: '1234' }
 
     it 'restarts the job' do

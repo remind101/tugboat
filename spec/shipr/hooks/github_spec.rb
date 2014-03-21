@@ -18,7 +18,9 @@ describe Shipr::Hooks::GitHub do
 
   describe 'POST /' do
     context 'when authenticated' do
-      with_authenticated_user
+      before do
+        warden.stub(authenticate!: true)
+      end
 
       context 'when the event is a deployment' do
         before do
@@ -27,7 +29,7 @@ describe Shipr::Hooks::GitHub do
 
         it 'creates a deploy' do
           expect {
-            post '/', { id: '1', sha: '1234', name: 'my/repo', payload: JSON.dump(environment: 'staging') }.to_json
+            post '/', { id: '1', sha: '1234', name: 'my/repo', payload: { environment: 'staging' } }.to_json
           }.to change { Shipr::Job.count }.by(1)
           verify_response 200
         end
@@ -40,7 +42,7 @@ describe Shipr::Hooks::GitHub do
 
         it 'does not create a deploy' do
           expect {
-            post '/', { id: '1', sha: '1234', name: 'my/repo', payload: JSON.dump(environment: 'staging') }.to_json
+            post '/', { id: '1', sha: '1234', name: 'my/repo', payload: { environment: 'staging' } }.to_json
           }.to_not change { Shipr::Job.count }
           verify_response 200
         end
@@ -48,9 +50,14 @@ describe Shipr::Hooks::GitHub do
     end
 
     context 'when not authenticated' do
+      before do
+        warden.stub(:authenticate!).and_throw(:warden)
+      end
+
       it 'returns a 403' do
-        post '/', { id: '1', sha: '1234', name: 'my/repo' }.to_json
-        verify_response 403
+        expect {
+          post '/', { id: '1', sha: '1234', name: 'my/repo' }.to_json
+        }.to throw_symbol :warden
       end
     end
   end

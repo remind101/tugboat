@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Shipr::JobRestarter do
-  let(:job) { create :job, sha: 'abc', config: { foo: 'bar' }, notify: ['http://webhook.test'] }
+  let(:job) { create :job, sha: 'abc', config: { foo: 'bar' } }
   subject(:job_restarter) { described_class.new(job) }
 
   describe '#restart' do
@@ -12,6 +12,5 @@ describe Shipr::JobRestarter do
     its(:sha)         { should eq job.sha }
     its(:environment) { should eq job.environment }
     its(:config)      { should eq job.config }
-    its(:notify)      { should eq job.notify }
   end
 end

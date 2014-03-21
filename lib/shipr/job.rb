@@ -15,7 +15,6 @@ module Shipr
     field :output, type: String, default: ''
     field :exit_status, type: Integer
     field :script, type: String
-    field :notify, type: Array, default: []
 
     def id
       _id.to_s

@@ -3,6 +3,12 @@ module ApiExampleGroup
   include Rack::Test::Methods
 
   included do
+    let(:warden) { double('warden') }
+
+    before do
+      env 'warden', warden
+    end
+
     before do
       Timecop.freeze Time.parse('2014-01-01 00:00:00 UTC')
     end

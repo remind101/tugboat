@@ -6,7 +6,6 @@ require 'rack/force_json'
 require 'shipr/warden'
 require 'shipr/consumers/worker_output_consumer'
 require 'shipr/consumers/worker_completion_consumer'
-require 'shipr/consumers/webhooks_consumer'
 require 'shipr/consumers/pusher_consumer'
 
 module Shipr
@@ -26,7 +25,6 @@ module Shipr
   autoload :JobRestarter,      'shipr/job_restarter'
   autoload :GitHubJobCreator,  'shipr/github_job_creator'
   autoload :DeployTask,        'shipr/deploy_task'
-  autoload :WebhookNotifier,   'shipr/webhook_notifier'
 
   module Hooks
     autoload :GitHub, 'shipr/hooks/github'

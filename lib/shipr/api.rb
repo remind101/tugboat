@@ -25,6 +25,16 @@ module Shipr
         authenticate!
       end
 
+      desc 'Deploy.'
+      params do
+        requires :repo, type: String
+        optional :force, type: Boolean
+        optional :environment, type: String
+      end
+      post do
+        present deploy(declared params)
+      end
+
       desc 'Returns all deploys.'
       get do
         present jobs.limit(30)

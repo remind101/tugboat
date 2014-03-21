@@ -14,8 +14,7 @@ module Shipr
       JobCreator.create(job.repo.name,
         sha: job.sha,
         environment: job.environment,
-        config: job.config.dup,
-        notify: job.notify.dup
+        config: job.config.dup
       )
     end
   end

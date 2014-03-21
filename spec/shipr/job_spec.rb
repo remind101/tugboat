@@ -16,7 +16,6 @@ describe Shipr::Job do
     its(:config)      { should eq({}) }
     its(:output)      { should eq '' }
     its(:script)      { should eq nil }
-    its(:notify)      { should eq [] }
   end
 
   describe '#complete!' do
@@ -68,13 +67,5 @@ describe Shipr::Job do
     subject { job.channel }
 
     it { should eq "private-job-#{job.id}" }
-  end
-
-  describe '#webhooks' do
-    subject { job.notify }
-
-    context 'by default' do
-      it { should eq [] }
-    end
   end
 end
