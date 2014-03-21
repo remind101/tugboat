@@ -55,6 +55,10 @@ module Shipr
       @workers ||= IronWorkerNG::Client.new
     end
 
+    def workers=(client)
+      @workers = client
+    end
+
     # Public: Global Pusher client for pushing events to the frontend client.
     #
     # Examples

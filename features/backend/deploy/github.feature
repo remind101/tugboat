@@ -16,3 +16,8 @@ Feature: Deploying via a GitHub deployment event
             | force       | false                                    |
             | environment | production                               |
             | config      | {}                                       |
+        And a deploy task should have been created with env:
+            | ENVIRONMENT | production                               |
+            | FORCE       | 0                                        |
+            | REPO        | git@github.com:remind101/shipr.git       |
+            | SHA         | ccfd249999a77dc63a81e8b591122b4655eb69d5 |

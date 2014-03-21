@@ -32,3 +32,13 @@ Then(/^a job should have been created with:$/) do |table|
   expect(job.environment).to eq fields['environment'] if fields['environment']
   expect(job.config).to eq JSON.parse(fields['config']) if fields['config']
 end
+
+Then(/^a deploy task should have been created with env:$/) do |table|
+  job, options = Shipr.workers.tasks.first
+
+  expect(job).to eq 'Deploy'
+
+  table.rows_hash.each do |key, value|
+    expect(options[:env][key]).to eq value
+  end
+end
