@@ -95,5 +95,12 @@ module Shipr
     def channel
       "private-job-#{id}"
     end
+
+    # Public: Location where the build can be viewed.
+    #
+    # Returns String.
+    def html_url
+      "#{Shipr.configuration.base_url}/deploys/#{id}"
+    end
   end
 end
