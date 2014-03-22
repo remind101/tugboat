@@ -99,6 +99,9 @@ GEM
     hashie (2.0.5)
     highline (1.6.21)
     hike (1.2.3)
+    httparty (0.13.0)
+      json (~> 1.8)
+      multi_xml (>= 0.5.2)
     hutch (0.7.0)
       bunny (~> 1.1.0)
       carrot-top (~> 0.0.7)
@@ -273,6 +276,7 @@ DEPENDENCIES
   grape-entity (~> 0.4.1)
   guard-rspec
   haml
+  httparty
   hutch
   iron_worker_ng (~> 0.16.4)
   json (~> 1.8.0)
