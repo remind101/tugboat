@@ -1,6 +1,14 @@
 require 'webmock/cucumber'
 
 VCR.configure do |config|
+  config.register_request_matcher :body do |r1, r2|
+    [r1, r2].each do |request|
+      request.body.gsub! /"target_url":"(.*?)"/, '"target_url":""'
+    end
+
+    r1.body == r2.body
+  end
+
   config.cassette_library_dir = 'features/cassettes'
   config.default_cassette_options = {
     match_requests_on: [:method, :uri, :body],
