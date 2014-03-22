@@ -34,10 +34,10 @@ describe Shipr::Notifiers::Slack do
       end
 
       let(:output) do
-        { fallback: 'Deploying shipr-test/test-repo@5f834d to production: http://shipr.test/deploys/1',
+        { fallback: 'Deploying shipr-test/test-repo@5f834d to production: <http://shipr.test/deploys/1>',
           color: '#ff0',
           fields: [
-            { value: 'Deploying shipr-test/test-repo@5f834d to production: http://shipr.test/deploys/1' }
+            { value: 'Deploying shipr-test/test-repo@5f834d to production: <http://shipr.test/deploys/1>' }
           ] }
       end
 
@@ -58,10 +58,10 @@ describe Shipr::Notifiers::Slack do
       end
 
       let(:output) do
-        { fallback: 'Deployed shipr-test/test-repo@5f834d to production: http://shipr.test/deploys/1',
+        { fallback: 'Deployed shipr-test/test-repo@5f834d to production: <http://shipr.test/deploys/1>',
           color: '#0f0',
           fields: [
-            { value: 'Deployed shipr-test/test-repo@5f834d to production: http://shipr.test/deploys/1' }
+            { value: 'Deployed shipr-test/test-repo@5f834d to production: <http://shipr.test/deploys/1>' }
           ] }
       end
 
@@ -82,10 +82,10 @@ describe Shipr::Notifiers::Slack do
       end
 
       let(:output) do
-        { fallback: 'Failed to deploy shipr-test/test-repo@5f834d to production: http://shipr.test/deploys/1',
+        { fallback: 'Failed to deploy shipr-test/test-repo@5f834d to production: <http://shipr.test/deploys/1>',
           color: '#f00',
           fields: [
-            { value: 'Failed to deploy shipr-test/test-repo@5f834d to production: http://shipr.test/deploys/1' }
+            { value: 'Failed to deploy shipr-test/test-repo@5f834d to production: <http://shipr.test/deploys/1>' }
           ] }
       end
 
@@ -106,10 +106,10 @@ describe Shipr::Notifiers::Slack do
       end
 
       let(:output) do
-        { fallback: 'Failed to deploy shipr-test/test-repo@5f834d to production: http://shipr.test/deploys/1',
+        { fallback: 'Failed to deploy shipr-test/test-repo@5f834d to production: <http://shipr.test/deploys/1>',
           color: '#f00',
           fields: [
-            { value: 'Failed to deploy shipr-test/test-repo@5f834d to production: http://shipr.test/deploys/1' }
+            { value: 'Failed to deploy shipr-test/test-repo@5f834d to production: <http://shipr.test/deploys/1>' }
           ] }
       end
 

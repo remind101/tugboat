@@ -2,10 +2,10 @@ module Shipr
   module Notifiers
     class Slack < Base
       MESSAGES = {
-        pending: ['#ff0', "Deploying %s@%s to %s: %s"],
-        success: ['#0f0', "Deployed %s@%s to %s: %s"],
-        failure: ['#f00', "Failed to deploy %s@%s to %s: %s"],
-        error:   ['#f00', "Failed to deploy %s@%s to %s: %s"]
+        pending: ['#ff0', "Deploying %s@%s to %s: <%s>"],
+        success: ['#0f0', "Deployed %s@%s to %s: <%s>"],
+        failure: ['#f00', "Failed to deploy %s@%s to %s: <%s>"],
+        error:   ['#f00', "Failed to deploy %s@%s to %s: <%s>"]
       }
 
       def notify
