@@ -29,15 +29,16 @@ describe Shipr::Notifiers::Slack do
           name: 'shipr-test/test-repo',
           sha: '5f834de43d24c20ae761f8b4a6fd8a980928b96b',
           payload: {
-            environment: 'production'
+            environment: 'production',
+            user: 'ejholmes'
           } }
       end
 
       let(:output) do
-        { fallback: 'Deploying shipr-test/test-repo@5f834d to production: <http://shipr.test/deploys/1>',
+        { fallback: 'Deploying shipr-test/test-repo@5f834d to production by ejholmes: <http://shipr.test/deploys/1>',
           color: '#ff0',
           fields: [
-            { value: 'Deploying shipr-test/test-repo@5f834d to production: <http://shipr.test/deploys/1>' }
+            { value: 'Deploying shipr-test/test-repo@5f834d to production by ejholmes: <http://shipr.test/deploys/1>' }
           ] }
       end
 
@@ -53,39 +54,16 @@ describe Shipr::Notifiers::Slack do
           name: 'shipr-test/test-repo',
           sha: '5f834de43d24c20ae761f8b4a6fd8a980928b96b',
           payload: {
-            environment: 'production'
+            environment: 'production',
+            user: 'ejholmes'
           } }
       end
 
       let(:output) do
-        { fallback: 'Deployed shipr-test/test-repo@5f834d to production: <http://shipr.test/deploys/1>',
+        { fallback: 'Deployed shipr-test/test-repo@5f834d to production by ejholmes: <http://shipr.test/deploys/1>',
           color: '#0f0',
           fields: [
-            { value: 'Deployed shipr-test/test-repo@5f834d to production: <http://shipr.test/deploys/1>' }
-          ] }
-      end
-
-      it 'sends the proper payload' do
-        notifier.notify
-      end
-    end
-
-    context 'when the deployment is errored' do
-      let(:input) do
-        { state: 'error',
-          target_url: 'http://shipr.test/deploys/1',
-          name: 'shipr-test/test-repo',
-          sha: '5f834de43d24c20ae761f8b4a6fd8a980928b96b',
-          payload: {
-            environment: 'production'
-          } }
-      end
-
-      let(:output) do
-        { fallback: 'Failed to deploy shipr-test/test-repo@5f834d to production: <http://shipr.test/deploys/1>',
-          color: '#f00',
-          fields: [
-            { value: 'Failed to deploy shipr-test/test-repo@5f834d to production: <http://shipr.test/deploys/1>' }
+            { value: 'Deployed shipr-test/test-repo@5f834d to production by ejholmes: <http://shipr.test/deploys/1>' }
           ] }
       end
 
@@ -101,15 +79,16 @@ describe Shipr::Notifiers::Slack do
           name: 'shipr-test/test-repo',
           sha: '5f834de43d24c20ae761f8b4a6fd8a980928b96b',
           payload: {
-            environment: 'production'
+            environment: 'production',
+            user: 'ejholmes'
           } }
       end
 
       let(:output) do
-        { fallback: 'Failed to deploy shipr-test/test-repo@5f834d to production: <http://shipr.test/deploys/1>',
+        { fallback: 'Failed to deploy shipr-test/test-repo@5f834d to production by ejholmes: <http://shipr.test/deploys/1>',
           color: '#f00',
           fields: [
-            { value: 'Failed to deploy shipr-test/test-repo@5f834d to production: <http://shipr.test/deploys/1>' }
+            { value: 'Failed to deploy shipr-test/test-repo@5f834d to production by ejholmes: <http://shipr.test/deploys/1>' }
           ] }
       end
 
