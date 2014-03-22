@@ -37,7 +37,6 @@ module Shipr
         requires :name, type: String
         requires :ref, type: String
         optional :force, type: Boolean
-        optional :environment, type: String
         optional :auto_merge, type: Boolean
         optional :payload, type: Hash
       end
