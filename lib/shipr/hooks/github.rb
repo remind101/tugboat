@@ -8,19 +8,11 @@ module Shipr
 
       helpers do
         def event
-          headers['X-Github-Event']
-        end
-
-        def ping?
-          event == 'ping'
-        end
-
-        def deployment?
-          event == 'deployment'
+          ActiveSupport::StringInquirer.new(headers['X-Github-Event'])
         end
 
         def deploy
-          deployment? ? GitHubJobCreator.create(params) : {}
+          GitHubJobCreator.create(params)
         end
       end
 
@@ -45,7 +37,13 @@ module Shipr
       end
       post do
         status 200
-        present deploy
+        if event.deployment?
+          present deploy
+        elsif event.deployment_status?
+          # TODO Implement some deployment status handlers
+        else
+          {}
+        end
       end
     end
   end

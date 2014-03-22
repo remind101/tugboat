@@ -33,6 +33,11 @@ module Shipr
     autoload :GitHub, 'shipr/hooks/github'
   end
 
+  module Notifiers
+    autoload :Base,  'shipr/notifiers/base'
+    autoload :Slack, 'shipr/notifiers/slack'
+  end
+
   module GitHub
     autoload :Client,         'shipr/github/client'
     autoload :Deployment,     'shipr/github/deployment'

@@ -72,7 +72,7 @@ http_interactions:
     uri: https://api.github.com/repos/shipr-test/test-repo/hooks
     body:
       encoding: UTF-8
-      string: "{\"name\":\"web\",\"events\":[\"deployment\"],\"active\":true,\"config\":{\"url\":\"http://:1234@localhost:5000/_github\",\"content_type\":\"json\"}}"
+      string: "{\"name\":\"web\",\"events\":[\"deployment\",\"deployment_status\"],\"active\":true,\"config\":{\"url\":\"http://:1234@localhost:5000/_github\",\"content_type\":\"json\"}}"
     headers:
       User-Agent:
       - Faraday v0.8.8

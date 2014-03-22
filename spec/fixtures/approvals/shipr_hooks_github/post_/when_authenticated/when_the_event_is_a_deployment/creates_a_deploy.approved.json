@@ -1,11 +1,2 @@
 {
-  "id": "<id>",
-  "sha": "1234",
-  "force": false,
-  "environment": "staging",
-  "config": {
-  },
-  "exit_status": null,
-  "done": false,
-  "success": false
 }

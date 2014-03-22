@@ -31,7 +31,7 @@ module Shipr
 
       def configuration
         { name: name,
-          events: [:deployment],
+          events: [:deployment, :deployment_status],
           active: true,
           config: {
             url: url,

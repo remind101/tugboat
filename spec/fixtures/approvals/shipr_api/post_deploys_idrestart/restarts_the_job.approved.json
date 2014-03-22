@@ -7,5 +7,9 @@
   },
   "exit_status": null,
   "done": false,
-  "success": false
+  "success": false,
+  "repo": {
+    "name": "remind101/shipr",
+    "clone_url": "git@github.com:remind101/shipr.git"
+  }
 }
