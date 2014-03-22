@@ -28,9 +28,9 @@ module Shipr
       def connection
         @connection ||= Faraday.new('https://api.github.com') do |builder|
           builder.request :authorization, :token, options[:token]
+          builder.response :raise_error
           builder.response :json
           builder.request :json
-          builder.response :raise_error
           builder.adapter Faraday.default_adapter
         end.tap do |connection|
           connection.headers['Accept'] = 'application/vnd.github.cannonball-preview+json'

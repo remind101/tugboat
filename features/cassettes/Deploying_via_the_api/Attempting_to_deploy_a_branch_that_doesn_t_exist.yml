@@ -1,0 +1,131 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.github.com/repos/shipr-test/test-repo/hooks
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Faraday v0.8.8
+      Accept:
+      - application/vnd.github.cannonball-preview+json
+      Authorization:
+      - token <GITHUB_DEPLOY_TOKEN>
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Sat, 22 Mar 2014 21:05:23 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 200 OK
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4999'
+      X-Ratelimit-Reset:
+      - '1395525923'
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Etag:
+      - "\"81c6376cf178c58191a0b8d9692bc30d\""
+      X-Oauth-Scopes:
+      - admin:repo_hook, repo_deployment
+      X-Accepted-Oauth-Scopes:
+      - admin:repo_hook, public_repo, read:repo_hook, repo, write:repo_hook
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      - Accept-Encoding
+      X-Github-Media-Type:
+      - github.cannonball-preview; format=json
+      X-Content-Type-Options:
+      - nosniff
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Github-Request-Id:
+      - 43A10E1A:64B1:1F17D37:532DFB12
+      X-Served-By:
+      - 3061975e1f37121b3751604ad153c687
+    body:
+      encoding: UTF-8
+      string: "[{\"url\":\"https://api.github.com/repos/shipr-test/test-repo/hooks/1985190\",\"test_url\":\"https://api.github.com/repos/shipr-test/test-repo/hooks/1985190/test\",\"id\":1985190,\"name\":\"web\",\"active\":true,\"events\":[\"deployment\"],\"config\":{\"url\":\"http://:1234@localhost:5000/_github\",\"content_type\":\"json\"},\"last_response\":{\"code\":404,\"status\":\"missing\",\"message\":\"Invalid
+        host.\"},\"updated_at\":\"2014-03-21T20:46:59Z\",\"created_at\":\"2014-03-21T20:37:45Z\"}]"
+    http_version: 
+  recorded_at: Sat, 22 Mar 2014 21:05:26 GMT
+- request:
+    method: post
+    uri: https://api.github.com/repos/shipr-test/test-repo/deployments
+    body:
+      encoding: UTF-8
+      string: "{\"ref\":\"develop\"}"
+    headers:
+      User-Agent:
+      - Faraday v0.8.8
+      Accept:
+      - application/vnd.github.cannonball-preview+json
+      Authorization:
+      - token <GITHUB_DEPLOY_TOKEN>
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 422
+      message: Unprocessable Entity
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Sat, 22 Mar 2014 21:05:23 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Status:
+      - 422 Unprocessable Entity
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4998'
+      X-Ratelimit-Reset:
+      - '1395525923'
+      X-Oauth-Scopes:
+      - admin:repo_hook, repo_deployment
+      X-Accepted-Oauth-Scopes:
+      - ''
+      X-Github-Media-Type:
+      - github.cannonball-preview; format=json
+      X-Content-Type-Options:
+      - nosniff
+      Content-Length:
+      - '92'
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Github-Request-Id:
+      - 43A10E1A:64B0:4AB95DA:532DFB13
+    body:
+      encoding: UTF-8
+      string: "{\"message\":\"No ref found for: develop\",\"documentation_url\":\"http://developer.github.com/v3\"}"
+    http_version: 
+  recorded_at: Sat, 22 Mar 2014 21:05:27 GMT
+recorded_with: VCR 2.8.0

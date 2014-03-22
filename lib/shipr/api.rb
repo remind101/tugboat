@@ -41,8 +41,13 @@ module Shipr
         optional :payload, type: Hash
       end
       post do
-        deploy
-        present {}
+        begin
+          deploy
+          present({})
+        rescue Faraday::Error::ClientError => e
+          status e.response[:status]
+          e.response[:body]
+        end
       end
 
       desc 'Returns all deploys.'

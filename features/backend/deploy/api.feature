@@ -14,3 +14,11 @@ Feature: Deploying via the api
             """
             {"environment":"staging"}
             """
+    
+    @dev
+    Scenario: Attempting to deploy a branch that doesn't exist
+        When I deploy the "develop" ref of "shipr-test/test-repo"
+        Then the last response should be 422 with the content:
+            """
+            {"message":"No ref found for: develop","documentation_url":"http://developer.github.com/v3"}
+            """

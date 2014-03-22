@@ -22,6 +22,11 @@ When(/^a deployment event is received$/) do
   post '/_github', fixture(:deployment_event)
 end
 
+When(/^I deploy the "(.*?)" ref of "(.*?)"$/) do |ref, name|
+  authenticate!
+  post '/api/deploys', name: name, ref: ref
+end
+
 When(/^I deploy "(.*?)"$/) do |name|
   authenticate!
   post '/api/deploys', name: name, ref: 'master'
