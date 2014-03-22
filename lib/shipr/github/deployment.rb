@@ -25,7 +25,6 @@ module Shipr
       end
 
       def create_deployment
-        p repo, params
         client.create_deployment repo, params
       end
 
