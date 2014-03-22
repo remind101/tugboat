@@ -4,7 +4,7 @@
 #
 # $SSH_KEY:       Private key to use when deploying.
 # $REPO:          The repo to deploy.
-# $BRANCH:        The branch, tag, or sha to checkout.
+# $SHA:           The git sha to checkout.
 # $DEPLOY_SCRIPT: The content of a deploy script to use if the repo doesn't define one.
 
 echo "$SSH_KEY" > "$HOME/id_rsa"
@@ -24,7 +24,7 @@ git init .
 git remote add origin "$REPO"
 git fetch -q origin
 
-git reset -q --hard "origin/$BRANCH"
+git reset -q --hard "$SHA"
 
 if [ -e ./script/deploy ]; then
     ./script/deploy
