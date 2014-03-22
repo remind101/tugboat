@@ -85,7 +85,8 @@ module Shipr
       Shipr.github.update_deployment_status(
         repo.name,
         guid,
-        state: status
+        state: status,
+        target_url: html_url
       )
     end
 

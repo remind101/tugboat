@@ -2,10 +2,10 @@ module Shipr
   module Notifiers
     class Slack < Base
       MESSAGES = {
-        pending: ['#ff0', "Deploying %s@%s to %s"],
-        success: ['#0f0', "Deployed %s@%s to %s"],
-        failure: ['#f00', "Failed to deploy %s@%s to %s"],
-        error:   ['#f00', "Failed to deploy %s@%s to %s"]
+        pending: ['#ff0', "Deploying %s@%s to %s: %s"],
+        success: ['#0f0', "Deployed %s@%s to %s: %s"],
+        failure: ['#f00', "Failed to deploy %s@%s to %s: %s"],
+        error:   ['#f00', "Failed to deploy %s@%s to %s: %s"]
       }
 
       def notify
@@ -17,7 +17,7 @@ module Shipr
 
       def attachment
         color, template = MESSAGES[state.to_sym]
-        message = template % [payload.name, payload.sha, payload.payload.environment]
+        message = template % [payload.name, payload.sha[0..5], payload.payload.environment, payload.target_url]
         { fallback: message, color: color, fields: [{ value: message }] }
       end
 
