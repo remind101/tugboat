@@ -40,7 +40,7 @@ module Shipr
         if event.deployment?
           present deploy
         elsif event.deployment_status?
-          # TODO Implement some deployment status handlers
+          Notifiers::Slack.notify(params)
         else
           {}
         end
