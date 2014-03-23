@@ -10,12 +10,12 @@ module Shipr
 
       def notify
         HTTParty.post "https://#{account}.slack.com/services/hooks/incoming-webhook?token=#{token}",
-          body: "payload=#{JSON.dump(message)}"
+          body: "payload=#{JSON.dump(attachments: [attachment])}"
       end
 
     private
 
-      def message
+      def attachment
         color, message = messages[state.to_sym]
         { color: color, fallback: message, text: message }
       end

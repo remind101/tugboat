@@ -31,7 +31,7 @@ describe Shipr::Notifiers::Slack do
     before do
       color, message = *expected
       stub_request(:post, "https://#{account}.slack.com/services/hooks/incoming-webhook?token=#{token}")
-        .with(body: "payload=#{JSON.dump(color: color, fallback: message, text: message)}")
+        .with(body: "payload=#{JSON.dump(attachments: [{ color: color, fallback: message, text: message }])}")
     end
 
     context 'when the deployment is pending' do
