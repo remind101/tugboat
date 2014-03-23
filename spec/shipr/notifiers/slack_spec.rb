@@ -17,80 +17,44 @@ describe Shipr::Notifiers::Slack do
   end
 
   describe '#notify' do
+    let(:input) do
+      { state: state,
+        target_url: 'http://shipr.test/deploys/1',
+        name: 'shipr-test/test-repo',
+        sha: '5f834de43d24c20ae761f8b4a6fd8a980928b96b',
+        payload: {
+          environment: 'production',
+          user: 'ejholmes'
+        } }
+    end
+
     before do
+      color, message = *expected
       stub_request(:post, "https://#{account}.slack.com/services/hooks/incoming-webhook?token=#{token}")
-        .with(body: "payload=#{JSON.dump(attachments: [output])}")
+        .with(body: "payload=#{JSON.dump(color: color, fallback: message, text: message)}")
     end
 
     context 'when the deployment is pending' do
-      let(:input) do
-        { state: 'pending',
-          target_url: 'http://shipr.test/deploys/1',
-          name: 'shipr-test/test-repo',
-          sha: '5f834de43d24c20ae761f8b4a6fd8a980928b96b',
-          payload: {
-            environment: 'production',
-            user: 'ejholmes'
-          } }
-      end
-
-      let(:output) do
-        { fallback: 'Deploying shipr-test/test-repo@5f834d to production by ejholmes: <http://shipr.test/deploys/1>',
-          color: '#ff0',
-          fields: [
-            { value: 'Deploying shipr-test/test-repo@5f834d to production by ejholmes: <http://shipr.test/deploys/1>' }
-          ] }
-      end
+      let(:state   ) { 'pending' }
+      let(:expected) { ['#ff0', 'ejholmes is <http://shipr.test/deploys/1|deploying> shipr-test/test-repo@5f834d to production'] }
 
       it 'sends the proper payload' do
         notifier.notify
       end
     end
 
-    context 'when the deployment is successful' do
-      let(:input) do
-        { state: 'success',
-          target_url: 'http://shipr.test/deploys/1',
-          name: 'shipr-test/test-repo',
-          sha: '5f834de43d24c20ae761f8b4a6fd8a980928b96b',
-          payload: {
-            environment: 'production',
-            user: 'ejholmes'
-          } }
-      end
-
-      let(:output) do
-        { fallback: 'Deployed shipr-test/test-repo@5f834d to production by ejholmes: <http://shipr.test/deploys/1>',
-          color: '#0f0',
-          fields: [
-            { value: 'Deployed shipr-test/test-repo@5f834d to production by ejholmes: <http://shipr.test/deploys/1>' }
-          ] }
-      end
+    pending 'when the deployment is successful' do
+      let(:state   ) { 'success' }
+      let(:expected) { ['#0f0', 'ejholmes <http://shipr.test/deploys/1|deployed> shipr-test/test-repo@5f834d to production'] }
 
       it 'sends the proper payload' do
         notifier.notify
       end
     end
 
-    context 'when the deployment is failed' do
-      let(:input) do
-        { state: 'error',
-          target_url: 'http://shipr.test/deploys/1',
-          name: 'shipr-test/test-repo',
-          sha: '5f834de43d24c20ae761f8b4a6fd8a980928b96b',
-          payload: {
-            environment: 'production',
-            user: 'ejholmes'
-          } }
-      end
-
-      let(:output) do
-        { fallback: 'Failed to deploy shipr-test/test-repo@5f834d to production by ejholmes: <http://shipr.test/deploys/1>',
-          color: '#f00',
-          fields: [
-            { value: 'Failed to deploy shipr-test/test-repo@5f834d to production by ejholmes: <http://shipr.test/deploys/1>' }
-          ] }
-      end
+    pending 'when the deployment is failed' do
+      let(:state   ) { 'failure' }
+      let(:expected) { ['#f00', 'ejholmes failed to <http://shipr.test/deploys/1|deploy> shipr-test/test-repo@5f834d to production'] }
 
       it 'sends the proper payload' do
         notifier.notify
