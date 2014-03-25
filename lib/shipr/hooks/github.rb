@@ -32,7 +32,9 @@ module Shipr
         optional :name, type: String
         optional :description, type: String
         group :payload do
+          optional :force, type: Boolean
           optional :environment, type: String
+          optional :config, type: Hash
         end
       end
       post do
