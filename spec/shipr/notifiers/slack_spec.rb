@@ -20,11 +20,15 @@ describe Shipr::Notifiers::Slack do
     let(:input) do
       { state: state,
         target_url: 'http://shipr.test/deploys/1',
-        name: 'shipr-test/test-repo',
-        sha: '5f834de43d24c20ae761f8b4a6fd8a980928b96b',
-        payload: {
-          environment: 'production',
-          user: 'ejholmes'
+        deployment: {
+          sha: '5f834de43d24c20ae761f8b4a6fd8a980928b96b',
+          payload: {
+            environment: 'production',
+            user: 'ejholmes'
+          }
+        },
+        repository: {
+          name: 'shipr-test/test-repo',
         } }
     end
 

@@ -14,19 +14,19 @@ module Shipr
     private
 
       def user
-        payload.payload.user
+        deployment.payload.user
       end
 
       def environment
-        payload.payload.environment
+        deployment.payload.environment
       end
 
       def name
-        payload.name
+        repository.name
       end
 
       def sha
-        payload.sha
+        deployment.sha
       end
 
       def short_sha
@@ -35,6 +35,14 @@ module Shipr
 
       def target_url
         payload.target_url
+      end
+
+      def repository
+        @repository ||= payload.repository
+      end
+      
+      def deployment
+        @deployment ||= payload.deployment
       end
 
       def state
