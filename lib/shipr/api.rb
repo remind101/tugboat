@@ -18,12 +18,18 @@ module Shipr
         Job.desc(:id)
       end
 
-      def declared(params)
-        super(params).select { |_, val| !val.nil? }
+      def required_contexts
+        params.force ? [] : nil
+      end
+
+      def deploy_params
+        p = declared(params).except(:name)
+        p.merge!(required_contexts: required_contexts)
+        p.select { |_, val| !val.nil? }
       end
 
       def deploy
-        Shipr::GitHub::Deployment.create(params.name, declared(params).except(:name))
+        Shipr::GitHub::Deployment.create(params.name, deploy_params)
       end
     end
 
@@ -36,8 +42,8 @@ module Shipr
       params do
         requires :name, type: String
         requires :ref, type: String
-        optional :force, type: Boolean
-        optional :auto_merge, type: Boolean
+        optional :force, type: Boolean, default: false
+        optional :auto_merge, type: Boolean, default: false
         optional :payload, type: Hash
       end
       post do
