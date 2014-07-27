@@ -39,9 +39,11 @@ module Shipr
   end
 
   module GitHub
-    autoload :Client,         'shipr/github/client'
-    autoload :Deployment,     'shipr/github/deployment'
-    autoload :DeploymentHook, 'shipr/github/deployment_hook'
+    autoload :Client,               'shipr/github/client'
+    autoload :Deployment,           'shipr/github/deployment'
+    autoload :Hook,                 'shipr/github/hook'
+    autoload :DeploymentHook,       'shipr/github/deployment_hook'
+    autoload :DeploymentStatusHook, 'shipr/github/deployment_status_hook'
   end
 
   class << self
