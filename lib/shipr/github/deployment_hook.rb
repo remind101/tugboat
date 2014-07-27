@@ -35,7 +35,8 @@ module Shipr
           active: true,
           config: {
             url: url,
-            content_type: 'json'
+            content_type: 'json',
+            secret: Shipr.configuration.auth_token
           } }
       end
 
