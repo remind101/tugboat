@@ -40,6 +40,10 @@ module Shipr
       ENV['COOKIE_SECRET']
     end
 
+    def notifier_url
+      ENV['NOTIFIER_URL']
+    end
+
     def github_hook
       base_url.gsub('://', "://:#{auth_token}@") + '/_github'
     end

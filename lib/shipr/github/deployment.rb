@@ -14,14 +14,15 @@ module Shipr
       end
 
       def create
-        install_webhook
+        install_webhooks
         create_deployment
       end
 
     private
 
-      def install_webhook
+      def install_webhooks
         DeploymentHook.install(repo)
+        DeploymentStatusHook.install(repo)
       end
 
       def create_deployment
