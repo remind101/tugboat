@@ -22,7 +22,6 @@ module Shipr
 
       def install_webhooks
         DeploymentHook.install(repo)
-        DeploymentStatusHook.install(repo)
       end
 
       def create_deployment
