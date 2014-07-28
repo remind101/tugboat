@@ -27,7 +27,7 @@ module Shipr
       { sha: params.sha,
         guid: params.id,
         force: payload.force,
-        environment: payload.environment,
+        environment: params.environment,
         config: payload.config,
         description: params.description }.delete_if { |k,v| v.nil? }
     end

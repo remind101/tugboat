@@ -5,7 +5,8 @@ describe Shipr::GitHubJobCreator do
     { name: 'remind101/shipr',
       sha: '1234',
       description: 'My topic branch',
-      payload: { environment: 'staging', config: { 'FOO' => 'BAR' } } }
+      environment: 'staging',
+      payload: { config: { 'FOO' => 'BAR' } } }
   end
 
   describe '.create' do

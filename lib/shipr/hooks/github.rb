@@ -31,9 +31,9 @@ module Shipr
         optional :sha, type: String
         optional :name, type: String
         optional :description, type: String
+        optional :environment, type: String
         group :payload do
           optional :force, type: Boolean
-          optional :environment, type: String
           optional :config, type: Hash
         end
       end
