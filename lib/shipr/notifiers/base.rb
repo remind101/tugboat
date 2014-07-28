@@ -18,7 +18,7 @@ module Shipr
       end
 
       def environment
-        deployment.payload.environment
+        deployment.environment
       end
 
       def name
