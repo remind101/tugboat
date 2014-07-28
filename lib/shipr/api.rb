@@ -42,6 +42,7 @@ module Shipr
       params do
         requires :name, type: String
         requires :ref, type: String
+        optional :environment, type: String
         optional :force, type: Boolean, default: false
         optional :auto_merge, type: Boolean, default: false
         optional :payload, type: Hash
