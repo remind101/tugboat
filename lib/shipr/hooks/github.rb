@@ -12,7 +12,7 @@ module Shipr
         end
 
         def deploy
-          GitHubJobCreator.create(params)
+          GitHubJobCreator.create(params.deployment)
         end
       end
 
@@ -26,17 +26,6 @@ module Shipr
         authenticate!(scope: :api)
       end
 
-      params do
-        optional :id, type: Integer
-        optional :sha, type: String
-        optional :name, type: String
-        optional :description, type: String
-        optional :environment, type: String
-        group :payload do
-          optional :force, type: Boolean
-          optional :config, type: Hash
-        end
-      end
       post do
         status 200
         if event.deployment?

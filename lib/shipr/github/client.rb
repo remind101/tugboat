@@ -33,7 +33,7 @@ module Shipr
           builder.request :json
           builder.adapter Faraday.default_adapter
         end.tap do |connection|
-          connection.headers['Accept'] = 'application/vnd.github.cannonball-preview+json'
+          connection.headers['Accept'] = 'application/vnd.github.v3+json'
         end
       end
     end

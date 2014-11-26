@@ -34,7 +34,7 @@ module Shipr
       end
 
       def target_url
-        payload.target_url
+        deployment_status.target_url
       end
 
       def repository
@@ -45,8 +45,12 @@ module Shipr
         @deployment ||= payload.deployment
       end
 
+      def deployment_status
+        @deployment_status ||= payload.deployment_status
+      end
+
       def state
-        ActiveSupport::StringInquirer.new(payload.state)
+        ActiveSupport::StringInquirer.new(deployment_status.state)
       end
     end
   end
