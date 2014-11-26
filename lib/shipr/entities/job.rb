@@ -3,6 +3,7 @@ module Shipr
     class Job < Grape::Entity
       expose :id
       expose :sha
+      expose :ref
       expose :force
       expose :environment
       expose :config

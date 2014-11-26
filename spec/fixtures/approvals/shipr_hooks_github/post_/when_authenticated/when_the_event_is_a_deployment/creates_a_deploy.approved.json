@@ -1,6 +1,7 @@
 {
   "id": "<id>",
   "sha": "26dabd6b055b4e95955bf15035533eb76e41a3e0",
+  "ref": "develop",
   "force": true,
   "environment": "staging",
   "config": {

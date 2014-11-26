@@ -7,6 +7,7 @@ module Shipr
 
     field :guid, type: Integer
     field :sha, type: String
+    field :ref, type: String
     field :environment, type: String, default: 'production'
     field :force, type: Boolean, default: false
     field :description, type: String, default: ''

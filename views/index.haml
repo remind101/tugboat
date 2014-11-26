@@ -55,7 +55,7 @@
           %tr(ng-repeat="job in jobs | orderBy:'id':true")
             %td
               %a(href="" ui-sref="app.jobs.detail({ jobId: job.id })" ng-bind="job.id")
-            %td(ng-bind="job.sha")
+            %td(ng-bind="job.ref")
 
     %script(type="text/ng-template" id="jobs/detail.html")
       .job
@@ -68,7 +68,7 @@
             %span.is-done(ng-if="job.isDeployed()") Deployed
             %span.is-failed(ng-if="job.isFailed()") Failed
           %p.job__destination
-            %strong(ng-bind="job.sha")
+            %strong(ng-bind="job.ref" title="{{ job.sha }}")
             &#8674;
             %strong(ng-bind="job.environment")
 

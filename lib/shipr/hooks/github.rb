@@ -38,6 +38,7 @@ module Shipr
           job = deployments_service.create(
             params.repository.full_name,
             sha:         params.deployment.sha,
+            ref:         params.deployment.ref,
             guid:        params.deployment.id,
             force:       params.deployment.payload.try(:force),
             environment: params.deployment.environment,
