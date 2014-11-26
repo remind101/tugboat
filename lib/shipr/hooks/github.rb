@@ -30,7 +30,7 @@ module Shipr
         status 200
         if event.deployment?
           job = deployments_service.create(
-            params.repository.name,
+            params.repository.full_name,
             sha:         params.deployment.sha,
             guid:        params.deployment.id,
             force:       params.deployment.payload.try(:force),

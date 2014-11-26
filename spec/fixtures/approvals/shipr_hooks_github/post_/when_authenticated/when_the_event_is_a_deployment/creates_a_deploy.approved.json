@@ -9,7 +9,7 @@
   "done": false,
   "success": false,
   "repo": {
-    "name": "r101-api",
-    "clone_url": "git@github.com:r101-api.git"
+    "name": "remind101/r101-api",
+    "clone_url": "git@github.com:remind101/r101-api.git"
   }
 }
