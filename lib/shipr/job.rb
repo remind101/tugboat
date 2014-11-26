@@ -1,7 +1,6 @@
 module Shipr
   class Job
     include Mongoid::Document
-    include Grape::Entity::DSL
     store_in collection: 'jobs'
 
     belongs_to :repo
@@ -23,30 +22,6 @@ module Shipr
     # ===========
     # = Methods =
     # ===========
-    
-    # Public: Mark the job is complete, with the exit status of the process.
-    #
-    # exit_status - Integer exit status of the deploy command.
-    #
-    # Examples
-    #
-    #   job.complete!(0)
-    #   # => true
-    def complete!(exit_status)
-      JobCompleter.complete(self, exit_status)
-    end
-
-    # Public: Append lines of output from the process.
-    #
-    # output - String of text to append. Can 
-    #
-    # Examples
-    #
-    #   job.append_output!("hello world")!
-    #   # => true
-    def append_output!(output)
-      JobOutputAppender.append(self, output)
-    end
 
     # Public: Wether the job has completed or not.
     #
@@ -71,23 +46,6 @@ module Shipr
 
     def script
       super || Shipr.default_script
-    end
-
-    # Public: Restart this job.
-    #
-    # Returns new Job.
-    def restart!
-      JobRestarter.restart(self)
-    end
-
-    # Public: Update the deployment status on github.
-    def update_status(status)
-      Shipr.github.update_deployment_status(
-        repo.name,
-        guid,
-        state: status,
-        target_url: html_url
-      )
     end
 
     # Public: Channel where pusher messages should be sent.

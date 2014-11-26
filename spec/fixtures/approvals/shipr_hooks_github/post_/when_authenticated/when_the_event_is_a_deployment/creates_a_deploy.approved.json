@@ -1,2 +1,15 @@
 {
+  "id": "<id>",
+  "sha": "26dabd6b055b4e95955bf15035533eb76e41a3e0",
+  "force": true,
+  "environment": "staging",
+  "config": {
+  },
+  "exit_status": null,
+  "done": false,
+  "success": false,
+  "repo": {
+    "name": "r101-api",
+    "clone_url": "git@github.com:r101-api.git"
+  }
 }

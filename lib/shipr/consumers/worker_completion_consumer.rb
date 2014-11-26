@@ -6,8 +6,12 @@ module Shipr
 
       def process(message)
         job = Job.find(message[:id])
-        job.complete!(message[:exit_status])
+        deployments_service.completed job, message[:exit_status]
       end
+
+      private
+
+      delegate :deployments_service, to: :Shipr
     end
   end
 end

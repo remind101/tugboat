@@ -29,7 +29,7 @@ describe Shipr::Hooks::GitHub do
 
         it 'creates a deploy' do
           expect {
-            post '/', { id: '1', sha: '1234', name: 'my/repo', payload: { environment: 'staging' } }.to_json
+            post '/', File.read(File.expand_path('../../../fixtures/deployment.json', __FILE__))
           }.to change { Shipr::Job.count }.by(1)
           verify_response 200
         end
@@ -45,6 +45,19 @@ describe Shipr::Hooks::GitHub do
             post '/', { id: '1', sha: '1234', name: 'my/repo', payload: { environment: 'staging' } }.to_json
           }.to_not change { Shipr::Job.count }
           verify_response 200
+        end
+      end
+
+      context 'when the event is a deployment_status' do
+        before do
+          header 'X-Github-Event', 'deployment_status'
+        end
+
+        it 'does not create a deploy' do
+          post '/', File.read(File.expand_path('../../../fixtures/deployment_status.json', __FILE__))
+          verify format: :json do
+            Shipr.notifier.payloads.to_json
+          end
         end
       end
     end

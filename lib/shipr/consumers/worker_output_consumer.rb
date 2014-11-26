@@ -6,7 +6,13 @@ module Shipr
 
       def process(message)
         job = Job.find(message[:id])
-        job.append_output!(message[:output])
+        deployments_service.append_output job, message[:output]
+      end
+
+      private
+
+      def deployments_service
+        Shipr.deployments_service
       end
     end
   end

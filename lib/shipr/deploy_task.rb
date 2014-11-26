@@ -25,9 +25,9 @@ module Shipr
     # = Methods =
     # ===========
 
-    def self.create(*args); new(*args).create end
+    def self.start(*args); new(*args).start end
 
-    def create
+    def start
       tasks.create 'Deploy', params
     end
 

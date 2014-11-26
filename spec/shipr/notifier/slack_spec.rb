@@ -1,20 +1,10 @@
 require 'spec_helper'
 
-describe Shipr::Notifiers::Slack do
+describe Shipr::Notifier::Slack do
   let(:account) { 'foobar' }
   let(:token) { '1234' }
-  let(:payload) { Hashie::Mash.new(input) }
-  subject(:notifier) { described_class.new(payload) }
-
-  before do
-    ENV['SLACK_ACCOUNT'] = account
-    ENV['SLACK_TOKEN']   = token
-  end
-
-  after do
-    ENV.delete('SLACK_ACCOUNT')
-    ENV.delete('SLACK_TOKEN')
-  end
+  let(:payload) { Shipr::Notifier::Payload.new_from_github Hashie::Mash.new input }
+  subject(:notifier) { described_class.new('foobar', '1234') }
 
   describe '#notify' do
     let(:input) do
@@ -45,7 +35,7 @@ describe Shipr::Notifiers::Slack do
       let(:expected) { ['#ff0', 'ejholmes is <http://shipr.test/deploys/1|deploying> shipr-test/test-repo@5f834d to production'] }
 
       it 'sends the proper payload' do
-        notifier.notify
+        notifier.notify payload
       end
     end
 

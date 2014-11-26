@@ -18,14 +18,11 @@
   module.factory('Job', function($resource, jobEvents) {
     var resource = $resource(
       '/api/deploys/:jobId',
-      { jobId: '@id' },
-      { restart: { method: 'POST', url: '/api/deploys/:jobId/restart' } }
+      { jobId: '@id' }
     );
 
     function Job(attributes){
       this.setAttributes(attributes);
-
-      this.restart = attributes.$restart;
     }
 
     /**

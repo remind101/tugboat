@@ -18,23 +18,6 @@ describe Shipr::Job do
     its(:script)      { should eq nil }
   end
 
-  describe '#complete!' do
-    before do
-      job.complete!(-1)
-    end
-
-    its(:exit_status) { should eq -1 }
-  end
-
-  describe '#append_output!' do
-    before do
-      job.append_output!('hello')
-      job.append_output!('world')
-    end
-
-    its(:output) { should eq 'helloworld' }
-  end
-
   describe '#done?' do
     subject { job.done? }
 

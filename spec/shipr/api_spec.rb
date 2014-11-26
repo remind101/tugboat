@@ -21,13 +21,4 @@ describe Shipr::API do
       verify_response 200
     end
   end
-
-  describe 'POST /deploys/:id/restart' do
-    let(:job) { create :job, sha: '1234' }
-
-    it 'restarts the job' do
-      post "/deploys/#{job.id}/restart"
-      verify_response 200
-    end
-  end
 end

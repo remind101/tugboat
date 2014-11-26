@@ -6,13 +6,13 @@ module Shipr
       format :json
       default_format :json
 
+      represent Shipr::Job, with: Entities::Job
+
       helpers do
+        delegate :deployments_service, :notifier, to: :Shipr
+
         def event
           ActiveSupport::StringInquirer.new(headers['X-Github-Event'])
-        end
-
-        def deploy
-          GitHubJobCreator.create(params.deployment)
         end
       end
 
@@ -29,9 +29,19 @@ module Shipr
       post do
         status 200
         if event.deployment?
-          present deploy
+          job = deployments_service.create(
+            params.repository.name,
+            sha:         params.deployment.sha,
+            guid:        params.deployment.id,
+            force:       params.deployment.payload.try(:force),
+            environment: params.deployment.environment,
+            config:      params.deployment.payload.try(:config),
+            description: params.deployment.description
+          )
+          present job
         elsif event.deployment_status?
-          Notifiers::Slack.notify(params)
+          notifier.notify Shipr::Notifier::Payload.new_from_github params
+          present({})
         else
           {}
         end

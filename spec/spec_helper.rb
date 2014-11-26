@@ -26,4 +26,8 @@ RSpec.configure do |config|
   config.after :each do
     DatabaseCleaner.clean
   end
+
+  config.filter_run_including focus: true
+  config.run_all_when_everything_filtered = true
+  config.fail_fast = false
 end

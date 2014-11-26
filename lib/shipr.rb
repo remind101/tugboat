@@ -15,14 +15,11 @@ module Shipr
   autoload :PusherAuth,      'shipr/pusher_auth'
   autoload :Unauthenticated, 'shipr/unauthenticated'
 
-  autoload :Repo,              'shipr/repo'
-  autoload :Job,               'shipr/job'
-  autoload :JobCreator,        'shipr/job_creator'
-  autoload :JobCompleter,      'shipr/job_completer'
-  autoload :JobOutputAppender, 'shipr/job_output_appender'
-  autoload :JobRestarter,      'shipr/job_restarter'
-  autoload :GitHubJobCreator,  'shipr/github_job_creator'
-  autoload :DeployTask,        'shipr/deploy_task'
+  autoload :Deployments, 'shipr/deployments'
+
+  autoload :Repo,       'shipr/repo'
+  autoload :Job,        'shipr/job'
+  autoload :DeployTask, 'shipr/deploy_task'
 
   module Entities
     autoload :Repo, 'shipr/entities/repo'
@@ -33,9 +30,11 @@ module Shipr
     autoload :GitHub, 'shipr/hooks/github'
   end
 
-  module Notifiers
-    autoload :Base,  'shipr/notifiers/base'
-    autoload :Slack, 'shipr/notifiers/slack'
+  module Notifier
+    autoload :Payload, 'shipr/notifier/payload'
+    autoload :Base,    'shipr/notifier/base'
+    autoload :Slack,   'shipr/notifier/slack'
+    autoload :Null,    'shipr/notifier/null'
   end
 
   module GitHub
@@ -50,6 +49,29 @@ module Shipr
     
     def configuration
       @configuration ||= Configuration.new
+    end
+
+    attr_accessor :deployer, :notifier
+
+    def deployments_service
+      @deployments_service ||= Deployments::PushedService.new(
+        Deployments::GitHubStatusService.new(
+          Deployments::DeployService.new(
+            Deployments::BaseService.new,
+            deployer
+          ),
+          github
+        ),
+        self
+      )
+    end
+
+    def deployer
+      @deployer ||= DeployTask
+    end
+
+    def notifier
+      @notifier ||= Notifier::Slack.new ENV['SLACK_ACCOUNT'], ENV['SLACK_TOKEN']
     end
 
     # Public: Global Iron Worker client for queueing up new workers. Iron
@@ -101,7 +123,7 @@ module Shipr
     # Public: Trigger a pusher event.
     #
     # Returns nothing.
-    def push(channel, event, data)
+    def trigger(channel, event, data)
       publish('pusher.push', channel: channel, event: event, data: data)
     end
 
