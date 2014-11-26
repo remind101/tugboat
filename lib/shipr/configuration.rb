@@ -16,6 +16,12 @@ module Shipr
     # The api token for root access.
     attr_accessor :auth_token
 
+    # The deployment provider to use when deploying.
+    attr_accessor :provider
+
+    # The notifier to use for deployment status notifications.
+    attr_accessor :notifier
+
     def github_deploy_token
       ENV['GITHUB_DEPLOY_TOKEN']
     end
@@ -42,6 +48,14 @@ module Shipr
 
     def github_hook
       base_url.gsub('://', "://:#{auth_token}@") + '/_github'
+    end
+
+    def provider
+      @provider ||= Provider::IronWorker.new
+    end
+
+    def notifier
+      @notifier ||= Notifier::Slack.new ENV['SLACK_ACCOUNT'], ENV['SLACK_TOKEN']
     end
   end
 end

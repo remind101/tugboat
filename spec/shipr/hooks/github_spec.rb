@@ -56,7 +56,7 @@ describe Shipr::Hooks::GitHub do
         it 'does not create a deploy' do
           post '/', File.read(File.expand_path('../../../fixtures/deployment_status.json', __FILE__))
           verify format: :json do
-            Shipr.notifier.payloads.to_json
+            Shipr.configuration.notifier.payloads.to_json
           end
         end
       end

@@ -9,10 +9,16 @@ module Shipr
       represent Shipr::Job, with: Entities::Job
 
       helpers do
-        delegate :deployments_service, :notifier, to: :Shipr
-
         def event
           ActiveSupport::StringInquirer.new(headers['X-Github-Event'])
+        end
+
+        def deployments_service
+          Shipr.deployments_service
+        end
+
+        def notifier
+          Shipr.configuration.notifier
         end
       end
 

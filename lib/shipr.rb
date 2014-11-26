@@ -15,11 +15,22 @@ module Shipr
   autoload :PusherAuth,      'shipr/pusher_auth'
   autoload :Unauthenticated, 'shipr/unauthenticated'
 
-  autoload :Deployments, 'shipr/deployments'
+  autoload :Repo, 'shipr/repo'
+  autoload :Job,  'shipr/job'
 
-  autoload :Repo,       'shipr/repo'
-  autoload :Job,        'shipr/job'
-  autoload :DeployTask, 'shipr/deploy_task'
+  module Provider
+    autoload :Base,       'shipr/provider/base'
+    autoload :IronWorker, 'shipr/provider/iron_worker'
+    autoload :Null,       'shipr/provider/null'
+  end
+
+  module Deployments
+    autoload :AbstractService,     'shipr/deployments/abstract_service'
+    autoload :BaseService,         'shipr/deployments/base_service'
+    autoload :PushedService,       'shipr/deployments/pushed_service'
+    autoload :DeployService,       'shipr/deployments/deploy_service'
+    autoload :GitHubStatusService, 'shipr/deployments/github_status_service'
+  end
 
   module Entities
     autoload :Repo, 'shipr/entities/repo'
@@ -51,44 +62,17 @@ module Shipr
       @configuration ||= Configuration.new
     end
 
-    attr_accessor :deployer, :notifier
-
     def deployments_service
       @deployments_service ||= Deployments::PushedService.new(
         Deployments::GitHubStatusService.new(
           Deployments::DeployService.new(
             Deployments::BaseService.new,
-            deployer
+            configuration.provider
           ),
           github
         ),
         self
       )
-    end
-
-    def deployer
-      @deployer ||= DeployTask
-    end
-
-    def notifier
-      @notifier ||= Notifier::Slack.new ENV['SLACK_ACCOUNT'], ENV['SLACK_TOKEN']
-    end
-
-    # Public: Global Iron Worker client for queueing up new workers. Iron
-    # Worker is used to queue new workers that do the heavy lifting when
-    # deploying a repo.
-    #
-    # Examples
-    #
-    #   Shipr.workers.tasks.create('Deploy', {})
-    #
-    # Returns an IronWorkerNG::Client instance.
-    def workers
-      @workers ||= IronWorkerNG::Client.new
-    end
-
-    def workers=(client)
-      @workers = client
     end
 
     # Public: Global Pusher client for pushing events to the frontend client.
