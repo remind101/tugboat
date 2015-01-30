@@ -21,6 +21,7 @@ module Shipr
   module Provider
     autoload :Base,       'shipr/provider/base'
     autoload :IronWorker, 'shipr/provider/iron_worker'
+    autoload :Empire,     'shipr/provider/empire'
     autoload :Null,       'shipr/provider/null'
   end
 
