@@ -46,9 +46,9 @@ func (p *Provider) Deploy(ctx context.Context, d *tugboat.Deployment, w io.Write
 		return err
 	}
 
-	fmt.Fprintf(w, "done.\n(Tugboat) -> Creating build for %s... ", source)
-
 	app := appFor(d)
+	fmt.Fprintf(w, "done.\n(Tugboat) -> Deploying to %s... ", app)
+
 	b, err := p.buildCreate(app, source, sha)
 	if err != nil {
 		return fmt.Errorf("unable to create build: %s", err)

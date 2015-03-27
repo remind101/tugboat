@@ -19,7 +19,7 @@ func TestProvider(t *testing.T) {
 	)
 
 	header := `(Tugboat) -> Fetching archive link for ejholmes/acme-inc@abcd... done.
-(Tugboat) -> Creating build for http://github.com/archive... done.
+(Tugboat) -> Deploying to acme-inc... done.
 `
 
 	logs := "Hello"
