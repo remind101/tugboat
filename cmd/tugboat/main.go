@@ -42,7 +42,7 @@ func newTugboat(c *cli.Context) (*tugboat.Tugboat, error) {
 		return tug, err
 	}
 
-	tug.Provider = newProvider(c)
+	tug.Providers = []tugboat.Provider{newProvider(c)}
 
 	return tug, nil
 }

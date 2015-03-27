@@ -18,6 +18,7 @@ type Deployment struct {
 	Status      string `json:"status"`
 	Output      string `json:"output"`
 	Error       string `json:"error"`
+	Provider    string `json:"provider"`
 }
 
 func newDeployment(d *tugboat.Deployment) *Deployment {
@@ -30,6 +31,7 @@ func newDeployment(d *tugboat.Deployment) *Deployment {
 		Environment: d.Environment,
 		Status:      d.Status.String(),
 		Error:       d.Error,
+		Provider:    d.Provider,
 	}
 }
 

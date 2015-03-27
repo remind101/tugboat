@@ -6,6 +6,7 @@
       <th>Repo</th>
       <th>Ref</th>
       <th>Environment</th>
+      <th>Provider</th>
       <th>Status</th>
     </tr>
   </thead>
@@ -17,6 +18,7 @@
     <td ng-bind="job.repo"></td>
     <td ng-bind="job.ref" title="{{ job.sha }}"></td>
     <td ng-bind="job.environment" title="{{ job.environment }}"></td>
+    <td ng-bind="job.provider" title="{{ job.provider }}"></td>
     <td ng-bind="job.status"></td>
   </tr>
   </tbody>

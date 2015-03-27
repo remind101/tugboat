@@ -76,7 +76,7 @@ func NewTestClient(t testing.TB) (*hooker.Client, *tugboat.Tugboat, *httptest.Se
 	if err != nil {
 		t.Fatal(err)
 	}
-	tug.Provider = fake.NewProvider()
+	tug.Providers = []tugboat.Provider{fake.NewProvider()}
 
 	if err := tug.Reset(); err != nil {
 		t.Fatal(err)

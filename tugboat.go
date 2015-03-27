@@ -29,7 +29,7 @@ type Config struct {
 // Tugboat provides methods for performing deployments.
 type Tugboat struct {
 	// Provider is a provider that will be used to fullfill deployments.
-	Provider Provider
+	Providers []Provider
 
 	store *store
 
@@ -100,17 +100,23 @@ func (t *Tugboat) Logs(d *Deployment) (string, error) {
 
 // Deploy triggers a new deployment.
 func (t *Tugboat) Deploy(ctx context.Context, opts DeployOpts) ([]*Deployment, error) {
-	p := t.Provider
-	if p == nil {
-		p = &NullProvider{}
+	ps := t.Providers
+	if len(ps) == 0 {
+		ps = []Provider{&NullProvider{}}
 	}
 
-	d, err := t.deploy(ctx, opts, p)
-	if err != nil {
-		return nil, err
+	var deployments []*Deployment
+
+	for _, p := range ps {
+		d, err := t.deploy(ctx, opts, p)
+		if err != nil {
+			return nil, err
+		}
+
+		deployments = append(deployments, d)
 	}
 
-	return []*Deployment{d}, nil
+	return deployments, nil
 }
 
 func (t *Tugboat) deploy(ctx context.Context, opts DeployOpts, p Provider) (*Deployment, error) {

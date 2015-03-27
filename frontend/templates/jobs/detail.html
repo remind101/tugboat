@@ -16,14 +16,6 @@
     <strong ng-bind="job.environment"></strong>
     </p>
   </header>
-  <div class="panel panel-primary" ng-if="job.config">
-    <div class="panel-heading">
-      <span ng-bind="job.repo.name"></span>
-    </div>
-    <div class="panel-body">
-      <div environment-variables="job.config"></div>
-    </div>
-  </div>
   <div class="job__not-started" ng-if="job.isQueued()">
     <strong>Hang Tight!</strong>
     Your logs should be showing up shortly
