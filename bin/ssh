@@ -1,3 +1,0 @@
-#!/bin/bash
-
-exec /usr/bin/ssh -o StrictHostKeyChecking=no -i "$HOME/id_rsa" "$@"

@@ -1,5 +1,0 @@
-#!/bin/bash
-
-export
-
-git push git@heroku.com:r101-shipr.git HEAD:master

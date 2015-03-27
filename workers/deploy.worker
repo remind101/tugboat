@@ -1,5 +1,0 @@
-runtime 'ruby'
-exec 'deploy.rb'
-dir '../bin'
-gemfile '../Gemfile', 'worker'
-name 'Deploy'

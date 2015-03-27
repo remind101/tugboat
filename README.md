@@ -1,44 +1,39 @@
-# Shipr
+# [Tugboat](https://github.com/ejholmes/tugboat)
 
-Shipr is a REST API and AngularJS client for deploying GitHub repositories using the [GitHub deployments api](http://developer.github.com/v3/repos/deployments/).
+Tugboat is an API and AngularJS client for deploying GitHub repos using the [GitHub Deployments API](http://developer.github.com/v3/repos/deployments/).
 
-![](https://s3.amazonaws.com/ejholmes.github.com/Sl3ye.png)
+![](https://s3.amazonaws.com/ejholmes.github.com/ioiPx.png)
 
 ## What happens?
 
-1. You trigger a deploy via github (`POST https://api.github.com/repos/remind101/shipr/deployments`)
-2. GitHub sends Shipr a POST request with the deployment event.
-2. The app spins up a [deploy worker](./workers/deploy.worker) on Iron.io
-3. The worker runs the [deploy script](./bin/deploy), which:
-   1. Clones the repository
-   2. Checks out the appropriate branch/tag/SHA
-   3. Exports your config vars as environment variables
-   4. Runs ./script/deploy within the cloned repository
+1. You trigger a deploy via GitHub (e.g. `POST https://api.github.com/repos/ejholmes/acme-inc/deployments`)
+2. GitHub sends Tugboat a POST request with the deployment event.
+3. Tugboat deploys the repo using a provider (e.g. To Heroku).
 
 ## Why?
 
-The main goal is to make it easier to create tooling for deploying.
+The main goal is to make it easier to create tooling for deploying. At [Remind](https://remind.com)
+we like to deploy all of our services via Hubot and Slack. If you're using Hubot, you can use
+the [hubot-deploy](https://github.com/remind101/hubot-deploy) script to create GitHub Deployments.
 
-## Setup
+## Providers
 
-1. Create an OAuth application on GitHub.
-2. Create an OAuth token with the `deployment_status` and `admin:repo_hook` scope.
-3. Install Shipr on a heroku app:
+Tugboat supports the concept of "provider" backends that control what happens
+when Tugboat gets a deployment event from GitHub. Currently, the following
+providers are supported.
 
-   ```bash
-   $ ./script/install <app name>
-   ```
+* **Heroku**: This provider will deploy the repo to Heroku using the [Platform API](https://devcenter.heroku.com/articles/platform-api-reference#build).
 
-   **Running this on heroku will cost you money! (~$133/month)**
+## Notifiers
 
-## Deploy Script
+Tugboat can also send notifications to other services to announce information
+about a deployment. Currently, the following notifiers are supported.
 
-By default, Shipr will try to run `./script/deploy` inside your repository if
-it exists. You can also specify a default script to use if none is provided via
-the `DEPLOY_SCRIPT_URL` environment variable. We keep [our default deploy script](https://gist.github.com/ejholmes/474068635673c7f5c413/raw/deploy.sh)
-in a gist.
+* **Slack**: Sends notifications about the deployment status to a Slack channel:
+  
+  ![](https://s3.amazonaws.com/ejholmes.github.com/hpi95.png)
 
----
+## Roadmap
 
-Want to work on awesome stuff like this? You should probably [come work with
-us](https://www.remind101.com/careers).
+* [Librato annotations notifier](https://github.com/ejholmes/tugboat/issues/7).
+* [.tugboat.yml configuration file](https://github.com/ejholmes/tugboat/issues/8).
