@@ -14,7 +14,7 @@ before_install:
   - go get github.com/tools/godep
   - export PATH=$HOME/gopath/bin:$PATH
   - createdb tugboat
-  - make cmd
+  - godep go install ./...
   - tugboat migrate
 
 script:
