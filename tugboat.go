@@ -99,12 +99,21 @@ func (t *Tugboat) Logs(d *Deployment) (string, error) {
 }
 
 // Deploy triggers a new deployment.
-func (t *Tugboat) Deploy(ctx context.Context, opts DeployOpts) (*Deployment, error) {
+func (t *Tugboat) Deploy(ctx context.Context, opts DeployOpts) ([]*Deployment, error) {
 	p := t.Provider
 	if p == nil {
 		p = &NullProvider{}
 	}
 
+	d, err := t.deploy(ctx, opts, p)
+	if err != nil {
+		return nil, err
+	}
+
+	return []*Deployment{d}, nil
+}
+
+func (t *Tugboat) deploy(ctx context.Context, opts DeployOpts, p Provider) (*Deployment, error) {
 	d := newDeployment(opts)
 	d.Started(p.Name())
 
@@ -112,13 +121,18 @@ func (t *Tugboat) Deploy(ctx context.Context, opts DeployOpts) (*Deployment, err
 		return d, err
 	}
 
-	w := &logWriter{
-		createLogLine: t.logs.LogLinesCreate,
-		deploymentID:  d.ID,
-	}
+	go func() {
+		w := &logWriter{
+			createLogLine: t.logs.LogLinesCreate,
+			deploymentID:  d.ID,
+		}
 
-	deploy(ctx, d, w, p)
-	return d, t.deployments.DeploymentsUpdate(d)
+		deploy(ctx, d, w, p)
+
+		t.deployments.DeploymentsUpdate(d)
+	}()
+
+	return d, nil
 }
 
 func (t *Tugboat) Reset() error {

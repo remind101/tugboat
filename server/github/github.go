@@ -2,6 +2,7 @@ package github
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 
@@ -60,18 +61,22 @@ func (h *DeploymentHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	go func() {
-		h.tugboat.Deploy(context.TODO(), tugboat.DeployOpts{
-			ID:          p.Deployment.ID,
-			Sha:         p.Deployment.Sha,
-			Ref:         p.Deployment.Ref,
-			Environment: p.Deployment.Environment,
-			Description: p.Deployment.Description,
-			Repo:        p.Repository.FullName,
-		})
-	}()
+	ds, err := h.tugboat.Deploy(context.TODO(), tugboat.DeployOpts{
+		ID:          p.Deployment.ID,
+		Sha:         p.Deployment.Sha,
+		Ref:         p.Deployment.Ref,
+		Environment: p.Deployment.Environment,
+		Description: p.Deployment.Description,
+		Repo:        p.Repository.FullName,
+	})
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
 
-	io.WriteString(w, "Ok\n")
+	for _, d := range ds {
+		fmt.Fprintf(w, "Deployment: %s\n", d.ID)
+	}
 }
 
 type DeploymentStatusPayload struct {
