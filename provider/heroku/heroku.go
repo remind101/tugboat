@@ -51,12 +51,12 @@ func (p *Provider) Deploy(ctx context.Context, d *tugboat.Deployment, w io.Write
 
 	b, err := p.buildCreate(app, source, sha)
 	if err != nil {
-		return fmt.Errorf("unable to create build: %s", err)
+		return fmt.Errorf("Unable to create build: %s", err)
 	}
 
 	resp, err := http.Get(b.OutputStreamURL)
 	if err != nil {
-		return fmt.Errorf("unable to get log stream at %s: %s", b.OutputStreamURL, err)
+		return fmt.Errorf("Unable to get log stream at %s: %s", b.OutputStreamURL, err)
 	}
 	defer resp.Body.Close()
 
@@ -66,7 +66,7 @@ func (p *Provider) Deploy(ctx context.Context, d *tugboat.Deployment, w io.Write
 
 	br, err := p.buildResult(app, b.ID)
 	if err != nil {
-		return fmt.Errorf("unable to get build result: %s", err)
+		return fmt.Errorf("Unable to get build result: %s", err)
 	}
 
 	if br.Build.Status == "failed" {
