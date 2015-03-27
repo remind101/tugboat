@@ -50,7 +50,7 @@ func (p *Provider) Deploy(ctx context.Context, d *tugboat.Deployment, w io.Write
 	fmt.Fprintf(w, "done.\n(Tugboat) -> Deploying to %s...\n", app)
 
 	b, err := p.buildCreate(app, source, sha)
-	if err != nil || b.OutputStreamURL == "" {
+	if err != nil {
 		return fmt.Errorf("unable to create build: %s", err)
 	}
 
@@ -119,11 +119,15 @@ func appFor(d *tugboat.Deployment) string {
 }
 
 func newHerokuClient(token string) *heroku.Service {
-	t := &oauth.Transport{
-		Token: &oauth.Token{AccessToken: token},
+	t := &heroku.Transport{
+		Transport: &oauth.Transport{
+			Token: &oauth.Token{AccessToken: token},
+		},
 	}
 
-	return heroku.NewService(t.Client())
+	return heroku.NewService(&http.Client{
+		Transport: t,
+	})
 }
 
 func newGitHubClient(token string) *github.Client {

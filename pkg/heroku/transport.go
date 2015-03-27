@@ -20,12 +20,6 @@ var DefaultClient = &http.Client{
 }
 
 type Transport struct {
-	// Username is the HTTP basic auth username for API calls made by this Client.
-	Username string
-
-	// Password is the HTTP basic auth password for API calls made by this Client.
-	Password string
-
 	// UserAgent to be provided in API requests. Set to DefaultUserAgent if not
 	// specified.
 	UserAgent string
@@ -68,9 +62,8 @@ func (t *Transport) RoundTrip(req *http.Request) (*http.Response, error) {
 		req.Header.Set("User-Agent", t.UserAgent)
 	}
 
-	req.Header.Set("Accept", "application/vnd.heroku+json; version=3")
+	req.Header.Set("Accept", "application/vnd.heroku+json; version=edge")
 	req.Header.Set("Request-Id", uuid.New())
-	req.SetBasicAuth(t.Username, t.Password)
 	for k, v := range t.AdditionalHeaders {
 		req.Header[k] = v
 	}

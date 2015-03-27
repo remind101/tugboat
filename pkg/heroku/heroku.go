@@ -82,7 +82,7 @@ func (s *Service) NewRequest(method, path string, body interface{}) (*http.Reque
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set("Accept", "application/vnd.heroku+json; version=edge")
+	req.Header.Set("Accept", "application/json")
 	req.Header.Set("User-Agent", DefaultUserAgent)
 	if ctype != "" {
 		req.Header.Set("Content-Type", ctype)
