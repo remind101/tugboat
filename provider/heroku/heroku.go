@@ -47,14 +47,12 @@ func (p *Provider) Deploy(ctx context.Context, d *tugboat.Deployment, w io.Write
 	}
 
 	app := appFor(d)
-	fmt.Fprintf(w, "done.\n(Tugboat) -> Deploying to %s... ", app)
+	fmt.Fprintf(w, "done.\n(Tugboat) -> Deploying to %s...\n", app)
 
 	b, err := p.buildCreate(app, source, sha)
 	if err != nil {
 		return fmt.Errorf("unable to create build: %s", err)
 	}
-
-	fmt.Fprintf(w, "done.\n")
 
 	resp, err := http.Get(b.OutputStreamURL)
 	if err != nil {
