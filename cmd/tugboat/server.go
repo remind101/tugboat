@@ -39,10 +39,10 @@ var cmdServer = cli.Command{
 			EnvVar: "TUGBOAT_PUSHER_URL",
 		},
 		cli.StringFlag{
-			Name:   "heroku.token",
+			Name:   "provider",
 			Value:  "",
-			Usage:  "A Heroku API token for deploying.",
-			EnvVar: "TUGBOAT_HEROKU_TOKEN",
+			Usage:  "A comma delimited list of providers to deploy to.",
+			EnvVar: "TUGBOAT_PROVIDERS",
 		},
 		cli.StringFlag{
 			Name:   "github.token",

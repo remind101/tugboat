@@ -1,7 +1,10 @@
 package main
 
 import (
+	"fmt"
+	"net/url"
 	"os"
+	"strings"
 
 	"github.com/codegangsta/cli"
 	"github.com/remind101/tugboat"
@@ -42,14 +45,50 @@ func newTugboat(c *cli.Context) (*tugboat.Tugboat, error) {
 		return tug, err
 	}
 
-	tug.Providers = []tugboat.Provider{newProvider(c)}
+	ps, err := newProviders(c)
+	if err != nil {
+		return tug, err
+	}
+
+	tug.Providers = ps
 
 	return tug, nil
 }
 
-func newProvider(c *cli.Context) tugboat.Provider {
-	return heroku.NewProvider(
-		c.String("github.token"),
-		c.String("heroku.token"),
-	)
+func newProviders(c *cli.Context) ([]tugboat.Provider, error) {
+	uris := strings.Split(c.String("provider"), ",")
+
+	var providers []tugboat.Provider
+
+	for _, uri := range uris {
+		p, err := newProvider(c, uri)
+		if err != nil {
+			return nil, err
+		}
+
+		providers = append(providers, p)
+	}
+
+	return providers, nil
+}
+
+func newProvider(c *cli.Context, uri string) (tugboat.Provider, error) {
+	u, err := url.Parse(uri)
+	if err != nil {
+		return nil, err
+	}
+
+	var p tugboat.Provider
+
+	switch u.Scheme {
+	case "heroku":
+		p = heroku.NewProvider(
+			c.String("github.token"),
+			u.Query().Get("token"),
+		)
+	default:
+		return nil, fmt.Errorf("No provider matching %s", u)
+	}
+
+	return p, nil
 }
