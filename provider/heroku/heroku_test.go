@@ -18,8 +18,8 @@ func TestProvider(t *testing.T) {
 		g *httptest.Server
 	)
 
-	header := `(Tugboat) -> Fetching archive link for ejholmes/acme-inc@abcd... done.
-(Tugboat) -> Deploying to acme-inc...
+	header := `-----> Fetching archive link for ejholmes/acme-inc@abcd... done.
+-----> Deploying to acme-inc...
 `
 
 	logs := "Hello"

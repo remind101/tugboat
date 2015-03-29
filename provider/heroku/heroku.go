@@ -39,7 +39,7 @@ func (p *Provider) Name() string {
 func (p *Provider) Deploy(ctx context.Context, d *tugboat.Deployment, w io.Writer) error {
 	sha := d.Sha
 
-	fmt.Fprintf(w, "(Tugboat) -> Fetching archive link for %s@%s... ", d.Repo, d.Sha)
+	fmt.Fprintf(w, "-----> Fetching archive link for %s@%s... ", d.Repo, d.Sha)
 
 	source, err := p.getSource(d.Repo, sha)
 	if err != nil {
@@ -47,7 +47,7 @@ func (p *Provider) Deploy(ctx context.Context, d *tugboat.Deployment, w io.Write
 	}
 
 	app := appFor(d)
-	fmt.Fprintf(w, "done.\n(Tugboat) -> Deploying to %s...\n", app)
+	fmt.Fprintf(w, "done.\n-----> Deploying to %s...\n", app)
 
 	b, err := p.buildCreate(app, source, sha)
 	if err != nil {
