@@ -57,6 +57,24 @@ var cmdServer = cli.Command{
 			EnvVar: "TUGBOAT_GITHUB_SECRET",
 		},
 		cli.StringFlag{
+			Name:   "github.client_id",
+			Value:  "",
+			Usage:  "OAuth client id.",
+			EnvVar: "TUGBOAT_GITHUB_CLIENT_ID",
+		},
+		cli.StringFlag{
+			Name:   "github.client_secret",
+			Value:  "",
+			Usage:  "OAuth client secret.",
+			EnvVar: "TUGBOAT_GITHUB_CLIENT_SECRET",
+		},
+		cli.StringFlag{
+			Name:   "github.organization",
+			Value:  "",
+			Usage:  "If provided, specifies the github organization that users need to be a member of to authenticate.",
+			EnvVar: "TUGBOAT_GITHUB_ORG",
+		},
+		cli.StringFlag{
 			Name:   "cookie.secret",
 			Value:  "",
 			Usage:  "A secret key used to sign cookies. Should be 32 characters long.",
@@ -96,6 +114,9 @@ func runServer(c *cli.Context) {
 func newServer(tug *tugboat.Tugboat, notifier notifier.Notifier, c *cli.Context) http.Handler {
 	config := server.Config{}
 	config.GitHub.Secret = c.String("github.secret")
+	config.GitHub.ClientID = c.String("github.client_id")
+	config.GitHub.ClientSecret = c.String("github.client_secret")
+	config.GitHub.Organization = c.String("github.organization")
 	config.CookieSecret = readKey(c.String("cookie.secret"))
 
 	cd, err := tugboat.ParsePusherCredentials(c.String("pusher.url"))

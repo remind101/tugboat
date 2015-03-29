@@ -56,6 +56,10 @@ func newTugboat(c *cli.Context) (*tugboat.Tugboat, error) {
 }
 
 func newProviders(c *cli.Context) ([]tugboat.Provider, error) {
+	if c.String("provider") == "" {
+		return nil, nil
+	}
+
 	uris := strings.Split(c.String("provider"), ",")
 
 	var providers []tugboat.Provider

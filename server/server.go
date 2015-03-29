@@ -2,7 +2,6 @@ package server
 
 import (
 	"net/http"
-	"os"
 
 	"github.com/gorilla/mux"
 	"github.com/kr/githubauth"
@@ -16,12 +15,11 @@ import (
 
 type Config struct {
 	GitHub struct {
-		Secret string
+		Secret, ClientID, ClientSecret, Organization string
 	}
 
 	Pusher struct {
-		Key    string
-		Secret string
+		Key, Secret string
 	}
 
 	// CookieSecret is a secret key that will be used to sign cookies.
@@ -32,7 +30,7 @@ func New(tug *tugboat.Tugboat, notifier notifier.Notifier, config Config) http.H
 	r := mux.NewRouter()
 
 	// auth is a function that can wrap an http.Handler with authentication.
-	auth := authenticate(config.CookieSecret)
+	auth := newAuthenticator(config)
 
 	// Mount GitHub webhooks
 	g := github.New(tug, notifier, config.GitHub.Secret)
@@ -64,15 +62,29 @@ func githubWebhook(r *http.Request, rm *mux.RouteMatch) bool {
 	return len(h) > 0
 }
 
-func authenticate(key [32]byte) func(http.Handler) http.Handler {
+type authenticator func(http.Handler) http.Handler
+
+func newAuthenticator(config Config) authenticator {
+	switch {
+	case config.GitHub.ClientID != "":
+		return githubAuthenticator(config)
+	default:
+		return func(h http.Handler) http.Handler {
+			return h
+		}
+	}
+}
+
+func githubAuthenticator(config Config) authenticator {
+	key := config.CookieSecret
 	keys := []*[32]byte{&key}
 
 	return func(h http.Handler) http.Handler {
 		return &githubauth.Handler{
-			RequireOrg:   os.Getenv("TUGBOAT_GITHUB_ORG"),
+			RequireOrg:   config.GitHub.Organization,
 			Keys:         keys,
-			ClientID:     os.Getenv("TUGBOAT_GITHUB_CLIENT_ID"),
-			ClientSecret: os.Getenv("TUGBOAT_GITHUB_CLIENT_SECRET"),
+			ClientID:     config.GitHub.ClientID,
+			ClientSecret: config.GitHub.ClientSecret,
 			Handler:      h,
 		}
 	}
