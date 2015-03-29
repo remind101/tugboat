@@ -325,43 +325,6 @@ module.run(['$templateCache', function($templateCache) {
 }]);
 })();
 
-(function(module) {
-try {
-  module = angular.module('templates');
-} catch (e) {
-  module = angular.module('templates', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('jobs/list.html',
-    '<h2 class="page-header">Deploys</h2>\n' +
-    '<table class="table table-striped">\n' +
-    '  <thead>\n' +
-    '    <tr>\n' +
-    '      <th>#</th>\n' +
-    '      <th>Repo</th>\n' +
-    '      <th>Ref</th>\n' +
-    '      <th>Environment</th>\n' +
-    '      <th>Provider</th>\n' +
-    '      <th>Status</th>\n' +
-    '    </tr>\n' +
-    '  </thead>\n' +
-    '  <tbody>\n' +
-    '  <tr ng-repeat="job in jobs">\n' +
-    '    <td>\n' +
-    '      <a href="" ng-bind="job.github_id" ui-sref="app.jobs.detail({ jobId: job.id })"></a>\n' +
-    '    </td>\n' +
-    '    <td ng-bind="job.repo"></td>\n' +
-    '    <td ng-bind="job.ref" title="{{ job.sha }}"></td>\n' +
-    '    <td ng-bind="job.environment" title="{{ job.environment }}"></td>\n' +
-    '    <td ng-bind="job.provider" title="{{ job.provider }}"></td>\n' +
-    '    <td ng-bind="job.status"></td>\n' +
-    '  </tr>\n' +
-    '  </tbody>\n' +
-    '</table>\n' +
-    '');
-}]);
-})();
-
 (function(angular) {
   'use strict';
 
@@ -429,6 +392,43 @@ module.run(['$templateCache', function($templateCache) {
   });
 
 })(angular);
+
+(function(module) {
+try {
+  module = angular.module('templates');
+} catch (e) {
+  module = angular.module('templates', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('jobs/list.html',
+    '<h2 class="page-header">Deploys</h2>\n' +
+    '<table class="table table-striped">\n' +
+    '  <thead>\n' +
+    '    <tr>\n' +
+    '      <th>#</th>\n' +
+    '      <th>Repo</th>\n' +
+    '      <th>Ref</th>\n' +
+    '      <th>Environment</th>\n' +
+    '      <th>Provider</th>\n' +
+    '      <th>Status</th>\n' +
+    '    </tr>\n' +
+    '  </thead>\n' +
+    '  <tbody>\n' +
+    '  <tr ng-repeat="job in jobs">\n' +
+    '    <td>\n' +
+    '      <a href="" ng-bind="job.github_id" ui-sref="app.jobs.detail({ jobId: job.id })"></a>\n' +
+    '    </td>\n' +
+    '    <td ng-bind="job.repo"></td>\n' +
+    '    <td ng-bind="job.ref" title="{{ job.sha }}"></td>\n' +
+    '    <td ng-bind="job.environment" title="{{ job.environment }}"></td>\n' +
+    '    <td ng-bind="job.provider" title="{{ job.provider }}"></td>\n' +
+    '    <td ng-bind="job.status"></td>\n' +
+    '  </tr>\n' +
+    '  </tbody>\n' +
+    '</table>\n' +
+    '');
+}]);
+})();
 
 (function(angular) {
   'use strict';
@@ -571,7 +571,7 @@ module.run(['$templateCache', function($templateCache) {
     var channels = {};
 
     function subscribe(scope, job) {
-      var channel = channels[job.id] = channels[job.id] || pusher.subscribe('deployments-' + job.id);
+      var channel = channels[job.id] = channels[job.id] || pusher.subscribe('private-deployments-' + job.id);
 
       channel.bind('log_line', function(data) {
         scope.$apply(function() {
