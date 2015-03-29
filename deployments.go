@@ -263,7 +263,7 @@ func (s *statusDeploymentsService) DeploymentsCreate(d *Deployment) error {
 // deploymentChannel returns the name of the channel to send pusher events on
 // for deployments.
 func deploymentChannel(id string) string {
-	return fmt.Sprintf("deployments-%s", id)
+	return fmt.Sprintf("private-deployments-%s", id)
 }
 
 // deploy performs a deployment using a provider, and update the Deployment

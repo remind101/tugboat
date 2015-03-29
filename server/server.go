@@ -9,6 +9,7 @@ import (
 	"github.com/remind101/tugboat"
 	"github.com/remind101/tugboat/frontend"
 	"github.com/remind101/tugboat/notifier"
+	"github.com/remind101/tugboat/pkg/pusherauth"
 	"github.com/remind101/tugboat/server/api"
 	"github.com/remind101/tugboat/server/github"
 )
@@ -19,7 +20,8 @@ type Config struct {
 	}
 
 	Pusher struct {
-		Key string
+		Key    string
+		Secret string
 	}
 
 	// CookieSecret is a secret key that will be used to sign cookies.
@@ -29,18 +31,28 @@ type Config struct {
 func New(tug *tugboat.Tugboat, notifier notifier.Notifier, config Config) http.Handler {
 	r := mux.NewRouter()
 
+	// auth is a function that can wrap an http.Handler with authentication.
+	auth := authenticate(config.CookieSecret)
+
 	// Mount GitHub webhooks
 	g := github.New(tug, notifier, config.GitHub.Secret)
 	r.MatcherFunc(githubWebhook).Handler(g)
 
 	// Mount the API.
-	a := authenticate(api.New(tug), config.CookieSecret)
+	a := auth(api.New(tug))
 	r.Headers("Accept", api.AcceptHeader).Handler(a)
+
+	// Pusher authentication.
+	p := auth(&pusherauth.Handler{
+		Key:    config.Pusher.Key,
+		Secret: []byte(config.Pusher.Secret),
+	})
+	r.Handle("/pusher/auth", p)
 
 	// Fallback to serving the frontend.
 	f := frontend.New("")
 	f.PusherKey = config.Pusher.Key
-	r.NotFoundHandler = authenticate(f, config.CookieSecret)
+	r.NotFoundHandler = auth(f)
 
 	return r
 }
@@ -52,14 +64,16 @@ func githubWebhook(r *http.Request, rm *mux.RouteMatch) bool {
 	return len(h) > 0
 }
 
-func authenticate(h http.Handler, key [32]byte) http.Handler {
+func authenticate(key [32]byte) func(http.Handler) http.Handler {
 	keys := []*[32]byte{&key}
 
-	return &githubauth.Handler{
-		RequireOrg:   os.Getenv("TUGBOAT_GITHUB_ORG"),
-		Keys:         keys,
-		ClientID:     os.Getenv("TUGBOAT_GITHUB_CLIENT_ID"),
-		ClientSecret: os.Getenv("TUGBOAT_GITHUB_CLIENT_SECRET"),
-		Handler:      h,
+	return func(h http.Handler) http.Handler {
+		return &githubauth.Handler{
+			RequireOrg:   os.Getenv("TUGBOAT_GITHUB_ORG"),
+			Keys:         keys,
+			ClientID:     os.Getenv("TUGBOAT_GITHUB_CLIENT_ID"),
+			ClientSecret: os.Getenv("TUGBOAT_GITHUB_CLIENT_SECRET"),
+			Handler:      h,
+		}
 	}
 }

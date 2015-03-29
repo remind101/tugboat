@@ -103,6 +103,7 @@ func newServer(tug *tugboat.Tugboat, notifier notifier.Notifier, c *cli.Context)
 		log.Fatal(err)
 	}
 	config.Pusher.Key = cd.Key
+	config.Pusher.Secret = cd.Secret
 
 	return server.New(tug, notifier, config)
 }

@@ -120,7 +120,7 @@
     var channels = {};
 
     function subscribe(scope, job) {
-      var channel = channels[job.id] = channels[job.id] || pusher.subscribe('deployments-' + job.id);
+      var channel = channels[job.id] = channels[job.id] || pusher.subscribe('private-deployments-' + job.id);
 
       channel.bind('log_line', function(data) {
         scope.$apply(function() {
