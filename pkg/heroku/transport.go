@@ -20,6 +20,12 @@ var DefaultClient = &http.Client{
 }
 
 type Transport struct {
+	// Username is the HTTP basic auth username for API calls made by this Client.
+	Username string
+
+	// Password is the HTTP basic auth password for API calls made by this Client.
+	Password string
+
 	// UserAgent to be provided in API requests. Set to DefaultUserAgent if not
 	// specified.
 	UserAgent string
@@ -30,6 +36,10 @@ type Transport struct {
 	// AdditionalHeaders are extra headers to add to each HTTP request sent by
 	// this Client.
 	AdditionalHeaders http.Header
+
+	// Version controls the api version to use. The zero value is the v3
+	// api.
+	Version string
 
 	// Transport is the HTTP transport to use when making requests.
 	// It will default to http.DefaultTransport if nil.
@@ -62,8 +72,14 @@ func (t *Transport) RoundTrip(req *http.Request) (*http.Response, error) {
 		req.Header.Set("User-Agent", t.UserAgent)
 	}
 
-	req.Header.Set("Accept", "application/vnd.heroku+json; version=edge")
+	version := t.Version
+	if version == "" {
+		version = "3"
+	}
+
+	req.Header.Set("Accept", fmt.Sprintf("application/vnd.heroku+json; version=%s", version))
 	req.Header.Set("Request-Id", uuid.New())
+	req.SetBasicAuth(t.Username, t.Password)
 	for k, v := range t.AdditionalHeaders {
 		req.Header[k] = v
 	}

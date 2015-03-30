@@ -120,9 +120,8 @@ func appFor(d *tugboat.Deployment) string {
 
 func newHerokuClient(token string) *heroku.Service {
 	t := &heroku.Transport{
-		Transport: &oauth.Transport{
-			Token: &oauth.Token{AccessToken: token},
-		},
+		Version:  "edge",
+		Password: token,
 	}
 
 	return heroku.NewService(&http.Client{
