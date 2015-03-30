@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"strings"
 
 	"github.com/codegangsta/cli"
 	"github.com/remind101/tugboat"
@@ -100,6 +101,8 @@ func runServer(c *cli.Context) {
 		log.Fatal(err)
 	}
 
+	logProviders(tug.Providers)
+
 	n, err := newNotifier(c.String("notifier"))
 	if err != nil {
 		log.Fatal(err)
@@ -160,4 +163,14 @@ func readKey(secret string) [32]byte {
 	}
 
 	return key
+}
+
+func logProviders(ps []tugboat.Provider) {
+	var s []string
+
+	for _, p := range ps {
+		s = append(s, p.Name())
+	}
+
+	log.Printf("Providers: %s", strings.Join(s, ","))
 }
