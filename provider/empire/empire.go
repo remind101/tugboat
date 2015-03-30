@@ -35,10 +35,15 @@ func (p *Provider) Name() string {
 
 func (p *Provider) Deploy(ctx context.Context, d *tugboat.Deployment, w io.Writer) error {
 	io.WriteString(w, "Deploying with empire... ")
-	return p.client.Deploy(Image{
+	if err := p.client.Deploy(Image{
 		Repo: d.Repo,
 		ID:   d.Sha,
-	})
+	}); err != nil {
+		return err
+	}
+
+	io.WriteString(w, "done.\n")
+	return nil
 }
 
 func newTransport(token string) http.RoundTripper {
