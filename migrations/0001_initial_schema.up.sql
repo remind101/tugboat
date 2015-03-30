@@ -24,6 +24,6 @@ CREATE TABLE logs (
   at timestamp without time zone NOT NULL
 );
 
-CREATE UNIQUE INDEX index_deployments_on_github_id ON deployments USING btree (github_id);
+CREATE INDEX index_deployments_on_github_id ON deployments USING btree (github_id);
 CREATE INDEX index_deployments_on_created_at ON deployments USING btree (created_at);
 CREATE INDEX index_logs_on_at ON logs USING btree (at);
