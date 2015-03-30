@@ -112,6 +112,7 @@ func (h *DeploymentStatusHandler) ServeHTTP(w http.ResponseWriter, r *http.Reque
 		ID:          p.Deployment.ID,
 		TargetURL:   p.DeploymentStatus.TargetURL,
 		State:       p.DeploymentStatus.State,
+		Description: p.DeploymentStatus.Description,
 		Repo:        p.Repository.FullName,
 		User:        user,
 		Sha:         p.Deployment.Sha,

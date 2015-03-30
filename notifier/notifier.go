@@ -24,6 +24,9 @@ type Notification struct {
 	// The state being transitioned to.
 	State string
 
+	// The description provided when the deployment status was created.
+	Description string
+
 	// The full name of the repo.
 	Repo string
 

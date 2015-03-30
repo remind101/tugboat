@@ -2,6 +2,7 @@ package tugboat
 
 import (
 	"encoding/json"
+	"fmt"
 	"strings"
 
 	"github.com/google/go-github/github"
@@ -63,8 +64,9 @@ func (u *githubUpdater) UpdateStatus(d *Deployment) error {
 	repo := sp[1]
 
 	_, _, err := u.github.CreateDeploymentStatus(owner, repo, int(d.GitHubID), &github.DeploymentStatusRequest{
-		State:     github.String(githubStatus[d.Status]),
-		TargetURL: github.String(d.URL()),
+		State:       github.String(githubStatus[d.Status]),
+		TargetURL:   github.String(d.URL()),
+		Description: github.String(fmt.Sprintf("Deployed with %s", d.Provider)),
 	})
 
 	return err

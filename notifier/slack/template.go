@@ -2,6 +2,7 @@ package slack
 
 import (
 	"bytes"
+	"fmt"
 	"strings"
 	"text/template"
 
@@ -16,7 +17,7 @@ var (
 )
 
 func statusText(status string) string {
-	return `Deploy <{{.TargetURL}}|#{{.ID}}> (<https://github.com/{{.Repo}}/commits/{{.Sha}}|{{ truncate .Sha 7 }}>) of {{.Repo}}@{{.Ref}} to {{.Environment}} by {{.User}} ` + status
+	return fmt.Sprintf(`Deploy <{{.TargetURL}}|#{{.ID}}> (<https://github.com/{{.Repo}}/commits/{{.Sha}}|{{ truncate .Sha 7 }}>) of {{.Repo}}@{{.Ref}} to {{.Environment}} by {{.User}} %s ({{.Description}})`, status)
 }
 
 var funcMap = template.FuncMap{

@@ -24,6 +24,7 @@ func TestNotify(t *testing.T) {
 		ID:          1,
 		TargetURL:   "http://tugboat.example.org/1234",
 		State:       "pending",
+		Description: "Deployed with heroku",
 		Repo:        "ejholmes/acme-inc",
 		User:        "ejholmes",
 		Sha:         "208db1b5d2bb89b0ff0b79cb7f702e21a750f3fc",
@@ -35,10 +36,10 @@ func TestNotify(t *testing.T) {
 		state    string
 		expected string
 	}{
-		{"pending", "Deploy <http://tugboat.example.org/1234|#1> (<https://github.com/ejholmes/acme-inc/commits/208db1b5d2bb89b0ff0b79cb7f702e21a750f3fc|208db1b>) of ejholmes/acme-inc@master to staging by ejholmes started"},
-		{"success", "Deploy <http://tugboat.example.org/1234|#1> (<https://github.com/ejholmes/acme-inc/commits/208db1b5d2bb89b0ff0b79cb7f702e21a750f3fc|208db1b>) of ejholmes/acme-inc@master to staging by ejholmes succeeded"},
-		{"failure", "Deploy <http://tugboat.example.org/1234|#1> (<https://github.com/ejholmes/acme-inc/commits/208db1b5d2bb89b0ff0b79cb7f702e21a750f3fc|208db1b>) of ejholmes/acme-inc@master to staging by ejholmes failed"},
-		{"error", "Deploy <http://tugboat.example.org/1234|#1> (<https://github.com/ejholmes/acme-inc/commits/208db1b5d2bb89b0ff0b79cb7f702e21a750f3fc|208db1b>) of ejholmes/acme-inc@master to staging by ejholmes errored"},
+		{"pending", "Deploy <http://tugboat.example.org/1234|#1> (<https://github.com/ejholmes/acme-inc/commits/208db1b5d2bb89b0ff0b79cb7f702e21a750f3fc|208db1b>) of ejholmes/acme-inc@master to staging by ejholmes started (Deployed with heroku)"},
+		{"success", "Deploy <http://tugboat.example.org/1234|#1> (<https://github.com/ejholmes/acme-inc/commits/208db1b5d2bb89b0ff0b79cb7f702e21a750f3fc|208db1b>) of ejholmes/acme-inc@master to staging by ejholmes succeeded (Deployed with heroku)"},
+		{"failure", "Deploy <http://tugboat.example.org/1234|#1> (<https://github.com/ejholmes/acme-inc/commits/208db1b5d2bb89b0ff0b79cb7f702e21a750f3fc|208db1b>) of ejholmes/acme-inc@master to staging by ejholmes failed (Deployed with heroku)"},
+		{"error", "Deploy <http://tugboat.example.org/1234|#1> (<https://github.com/ejholmes/acme-inc/commits/208db1b5d2bb89b0ff0b79cb7f702e21a750f3fc|208db1b>) of ejholmes/acme-inc@master to staging by ejholmes errored (Deployed with heroku)"},
 	}
 
 	for i, tt := range tests {
