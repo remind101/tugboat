@@ -8,6 +8,7 @@ import (
 
 	"github.com/codegangsta/cli"
 	"github.com/remind101/tugboat"
+	"github.com/remind101/tugboat/provider/empire"
 	"github.com/remind101/tugboat/provider/heroku"
 )
 
@@ -82,17 +83,18 @@ func newProvider(c *cli.Context, uri string) (tugboat.Provider, error) {
 		return nil, err
 	}
 
-	var p tugboat.Provider
-
 	switch u.Scheme {
 	case "heroku":
-		p = heroku.NewProvider(
+		return heroku.NewProvider(
 			c.String("github.token"),
 			u.Query().Get("token"),
-		)
+		), nil
+	case "empire":
+		return empire.NewProvider(
+			fmt.Sprintf("https://%s", u.Host),
+			u.Query().Get("token"),
+		), nil
 	default:
 		return nil, fmt.Errorf("No provider matching %s", u)
 	}
-
-	return p, nil
 }
