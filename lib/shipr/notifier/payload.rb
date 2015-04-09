@@ -5,7 +5,7 @@ module Shipr::Notifier
     def self.new_from_github(params)
       new \
         name:        params.repository.name,
-        user:        params.deployment.payload.user,
+        user:        params.deployment.payload.user || params.deployment.creator.login,
         sha:         params.deployment.sha,
         target_url:  params.deployment_status.target_url,
         environment: params.deployment.environment,
