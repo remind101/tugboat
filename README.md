@@ -34,6 +34,10 @@ about a deployment. Currently, the following notifiers are supported.
   
   ![](https://s3.amazonaws.com/ejholmes.github.com/hpi95.png)
 
+## Setup
+
+**TODO**
+
 ## Roadmap
 
 * [Librato annotations notifier](https://github.com/ejholmes/tugboat/issues/7).
