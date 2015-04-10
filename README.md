@@ -14,7 +14,8 @@ Tugboat is an API and AngularJS client for deploying GitHub repos using the [Git
 
 The main goal is to make it easier to create tooling for deploying. At [Remind](https://remind.com)
 we like to deploy all of our services via Hubot and Slack. If you're using Hubot, you can use
-the [hubot-deploy](https://github.com/remind101/hubot-deploy) script to create GitHub Deployments.
+the [hubot-deploy](https://github.com/remind101/hubot-deploy) script or the [deploy CLI](https://github.com/remind101/deploy)
+to create GitHub Deployments.
 
 ## Providers
 
