@@ -9,7 +9,7 @@ apk add --update curl git go@edge
 
 GOPATH=/go go get github.com/tools/godep
 cd /go/src/github.com/remind101/tugboat
-PATH="/go/bin:$PATH" GOPATH=/go godep go install ./...
+PATH="/go/bin:$PATH" GOPATH=/go godep go install ./cmd/...
 mv /go/bin/tugboat /bin
 
 mkdir -p /var/run/tugboat
