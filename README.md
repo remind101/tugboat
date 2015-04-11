@@ -1,4 +1,4 @@
-# [Tugboat](https://github.com/ejholmes/tugboat)
+# [Tugboat](https://github.com/ejholmes/tugboat) [![Build Status](https://travis-ci.org/remind101/tugboat.svg?branch=master)](https://travis-ci.org/remind101/tugboat)
 
 Tugboat is an API and AngularJS client for deploying GitHub repos using the [GitHub Deployments API](http://developer.github.com/v3/repos/deployments/).
 
