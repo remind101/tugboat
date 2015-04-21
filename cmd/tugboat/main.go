@@ -91,7 +91,7 @@ func newProvider(c *cli.Context, uri string) (tugboat.Provider, error) {
 		), nil
 	case "empire":
 		return empire.NewProvider(
-			fmt.Sprintf("https://%s", u.Host),
+			fmt.Sprintf("http://%s", u.Host),
 			u.Query().Get("token"),
 		), nil
 	default:
