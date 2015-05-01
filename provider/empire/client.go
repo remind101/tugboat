@@ -1,6 +1,7 @@
 package empire
 
 import (
+	"io"
 	"net/http"
 
 	"github.com/remind101/tugboat/pkg/heroku"
@@ -20,17 +21,12 @@ func newClient(c *http.Client) *client {
 	}
 }
 
-type Image struct {
-	Repo string `json:"repo"`
-	ID   string `json:"id"`
-}
-
-func (c *client) Deploy(image Image) error {
+func (c *client) Deploy(image string, w io.Writer) error {
 	d := struct {
-		Image Image `json:"image"`
+		Image string `json:"image"`
 	}{
 		Image: image,
 	}
 
-	return c.Post(nil, "/deploys", &d)
+	return c.Post(w, "/deploys", &d)
 }

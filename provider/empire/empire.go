@@ -34,15 +34,13 @@ func (p *Provider) Name() string {
 }
 
 func (p *Provider) Deploy(ctx context.Context, d *tugboat.Deployment, w io.Writer) error {
-	io.WriteString(w, "Deploying with empire... ")
-	if err := p.client.Deploy(Image{
-		Repo: d.Repo,
-		ID:   d.Sha,
-	}); err != nil {
+	image := newImage(d)
+	fmt.Fprintf(w, "Deploying %s to %s...\n", image, p.client.URL)
+
+	if err := p.client.Deploy(newImage(d), w); err != nil {
 		return err
 	}
 
-	io.WriteString(w, "done.\n")
 	return nil
 }
 
@@ -69,4 +67,11 @@ func newTransport(token string) http.RoundTripper {
 		Password:  token,
 		Transport: proxy,
 	}
+}
+
+// newImage returns the Docker image that should be used for the given
+// deployment. It assumes that the docker images are tagged with the full git
+// Sha and that the Docker repository matches the github repository.
+func newImage(d *tugboat.Deployment) string {
+	return fmt.Sprintf("%s:%s", d.Repo, d.Sha)
 }
