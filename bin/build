@@ -13,6 +13,7 @@ PATH="/go/bin:$PATH" GOPATH=/go godep go install ./cmd/...
 mv /go/bin/tugboat /bin
 
 mkdir -p /var/run/tugboat
+cp Procfile /var/run/tugboat
 cp -r ./migrations /var/run/tugboat
 cp -r ./frontend /var/run/tugboat
 
