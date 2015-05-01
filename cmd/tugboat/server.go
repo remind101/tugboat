@@ -81,12 +81,17 @@ var cmdServer = cli.Command{
 			Usage:  "A secret key used to sign cookies. Should be 32 characters long.",
 			EnvVar: "TUGBOAT_COOKIE_SECRET",
 		},
-
 		cli.StringFlag{
 			Name:   "notifier",
 			Value:  "",
 			Usage:  "A notifier to use to handle deployment status webhooks.",
 			EnvVar: "TUGBOAT_NOTIFIER",
+		},
+		cli.StringFlag{
+			Name:   "environment",
+			Value:  "",
+			Usage:  "If a value is provided, only deploys if the environment matches the given value.",
+			EnvVar: "TUGBOAT_MATCH_ENVIRONMENT",
 		},
 	},
 }

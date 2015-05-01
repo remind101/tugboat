@@ -52,6 +52,7 @@ func newTugboat(c *cli.Context) (*tugboat.Tugboat, error) {
 	}
 
 	tug.Providers = ps
+	tug.MatchEnvironment = c.String("environment")
 
 	return tug, nil
 }

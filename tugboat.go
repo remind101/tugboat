@@ -31,6 +31,11 @@ type Tugboat struct {
 	// Provider is a provider that will be used to fullfill deployments.
 	Providers []Provider
 
+	// MatchEnvironment controls what environments are allowed to be
+	// deployed to. If a value is provided, Tugboat will only deploy if the
+	// environment matches.
+	MatchEnvironment string
+
 	store *store
 
 	deployments deploymentsService
@@ -100,6 +105,12 @@ func (t *Tugboat) Logs(d *Deployment) (string, error) {
 
 // Deploy triggers a new deployment.
 func (t *Tugboat) Deploy(ctx context.Context, opts DeployOpts) ([]*Deployment, error) {
+	if t.MatchEnvironment != "" {
+		if t.MatchEnvironment != opts.Environment {
+			return nil, nil
+		}
+	}
+
 	ps := t.Providers
 	if len(ps) == 0 {
 		ps = []Provider{&NullProvider{}}
