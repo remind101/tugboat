@@ -20,6 +20,22 @@ func TestConfig(t *testing.T) {
 			}
 		}},
 		{arrayEnvironmentsConfig, func(c *Config) {
+			if !c.Providers.Heroku.Environments.Match("production") {
+				t.Fatal("Expected match")
+			}
+
+			if !c.Providers.Heroku.Environments.Match("staging") {
+				t.Fatal("Expected no match")
+			}
+		}},
+		{regexEnvironmentConfig, func(c *Config) {
+			if !c.Providers.Heroku.Environments.Match("production") {
+				t.Fatal("Expected match")
+			}
+
+			if c.Providers.Heroku.Environments.Match("staging") {
+				t.Fatal("Expected no match")
+			}
 		}},
 	}
 
@@ -55,6 +71,20 @@ const arrayEnvironmentsConfig = `
         "production",
 	"staging"
       ],
+      "apps": {
+        "production": "foo",
+	"staging": "bar"
+      }
+    }
+  }
+}
+`
+
+const regexEnvironmentConfig = `
+{
+  "providers": {
+    "heroku": {
+      "environments": "/production/",
       "apps": {
         "production": "foo",
 	"staging": "bar"

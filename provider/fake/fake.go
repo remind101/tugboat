@@ -6,6 +6,7 @@ import (
 	"io"
 
 	"github.com/remind101/tugboat"
+	"github.com/remind101/tugboat/config"
 	"golang.org/x/net/context"
 )
 
@@ -43,6 +44,10 @@ func NewProvider() *Provider {
 	return &Provider{
 		Scenarios: DefaultScenarios,
 	}
+}
+
+func (p *Provider) Generate(d *tugboat.Deployment, c *config.Config) tugboat.Deployer {
+	return p
 }
 
 func (p *Provider) Deploy(ctx context.Context, d *tugboat.Deployment, w io.Writer) error {

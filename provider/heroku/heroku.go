@@ -11,6 +11,7 @@ import (
 
 	"github.com/google/go-github/github"
 	"github.com/remind101/tugboat"
+	"github.com/remind101/tugboat/config"
 	"github.com/remind101/tugboat/pkg/heroku"
 	"golang.org/x/net/context"
 )
@@ -34,6 +35,10 @@ func NewProvider(githubToken, herokuToken string) *Provider {
 
 func (p *Provider) Name() string {
 	return "heroku"
+}
+
+func (p *Provider) Generate(d *tugboat.Deployment, c *config.Config) tugboat.Deployer {
+	return p
 }
 
 func (p *Provider) Deploy(ctx context.Context, d *tugboat.Deployment, w io.Writer) error {

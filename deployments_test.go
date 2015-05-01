@@ -11,7 +11,7 @@ import (
 
 func TestDeploy(t *testing.T) {
 	tests := []struct {
-		fn     ProviderFunc
+		fn     DeployerFunc
 		status DeploymentStatus
 		err    string
 	}{

@@ -133,7 +133,8 @@ func (t *Tugboat) deploy(ctx context.Context, opts DeployOpts, p Provider) (*Dep
 			deploymentID:  d.ID,
 		}
 
-		deploy(ctx, d, w, p)
+		// TODO Match the environment with the config.
+		deploy(ctx, d, w, p.Generate(d, nil))
 
 		t.deployments.DeploymentsUpdate(d)
 	}()

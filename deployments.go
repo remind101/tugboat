@@ -268,7 +268,7 @@ func deploymentChannel(id string) string {
 
 // deploy performs a deployment using a provider, and update the Deployment
 // status appropriately.
-func deploy(ctx context.Context, d *Deployment, w io.Writer, p Provider) (err error) {
+func deploy(ctx context.Context, d *Deployment, w io.Writer, p Deployer) (err error) {
 	defer func() {
 		if v := recover(); v != nil {
 			err = fmt.Errorf("%v", v)
