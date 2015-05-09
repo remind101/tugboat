@@ -1,17 +1,13 @@
 package notifier
 
-// Notifier is an interface that notifiers can implement.
-type Notifier interface {
-	Notify(*Notification) error
-}
-
-// NullNotifier is an implementation of the Notifier interface that does nothing.
-type NullNotifier struct{}
-
-// Notify does nothing.
-func (n *NullNotifier) Notify(note *Notification) error {
-	return nil
-}
+// The github deployment states as defined in
+// https://developer.github.com/v3/repos/deployments/#list-deployment-statuses
+const (
+	StatusPending = "pending"
+	StatusSuccess = "success"
+	StatusError   = "error"
+	StatusFailure = "failure"
+)
 
 // Notification is passed to notifiers.
 type Notification struct {
@@ -43,6 +39,25 @@ type Notification struct {
 	Environment string
 }
 
+// Notifier is an interface that notifiers can implement.
+type Notifier interface {
+	Notify(*Notification) error
+}
+
+type NotifierFunc func(*Notification) error
+
+func (f NotifierFunc) Notify(n *Notification) error {
+	return f(n)
+}
+
+// NullNotifier is an implementation of the Notifier interface that does nothing.
+type NullNotifier struct{}
+
+// Notify does nothing.
+func (n *NullNotifier) Notify(note *Notification) error {
+	return nil
+}
+
 // MultiNotifier wraps a collection of Notifier's as a single notifier.
 type MultiNotifier []Notifier
 
@@ -55,4 +70,16 @@ func (mn MultiNotifier) Notify(note *Notification) error {
 	}
 
 	return nil
+}
+
+// FilterState wraps a notifier to only be called if the notification state
+// matches state.
+func FilterState(state string, n Notifier) Notifier {
+	return NotifierFunc(func(p *Notification) error {
+		if p.State == state {
+			return n.Notify(p)
+		}
+
+		return nil
+	})
 }
