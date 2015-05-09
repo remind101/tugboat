@@ -37,6 +37,11 @@ type Notifier struct {
 }
 
 func (n *Notifier) Notify(p *notifier.Notification) error {
+	// Only create deployments if it's successful.
+	if p.State != notifier.StatusSuccess {
+		return nil
+	}
+
 	var data DeploymentForm
 	data.Deployment.AppName = appName(p)
 	data.Deployment.Revision = p.Sha

@@ -23,7 +23,8 @@ func TestNotifier(t *testing.T) {
 	n := &Notifier{URL: s.URL, Key: "1234"}
 
 	if err := n.Notify(&notifier.Notification{
-		Repo: "remind101/acme-inc",
+		Repo:  "remind101/acme-inc",
+		State: "success",
 	}); err != nil {
 		t.Fatal(err)
 	}
