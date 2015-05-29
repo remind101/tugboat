@@ -2,6 +2,7 @@ package api
 
 import (
 	"encoding/json"
+	"errors"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -45,12 +46,14 @@ func newDeployments(ds []*tugboat.Deployment) []*Deployment {
 	return deployments
 }
 
-type DeploymentsHandler struct {
+type GetDeploymentsHandler struct {
 	tugboat *tugboat.Tugboat
 }
 
-func (h *DeploymentsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	d, err := h.tugboat.DeploymentsRecent()
+func (h *GetDeploymentsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	d, err := h.tugboat.Deployments(tugboat.DeploymentsQuery{
+		Limit: 20,
+	})
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -59,11 +62,11 @@ func (h *DeploymentsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(newDeployments(d))
 }
 
-type DeploymentHandler struct {
+type GetDeploymentHandler struct {
 	tugboat *tugboat.Tugboat
 }
 
-func (h *DeploymentHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (h *GetDeploymentHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	d, err := h.tugboat.DeploymentsFind(mux.Vars(r)["id"])
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -80,4 +83,78 @@ func (h *DeploymentHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	res.Output = out
 
 	json.NewEncoder(w).Encode(res)
+}
+
+var errInvalidToken = errors.New("Token is not valid for deployment")
+
+func authProvider(tug *tugboat.Tugboat, h http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		token, _, _ := r.BasicAuth()
+		if _, err := tug.TokensFind(token); err != nil {
+			http.Error(w, "Provided token is not valid", http.StatusUnauthorized)
+			return
+		}
+
+		h.ServeHTTP(w, r)
+	})
+}
+
+type PostDeploymentsHandler struct {
+	tugboat *tugboat.Tugboat
+}
+
+func (h *PostDeploymentsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	var f tugboat.DeployOpts
+	if err := json.NewDecoder(r.Body).Decode(&f); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	d, err := h.tugboat.DeploymentsCreate(f)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	json.NewEncoder(w).Encode(d)
+}
+
+type PostLogsHandler struct {
+	tugboat *tugboat.Tugboat
+}
+
+func (h *PostLogsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	d, err := h.tugboat.DeploymentsFind(mux.Vars(r)["id"])
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	if err := h.tugboat.WriteLogs(d, r.Body); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+}
+
+type PostStatusHandler struct {
+	tugboat *tugboat.Tugboat
+}
+
+func (h *PostStatusHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	d, err := h.tugboat.DeploymentsFind(mux.Vars(r)["id"])
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusNotFound)
+		return
+	}
+
+	var f tugboat.StatusUpdate
+	if err := json.NewDecoder(r.Body).Decode(&f); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	if err := h.tugboat.UpdateStatus(d, f); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 }

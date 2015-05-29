@@ -3,6 +3,7 @@ package server
 import (
 	"net/http"
 
+	"github.com/codegangsta/negroni"
 	"github.com/gorilla/mux"
 	"github.com/kr/githubauth"
 	"github.com/remind101/tugboat"
@@ -36,7 +37,10 @@ func New(tug *tugboat.Tugboat, config Config) http.Handler {
 	r.MatcherFunc(githubWebhook).Handler(g)
 
 	// Mount the API.
-	a := auth(api.New(tug))
+	a := api.New(tug, api.Config{
+		Auth:   auth,
+		Secret: config.GitHub.Secret,
+	})
 	r.Headers("Accept", api.AcceptHeader).Handler(a)
 
 	// Pusher authentication.
@@ -51,7 +55,10 @@ func New(tug *tugboat.Tugboat, config Config) http.Handler {
 	f.PusherKey = config.Pusher.Key
 	r.NotFoundHandler = auth(f)
 
-	return r
+	n := negroni.Classic()
+	n.UseHandler(r)
+
+	return n
 }
 
 // githubWebhook is a mux.MatcherFunc that matches requests that have an

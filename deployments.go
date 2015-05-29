@@ -2,12 +2,18 @@ package tugboat
 
 import (
 	"database/sql/driver"
+	"encoding/json"
 	"fmt"
 	"io"
 	"time"
 
-	"golang.org/x/net/context"
-	"gopkg.in/gorp.v1"
+	gh "github.com/remind101/tugboat/server/api/github"
+	gorp "gopkg.in/gorp.v1"
+)
+
+const (
+	// Maximum number of Deployments to return.
+	DefaultDeploymentsLimit = 20
 )
 
 type DeployOpts struct {
@@ -28,6 +34,36 @@ type DeployOpts struct {
 
 	// The repo that this deployment is for.
 	Repo string
+
+	// The name of the provider that this deployment relates to. In general,
+	// this would be the platform that is being deployed to (e.g.
+	// heroku/empire).
+	Provider string
+}
+
+// NewDeployOptsFromWebhook instantiates a new DeployOpts instance based on the
+// values inside a `deployment` event webhook payload.
+func NewDeployOptsFromReader(r io.Reader) (DeployOpts, error) {
+	var f gh.DeploymentPayload
+
+	if err := json.NewDecoder(r).Decode(&f); err != nil {
+		return DeployOpts{}, err
+	}
+
+	return DeployOpts{
+		ID:          f.Deployment.ID,
+		Sha:         f.Deployment.Sha,
+		Ref:         f.Deployment.Ref,
+		Environment: f.Deployment.Environment,
+		Description: f.Deployment.Description,
+		Repo:        f.Repository.FullName,
+	}, nil
+}
+
+// StatusUpdate is used to update the status of a Deployment.
+type StatusUpdate struct {
+	Status DeploymentStatus
+	Error  *error
 }
 
 // DeploymentStatus represents the status of a deployment.
@@ -68,21 +104,43 @@ func (s DeploymentStatus) IsCompleted() bool {
 // Scan implements the sql.Scanner interface.
 func (s *DeploymentStatus) Scan(src interface{}) error {
 	if src, ok := src.([]byte); ok {
-		switch string(src) {
-		case "failed":
-			*s = StatusFailed
-		case "started":
-			*s = StatusStarted
-		case "errored":
-			*s = StatusErrored
-		case "succeeded":
-			*s = StatusSucceeded
-		default:
-			*s = StatusPending
-		}
+		*s = newDeploymentStatus(string(src))
 	}
 
 	return nil
+}
+
+// UnmarshalJSON implements the json.Unmarshaler interface.
+func (s *DeploymentStatus) UnmarshalJSON(b []byte) error {
+	var src string
+
+	if err := json.Unmarshal(b, &src); err != nil {
+		return err
+	}
+
+	*s = newDeploymentStatus(src)
+
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaler interface.
+func (s DeploymentStatus) MarshalJSON() ([]byte, error) {
+	return json.Marshal(s.String())
+}
+
+func newDeploymentStatus(s string) DeploymentStatus {
+	switch s {
+	case "failed":
+		return StatusFailed
+	case "started":
+		return StatusStarted
+	case "errored":
+		return StatusErrored
+	case "succeeded":
+		return StatusSucceeded
+	default:
+		return StatusPending
+	}
 }
 
 // Value implements the driver.Value interface.
@@ -192,6 +250,11 @@ func (d *Deployment) changeStatus(status DeploymentStatus) {
 	d.prevStatus, d.Status = d.Status, status
 }
 
+// DeploymentsQuery is a query object for querying Deployments.
+type DeploymentsQuery struct {
+	Limit int
+}
+
 // DeploymentsCreate inserts a Deployment into the store.
 func (s *store) DeploymentsCreate(d *Deployment) error {
 	return s.db.Insert(d)
@@ -203,10 +266,16 @@ func (s *store) DeploymentsUpdate(d *Deployment) error {
 	return err
 }
 
-// DeploymentsRecent returns the most recent Deployments.
-func (s *store) DeploymentsRecent() ([]*Deployment, error) {
+// Deployments returns the most recent Deployments.
+func (s *store) Deployments(q DeploymentsQuery) ([]*Deployment, error) {
 	var d []*Deployment
-	_, err := s.db.Select(&d, `select * from deployments order by github_id desc limit 20`)
+
+	limit := q.Limit
+	if limit == 0 {
+		limit = DefaultDeploymentsLimit
+	}
+
+	_, err := s.db.Select(&d, fmt.Sprintf(`select * from deployments order by github_id desc limit %d`, limit))
 	return d, err
 }
 
@@ -264,33 +333,4 @@ func (s *statusDeploymentsService) DeploymentsCreate(d *Deployment) error {
 // for deployments.
 func deploymentChannel(id string) string {
 	return fmt.Sprintf("private-deployments-%s", id)
-}
-
-// deploy performs a deployment using a provider, and update the Deployment
-// status appropriately.
-func deploy(ctx context.Context, d *Deployment, w io.Writer, p Provider) (err error) {
-	defer func() {
-		if v := recover(); v != nil {
-			err = fmt.Errorf("%v", v)
-
-			if v, ok := v.(error); ok {
-				err = v
-			}
-		}
-
-		if err != nil {
-			if err == ErrFailed {
-				d.Failed()
-			} else {
-				d.Errored(err)
-			}
-		} else {
-			d.Succeeded()
-		}
-
-		return
-	}()
-
-	err = p.Deploy(ctx, d, w)
-	return
 }
