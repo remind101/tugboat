@@ -15,6 +15,7 @@ import (
 var commands = []cli.Command{
 	cmdServer,
 	cmdMigrate,
+	cmdTokens,
 }
 
 // Shared flags.
@@ -24,6 +25,12 @@ var (
 		Value:  "postgres://localhost/tugboat?sslmode=disable",
 		Usage:  "Postgres connection string.",
 		EnvVar: "DATABASE_URL",
+	}
+	flagProviderSecret = cli.StringFlag{
+		Name:   "provider.secret",
+		Value:  "",
+		Usage:  "A secret used to sign provider tokens",
+		EnvVar: "TUGBOAT_PROVIDER_SECRET",
 	}
 )
 
@@ -40,6 +47,7 @@ func newTugboat(c *cli.Context) (*tugboat.Tugboat, error) {
 	config.DB = c.String("db.url")
 	config.Pusher.URL = c.String("pusher.url")
 	config.GitHub.Token = c.String("github.token")
+	config.ProviderSecret = []byte(c.String("provider.secret"))
 
 	tug, err := tugboat.New(config)
 	if err != nil {

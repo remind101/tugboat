@@ -9,11 +9,21 @@ import (
 
 const AcceptHeader = "application/vnd.tugboat+json; version=1"
 
-func New(t *tugboat.Tugboat) http.Handler {
+type Config struct {
+	Auth   func(http.Handler) http.Handler
+	Secret string
+}
+
+func New(t *tugboat.Tugboat, config Config) http.Handler {
 	r := mux.NewRouter()
 
-	r.Handle("/jobs", &DeploymentsHandler{t}).Methods("GET")
-	r.Handle("/jobs/{id}", &DeploymentHandler{t}).Methods("GET")
+	auth := config.Auth
+
+	r.Handle("/jobs", auth(&GetDeploymentsHandler{t})).Methods("GET")
+	r.Handle("/jobs/{id}", auth(&GetDeploymentHandler{t})).Methods("GET")
+	r.Handle("/deployments", authProvider(t, &PostDeploymentsHandler{t})).Methods("POST")
+	r.Handle("/deployments/{id}/logs", authProvider(t, &PostLogsHandler{t})).Methods("POST")
+	r.Handle("/deployments/{id}/status", authProvider(t, &PostStatusHandler{t})).Methods("POST")
 
 	return r
 }

@@ -31,7 +31,7 @@ func TestDeployment(t *testing.T) {
 		for {
 			<-time.After(1 * time.Second)
 
-			ds, err := tug.DeploymentsRecent()
+			ds, err := tug.Deployments(tugboat.DeploymentsQuery{Limit: 30})
 			if err != nil {
 				t.Fatal(err)
 			}

@@ -1,12 +1,17 @@
 package tugboat
 
 import (
+	"errors"
+	"fmt"
+	"io"
+
+	"golang.org/x/net/context"
+
 	"code.google.com/p/goauth2/oauth"
 
 	"github.com/google/go-github/github"
 	"github.com/joshk/pusher"
 	"github.com/mattes/migrate/migrate"
-	"golang.org/x/net/context"
 )
 
 // BaseURL is the baseURL where tugboat is running.
@@ -21,6 +26,10 @@ type Config struct {
 	GitHub struct {
 		Token string
 	}
+
+	// ProviderSecret is the secret used to sign JWT tokens for
+	// authentication external providers.
+	ProviderSecret []byte
 
 	// DB connection string.
 	DB string
@@ -40,6 +49,7 @@ type Tugboat struct {
 
 	deployments deploymentsService
 	logs        logsService
+	tokens      tokensService
 }
 
 // New returns a new Tugboat instance.
@@ -73,22 +83,84 @@ func New(config Config) (*Tugboat, error) {
 
 	deployments := newDeploymentsService(store, updater)
 	logs := newLogsService(store, pusher)
+	tokens := newTokensService(config.ProviderSecret)
 
 	return &Tugboat{
 		store:       store,
 		deployments: deployments,
 		logs:        logs,
+		tokens:      tokens,
 	}, nil
 }
 
-func (t *Tugboat) DeploymentsRecent() ([]*Deployment, error) {
-	return t.store.DeploymentsRecent()
+// TokensCreate creates a new authentication token for an external provider.
+func (t *Tugboat) TokensCreate(token *Token) error {
+	return t.tokens.TokensCreate(token)
 }
 
+// TokensFind finds a provider authentication token.
+func (t *Tugboat) TokensFind(token string) (*Token, error) {
+	return t.tokens.TokensFind(token)
+}
+
+// Deployments returns the most recent Deployments.
+func (t *Tugboat) Deployments(q DeploymentsQuery) ([]*Deployment, error) {
+	return t.store.Deployments(q)
+}
+
+// DeploymentsFind finds a Deployment by id.
 func (t *Tugboat) DeploymentsFind(id string) (*Deployment, error) {
 	return t.store.DeploymentsFind(id)
 }
 
+// DeploymentsCreate creates a new Deployment.
+func (t *Tugboat) DeploymentsCreate(opts DeployOpts) (*Deployment, error) {
+	d := newDeployment(opts)
+	d.Started(opts.Provider)
+	return d, t.deployments.DeploymentsCreate(d)
+}
+
+// DeploymentsUpdate updates a Deployment.
+func (t *Tugboat) DeploymentsUpdate(d *Deployment) error {
+	return t.deployments.DeploymentsUpdate(d)
+}
+
+// UpdateStatus updates the deployment using the given StatusUpdate
+func (t *Tugboat) UpdateStatus(d *Deployment, update StatusUpdate) error {
+	switch update.Status {
+	case StatusFailed:
+		d.Failed()
+	case StatusErrored:
+		var err error
+		if update.Error != nil {
+			err = *update.Error
+		} else {
+			err = errors.New("no error provided")
+		}
+		d.Errored(err)
+	case StatusSucceeded:
+		d.Succeeded()
+	default:
+		return errors.New("invalid status")
+	}
+
+	return t.DeploymentsUpdate(d)
+}
+
+// WriteLogs reads each line from r and creates a log line for the Deployment.
+func (t *Tugboat) WriteLogs(d *Deployment, r io.Reader) error {
+	w := &logWriter{
+		createLogLine: t.logs.LogLinesCreate,
+		deploymentID:  d.ID,
+	}
+
+	_, err := io.Copy(w, r)
+	return err
+}
+
+// Logs returns a single string of text for all the entire log stream.
+// TODO: Make this into something that writes to an io.Writer and change the
+// frontend to stream the logs from a streaming endpoint.
 func (t *Tugboat) Logs(d *Deployment) (string, error) {
 	lines, err := t.store.LogLines(d)
 	if err != nil {
@@ -103,7 +175,7 @@ func (t *Tugboat) Logs(d *Deployment) (string, error) {
 	return out, nil
 }
 
-// Deploy triggers a new deployment.
+// DEPRECATED: Deploy triggers a new deployment.
 func (t *Tugboat) Deploy(ctx context.Context, opts DeployOpts) ([]*Deployment, error) {
 	if t.MatchEnvironment != "" {
 		if t.MatchEnvironment != opts.Environment {
@@ -131,29 +203,69 @@ func (t *Tugboat) Deploy(ctx context.Context, opts DeployOpts) ([]*Deployment, e
 }
 
 func (t *Tugboat) deploy(ctx context.Context, opts DeployOpts, p Provider) (*Deployment, error) {
-	d := newDeployment(opts)
-	d.Started(p.Name())
-
-	if err := t.deployments.DeploymentsCreate(d); err != nil {
-		return d, err
-	}
-
-	go func() {
-		w := &logWriter{
-			createLogLine: t.logs.LogLinesCreate,
-			deploymentID:  d.ID,
-		}
-
-		deploy(ctx, d, w, p)
-
-		t.deployments.DeploymentsUpdate(d)
-	}()
-
-	return d, nil
+	return Deploy(ctx, opts, p, t)
 }
 
 func (t *Tugboat) Reset() error {
 	return t.store.Reset()
+}
+
+type client interface {
+	DeploymentsCreate(DeployOpts) (*Deployment, error)
+	WriteLogs(*Deployment, io.Reader) error
+	UpdateStatus(*Deployment, StatusUpdate) error
+}
+
+// Deploy is the primary business logic for performing a deployment. It:
+//
+// 1. Creates the deployment within Tugboat.
+// 2. Performs the deployment using the Provider.
+// 3. Writes the log output to the deployment.
+// 4. Updates the status depending on the eror returned from `fn`.
+func Deploy(ctx context.Context, opts DeployOpts, p Provider, t client) (deployment *Deployment, err error) {
+	opts.Provider = p.Name()
+
+	deployment, err = t.DeploymentsCreate(opts)
+	if err != nil {
+		return
+	}
+
+	defer func() {
+		t.UpdateStatus(deployment, statusUpdate(err))
+		return
+	}()
+
+	r, w := io.Pipe()
+
+	go func() {
+		t.WriteLogs(deployment, r)
+	}()
+
+	err = p.Deploy(ctx, deployment, w)
+	return
+}
+
+func statusUpdate(err error) (update StatusUpdate) {
+	if v := recover(); v != nil {
+		err = fmt.Errorf("%v", v)
+
+		if v, ok := v.(error); ok {
+			err = v
+		}
+	}
+
+	if err != nil {
+		if err == ErrFailed {
+			update.Status = StatusFailed
+		} else {
+			update.Status = StatusErrored
+			update.Error = &err
+		}
+	} else {
+		update.Status = StatusSucceeded
+	}
+
+	return
 }
 
 // Migrate runs the migrations.
