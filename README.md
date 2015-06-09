@@ -25,15 +25,6 @@ providers are supported.
 
 * **Heroku**: This provider will deploy the repo to Heroku using the [Platform API](https://devcenter.heroku.com/articles/platform-api-reference#build).
 
-## Notifiers
-
-Tugboat can also send notifications to other services to announce information
-about a deployment. Currently, the following notifiers are supported.
-
-* **Slack**: Sends notifications about the deployment status to a Slack channel:
-  
-  ![](https://s3.amazonaws.com/ejholmes.github.com/hpi95.png)
-
 ## Setup
 
 **TODO**
