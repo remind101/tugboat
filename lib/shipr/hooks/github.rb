@@ -16,10 +16,6 @@ module Shipr
         def deployments_service
           Shipr.deployments_service
         end
-
-        def notifier
-          Shipr.configuration.notifier
-        end
       end
 
       helpers do
@@ -46,9 +42,6 @@ module Shipr
             description: params.deployment.description
           )
           present job
-        elsif event.deployment_status?
-          notifier.notify Shipr::Notifier::Payload.new_from_github params
-          present({})
         else
           {}
         end

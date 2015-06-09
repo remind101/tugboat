@@ -41,13 +41,6 @@ module Shipr
     autoload :GitHub, 'shipr/hooks/github'
   end
 
-  module Notifier
-    autoload :Payload, 'shipr/notifier/payload'
-    autoload :Base,    'shipr/notifier/base'
-    autoload :Slack,   'shipr/notifier/slack'
-    autoload :Null,    'shipr/notifier/null'
-  end
-
   module GitHub
     autoload :Client,               'shipr/github/client'
     autoload :Deployment,           'shipr/github/deployment'

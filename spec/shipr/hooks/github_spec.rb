@@ -47,19 +47,6 @@ describe Shipr::Hooks::GitHub do
           verify_response 200
         end
       end
-
-      context 'when the event is a deployment_status' do
-        before do
-          header 'X-Github-Event', 'deployment_status'
-        end
-
-        it 'does not create a deploy' do
-          post '/', File.read(File.expand_path('../../../fixtures/deployment_status.json', __FILE__))
-          verify format: :json do
-            Shipr.configuration.notifier.payloads.to_json
-          end
-        end
-      end
     end
 
     context 'when not authenticated' do

@@ -297,3 +297,6 @@ DEPENDENCIES
   vcr
   warden
   webmock
+
+BUNDLED WITH
+   1.10.0
