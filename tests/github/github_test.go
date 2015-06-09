@@ -10,7 +10,6 @@ import (
 	"time"
 
 	"github.com/remind101/tugboat"
-	"github.com/remind101/tugboat/notifier"
 	"github.com/remind101/tugboat/pkg/hooker"
 	"github.com/remind101/tugboat/provider/fake"
 	"github.com/remind101/tugboat/server"
@@ -82,7 +81,7 @@ func NewTestClient(t testing.TB) (*hooker.Client, *tugboat.Tugboat, *httptest.Se
 		t.Fatal(err)
 	}
 
-	s := httptest.NewServer(server.New(tug, &notifier.NullNotifier{}, server.Config{}))
+	s := httptest.NewServer(server.New(tug, server.Config{}))
 	c := hooker.NewClient(nil)
 	c.URL = s.URL
 

@@ -1,16 +1,12 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
-	"net/url"
 	"strings"
 
 	"github.com/codegangsta/cli"
 	"github.com/remind101/tugboat"
-	"github.com/remind101/tugboat/notifier"
-	"github.com/remind101/tugboat/notifier/slack"
 	"github.com/remind101/tugboat/server"
 )
 
@@ -82,12 +78,6 @@ var cmdServer = cli.Command{
 			EnvVar: "TUGBOAT_COOKIE_SECRET",
 		},
 		cli.StringFlag{
-			Name:   "notifier",
-			Value:  "",
-			Usage:  "A notifier to use to handle deployment status webhooks.",
-			EnvVar: "TUGBOAT_NOTIFIER",
-		},
-		cli.StringFlag{
 			Name:   "environment",
 			Value:  "",
 			Usage:  "If a value is provided, only deploys if the environment matches the given value.",
@@ -108,18 +98,13 @@ func runServer(c *cli.Context) {
 
 	logProviders(tug.Providers)
 
-	n, err := newNotifier(c.String("notifier"))
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	s := newServer(tug, n, c)
+	s := newServer(tug, c)
 
 	log.Printf("Starting on port %s", port)
 	log.Fatal(http.ListenAndServe(":"+port, s))
 }
 
-func newServer(tug *tugboat.Tugboat, notifier notifier.Notifier, c *cli.Context) http.Handler {
+func newServer(tug *tugboat.Tugboat, c *cli.Context) http.Handler {
 	config := server.Config{}
 	config.GitHub.Secret = c.String("github.secret")
 	config.GitHub.ClientID = c.String("github.client_id")
@@ -134,25 +119,7 @@ func newServer(tug *tugboat.Tugboat, notifier notifier.Notifier, c *cli.Context)
 	config.Pusher.Key = cd.Key
 	config.Pusher.Secret = cd.Secret
 
-	return server.New(tug, notifier, config)
-}
-
-func newNotifier(uri string) (notifier.Notifier, error) {
-	if uri == "" {
-		return &notifier.NullNotifier{}, nil
-	}
-
-	u, err := url.Parse(uri)
-	if err != nil {
-		return nil, err
-	}
-
-	switch {
-	case u.Host == "hooks.slack.com":
-		return slack.New(u.String()), nil
-	default:
-		return nil, fmt.Errorf("no notifier: %s", u.Scheme)
-	}
+	return server.New(tug, config)
 }
 
 func readKey(secret string) [32]byte {

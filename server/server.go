@@ -7,7 +7,6 @@ import (
 	"github.com/kr/githubauth"
 	"github.com/remind101/tugboat"
 	"github.com/remind101/tugboat/frontend"
-	"github.com/remind101/tugboat/notifier"
 	"github.com/remind101/tugboat/pkg/pusherauth"
 	"github.com/remind101/tugboat/server/api"
 	"github.com/remind101/tugboat/server/github"
@@ -26,14 +25,14 @@ type Config struct {
 	CookieSecret [32]byte
 }
 
-func New(tug *tugboat.Tugboat, notifier notifier.Notifier, config Config) http.Handler {
+func New(tug *tugboat.Tugboat, config Config) http.Handler {
 	r := mux.NewRouter()
 
 	// auth is a function that can wrap an http.Handler with authentication.
 	auth := newAuthenticator(config)
 
 	// Mount GitHub webhooks
-	g := github.New(tug, notifier, config.GitHub.Secret)
+	g := github.New(tug, config.GitHub.Secret)
 	r.MatcherFunc(githubWebhook).Handler(g)
 
 	// Mount the API.

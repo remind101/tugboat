@@ -8,16 +8,14 @@ import (
 
 	"github.com/ejholmes/hookshot"
 	"github.com/remind101/tugboat"
-	"github.com/remind101/tugboat/notifier"
 	"golang.org/x/net/context"
 )
 
-func New(tug *tugboat.Tugboat, notifier notifier.Notifier, secret string) http.Handler {
+func New(tug *tugboat.Tugboat, secret string) http.Handler {
 	r := hookshot.NewRouter()
 
 	r.Handle("ping", http.HandlerFunc(Ping))
 	r.Handle("deployment", hookshot.Authorize(&DeploymentHandler{tugboat: tug}, secret))
-	r.Handle("deployment_status", hookshot.Authorize(&DeploymentStatusHandler{notifier: notifier}, secret))
 
 	return r
 }
@@ -77,51 +75,4 @@ func (h *DeploymentHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	for _, d := range ds {
 		fmt.Fprintf(w, "Deployment: %s\n", d.ID)
 	}
-}
-
-type DeploymentStatusPayload struct {
-	Deployment       Deployment `json:"deployment"`
-	DeploymentStatus struct {
-		State       string `json:"state"`
-		TargetURL   string `json:"target_url"`
-		Description string `json:"description"`
-	} `json:"deployment_status"`
-	Repository Repository `json:"repository"`
-}
-
-type DeploymentStatusHandler struct {
-	notifier notifier.Notifier
-}
-
-func (h *DeploymentStatusHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	var p DeploymentStatusPayload
-
-	if err := json.NewDecoder(r.Body).Decode(&p); err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-
-	// For now, if a "user" is provided in the payload use that instead of
-	// the github creator.
-	user := p.Deployment.Creator.Login
-	if u, ok := p.Deployment.Payload["user"].(string); ok {
-		user = u
-	}
-
-	if err := h.notifier.Notify(&notifier.Notification{
-		ID:          p.Deployment.ID,
-		TargetURL:   p.DeploymentStatus.TargetURL,
-		State:       p.DeploymentStatus.State,
-		Description: p.DeploymentStatus.Description,
-		Repo:        p.Repository.FullName,
-		User:        user,
-		Sha:         p.Deployment.Sha,
-		Ref:         p.Deployment.Ref,
-		Environment: p.Deployment.Environment,
-	}); err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-
-	io.WriteString(w, "Ok\n")
 }
