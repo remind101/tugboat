@@ -230,40 +230,51 @@ func Deploy(ctx context.Context, opts DeployOpts, p Provider, t client) (deploym
 		return
 	}
 
-	defer func() {
-		t.UpdateStatus(deployment, statusUpdate(err))
-		return
-	}()
-
 	r, w := io.Pipe()
 
 	go func() {
 		t.WriteLogs(deployment, r)
 	}()
 
-	err = p.Deploy(ctx, deployment, w)
+	t.UpdateStatus(deployment, statusUpdate(func() error {
+		err = p.Deploy(ctx, deployment, w)
+		return err
+	}))
+
 	return
 }
 
-func statusUpdate(err error) (update StatusUpdate) {
-	if v := recover(); v != nil {
-		err = fmt.Errorf("%v", v)
+// statusUpdate calls fn and, depending on the error or panic, returns an
+// appropriate StatusUpdate.
+func statusUpdate(fn func() error) (update StatusUpdate) {
+	var err error
 
-		if v, ok := v.(error); ok {
-			err = v
+	defer func() {
+		if v := recover(); v != nil {
+			err = fmt.Errorf("%v", v)
+
+			if v, ok := v.(error); ok {
+				err = v
+			}
 		}
-	}
 
-	if err != nil {
+		// No error or panic. Success!
+		if err == nil {
+			update.Status = StatusSucceeded
+			return
+		}
+
+		// ErrFailed is returned when the deployment failed and the user
+		// should check the deployment logs.
 		if err == ErrFailed {
 			update.Status = StatusFailed
 		} else {
 			update.Status = StatusErrored
 			update.Error = &err
 		}
-	} else {
-		update.Status = StatusSucceeded
-	}
+	}()
+
+	err = fn()
 
 	return
 }
