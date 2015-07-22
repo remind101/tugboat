@@ -15,9 +15,6 @@ type Client struct {
 	// URL is the base url for the Tugboat API.
 	URL string
 
-	// Provider authentication token.
-	Token string
-
 	client *http.Client
 }
 
@@ -115,7 +112,6 @@ func (c *Client) NewRequest(method, path string, v interface{}) (*http.Request, 
 		return req, err
 	}
 	req.Header.Set("Accept", AcceptHeader)
-	req.SetBasicAuth(c.Token, "")
 
 	return req, err
 }

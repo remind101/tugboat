@@ -16,8 +16,7 @@ import (
 var (
 	payload = flag.String("payload", "tests/api/test-fixtures/deployment.json", "")
 	secret  = flag.String("secret", "", "")
-	url     = flag.String("url", "http://localhost:8080", "")
-	token   = flag.String("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJQcm92aWRlciI6ImZha2UifQ.zmy2Wq7Zbol7N1X-R7WX5R4E2i7uH_Arv7FRR2UwnDE", "")
+	url     = flag.String("url", "http://eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJQcm92aWRlciI6ImZha2UifQ.zmy2Wq7Zbol7N1X-R7WX5R4E2i7uH_Arv7FRR2UwnDE:@localhost:8080", "")
 	fail    = flag.Bool("fail", false, "Whether the deployment should fail with an error")
 )
 
@@ -37,7 +36,6 @@ func deploy() error {
 
 	c := tugboat.NewClient(nil)
 	c.URL = *url
-	c.Token = *token
 
 	opts, err := tugboat.NewDeployOptsFromReader(bytes.NewReader(raw))
 	if err != nil {

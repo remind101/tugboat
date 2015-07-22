@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http/httptest"
+	"net/url"
 	"strings"
 	"testing"
 
@@ -46,7 +47,13 @@ func TestDeploymentsCreate(t *testing.T) {
 func TestDeploymentsCreate_Unauthorized(t *testing.T) {
 	c, _, s := newTestClient(t)
 	defer s.Close()
-	c.Token = "Foo"
+
+	u, err := url.Parse(c.URL)
+	if err != nil {
+		t.Fatal(err)
+	}
+	u.User = url.User("")
+	c.URL = u.String()
 
 	if _, err := createDeployment(c); err == nil {
 		t.Fatal("Expected request to not be authorized")
@@ -116,8 +123,12 @@ func newTestClient(t testing.TB) (*tugboat.Client, *tugboat.Tugboat, *httptest.S
 
 	s := httptest.NewServer(tugboattest.NewServer(tug))
 	c := tugboat.NewClient(nil)
-	c.URL = s.URL
-	c.Token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJQcm92aWRlciI6Imhlcm9rdSJ9.HVBoIvRnGKR87odScLnkFWHi4pvSI8V7LJpjh00njBY"
+	u, err := url.Parse(s.URL)
+	if err != nil {
+		t.Fatal(err)
+	}
+	u.User = url.User("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJQcm92aWRlciI6Imhlcm9rdSJ9.HVBoIvRnGKR87odScLnkFWHi4pvSI8V7LJpjh00njBY")
+	c.URL = u.String()
 
 	return c, tug, s
 }
