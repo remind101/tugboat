@@ -167,6 +167,7 @@ func (t *Tugboat) Logs(d *Deployment) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	fmt.Println(lines)
 
 	out := ""
 	for _, line := range lines {
