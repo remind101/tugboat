@@ -7,7 +7,8 @@ import (
 	"io"
 	"time"
 
-	gh "github.com/remind101/tugboat/server/api/github"
+	"github.com/ejholmes/hookshot/events"
+
 	gorp "gopkg.in/gorp.v1"
 )
 
@@ -44,7 +45,7 @@ type DeployOpts struct {
 // NewDeployOptsFromWebhook instantiates a new DeployOpts instance based on the
 // values inside a `deployment` event webhook payload.
 func NewDeployOptsFromReader(r io.Reader) (DeployOpts, error) {
-	var f gh.DeploymentPayload
+	var f events.Deployment
 
 	if err := json.NewDecoder(r).Decode(&f); err != nil {
 		return DeployOpts{}, err
