@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"os"
 
 	"golang.org/x/net/context"
 
@@ -154,7 +155,7 @@ func (t *Tugboat) WriteLogs(d *Deployment, r io.Reader) error {
 		deploymentID:  d.ID,
 	}
 
-	_, err := io.Copy(w, r)
+	_, err := io.Copy(io.MultiWriter(os.Stdout, w), r)
 	return err
 }
 
