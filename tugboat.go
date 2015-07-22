@@ -189,7 +189,7 @@ func (t *Tugboat) Deploy(ctx context.Context, opts DeployOpts) ([]*Deployment, e
 	var deployments []*Deployment
 
 	for _, p := range ps {
-		d, err := Deploy(ctx, opts, p, t)
+		d, err := deploy(ctx, opts, p, t)
 		if err != nil {
 			return nil, err
 		}
@@ -216,7 +216,7 @@ type client interface {
 // 2. Performs the deployment using the Provider.
 // 3. Writes the log output to the deployment.
 // 4. Updates the status depending on the eror returned from `fn`.
-func Deploy(ctx context.Context, opts DeployOpts, p Provider, t client) (deployment *Deployment, err error) {
+func deploy(ctx context.Context, opts DeployOpts, p Provider, t client) (deployment *Deployment, err error) {
 	opts.Provider = p.Name()
 
 	deployment, err = t.DeploymentsCreate(opts)

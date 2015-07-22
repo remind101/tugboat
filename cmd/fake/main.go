@@ -42,7 +42,7 @@ func deploy() error {
 		return err
 	}
 
-	tugboat.Deploy(context.Background(), opts, tugboat.ProviderFunc(perform), c)
+	c.Deploy(context.Background(), opts, tugboat.ProviderFunc(perform))
 
 	return nil
 }

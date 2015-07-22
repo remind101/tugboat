@@ -7,6 +7,8 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+
+	"golang.org/x/net/context"
 )
 
 const AcceptHeader = "application/vnd.tugboat+json; version=1"
@@ -27,6 +29,11 @@ func NewClient(c *http.Client) *Client {
 	return &Client{
 		client: c,
 	}
+}
+
+// Deploy performs a deployment using a Provider.
+func (c *Client) Deploy(ctx context.Context, opts DeployOpts, p Provider) (*Deployment, error) {
+	return deploy(ctx, opts, p, c)
 }
 
 // DeploymentsCreate creates a deployment.

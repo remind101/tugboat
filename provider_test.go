@@ -33,9 +33,9 @@ func Example() {
 		Repo:        "remind101/acme-inc",
 	}
 
-	// Calling tugboat.Deploy will perform the deployment and record the
+	// Calling Deploy will perform the deployment and record the
 	// logs.
-	if _, err := tugboat.Deploy(context.TODO(), opts, tugboat.ProviderFunc(deploy), c); err != nil {
+	if _, err := c.Deploy(context.TODO(), opts, tugboat.ProviderFunc(deploy)); err != nil {
 		log.Fatal(err)
 	}
 }
