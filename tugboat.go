@@ -232,17 +232,23 @@ func Deploy(ctx context.Context, opts DeployOpts, p Provider, t client) (deploym
 
 	r, w := io.Pipe()
 
-	logsDone := make(chan struct{}, 1)
+	logsDone := make(chan struct{})
 	go func() {
+		fmt.Println("Reading logs")
 		// we're ignoring err here.
 		_ = t.WriteLogs(deployment, r)
+		fmt.Println("Logs done")
 		close(logsDone)
 	}()
+
+	fmt.Println("Deployment started")
 
 	t.UpdateStatus(deployment, statusUpdate(func() error {
 		err = p.Deploy(ctx, deployment, w)
 		return err
 	}))
+
+	fmt.Println("Deployment done")
 
 	w.Close()
 
