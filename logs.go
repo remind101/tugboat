@@ -27,8 +27,9 @@ type LogLine struct {
 
 // LogLinesCreate inserts a LogLine into the store.
 func (s *store) LogLinesCreate(l *LogLine) error {
-	fmt.Println(l)
-	return s.db.Insert(l)
+	err := s.db.Insert(l)
+	fmt.Println(err)
+	return err
 }
 
 // LogLines returns a slice of all LogLines for a given Deployment.
