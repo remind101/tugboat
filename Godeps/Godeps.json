@@ -26,8 +26,17 @@
 			"Rev": "1dd3ab0ff59e13f5b73dcbf70703710aebe50d2f"
 		},
 		{
+			"ImportPath": "github.com/dgrijalva/jwt-go",
+			"Comment": "v2.0.0-3-gc0da491",
+			"Rev": "c0da49162251c81124e34f3e7885527a091dacd5"
+		},
+		{
+			"ImportPath": "github.com/ejholmes/flock",
+			"Rev": "3c37e99d21fd913bd81c35b3c2f661cd04f2b1e8"
+		},
+		{
 			"ImportPath": "github.com/ejholmes/hookshot",
-			"Rev": "a37e081f0c1182305786466ecfa4df2317bc3903"
+			"Rev": "70f39e4f31e273e8a74c801d6cced84fd775e5fa"
 		},
 		{
 			"ImportPath": "github.com/go-sql-driver/mysql",
