@@ -2,69 +2,8 @@ package tugboat
 
 import (
 	"errors"
-	"io"
-	"io/ioutil"
 	"testing"
-
-	"golang.org/x/net/context"
 )
-
-func TestDeploy(t *testing.T) {
-	tests := []struct {
-		fn     ProviderFunc
-		status DeploymentStatus
-		err    string
-	}{
-		{
-			fn: func(ctx context.Context, d *Deployment, w io.Writer) error {
-				return nil
-			},
-			status: StatusSucceeded,
-		},
-		{
-			fn: func(ctx context.Context, d *Deployment, w io.Writer) error {
-				return ErrFailed
-			},
-			status: StatusFailed,
-		},
-		{
-			fn: func(ctx context.Context, d *Deployment, w io.Writer) error {
-				return errors.New("boom")
-			},
-			status: StatusErrored,
-			err:    "boom",
-		},
-		{
-			fn: func(ctx context.Context, d *Deployment, w io.Writer) error {
-				panic("boom")
-			},
-			status: StatusErrored,
-			err:    "boom",
-		},
-		{
-			fn: func(ctx context.Context, d *Deployment, w io.Writer) error {
-				panic(errors.New("boom"))
-			},
-			status: StatusErrored,
-			err:    "boom",
-		},
-	}
-
-	for i, tt := range tests {
-		d := &Deployment{}
-		w := ioutil.Discard
-
-		deploy(context.Background(), d, w, tt.fn)
-
-		if got, want := d.Status, tt.status; got != want {
-			t.Fatalf("#%d: Status => %s; want %s", i, got, want)
-		}
-
-		if got, want := d.Error, tt.err; got != want {
-			t.Fatalf("Error => %s; want %s", got, want)
-		}
-	}
-}
 
 func TestDeploymentStarted(t *testing.T) {
 	d := &Deployment{}

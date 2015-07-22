@@ -1,29 +1,96 @@
 # [Tugboat](https://github.com/ejholmes/tugboat) [![Build Status](https://travis-ci.org/remind101/tugboat.svg?branch=master)](https://travis-ci.org/remind101/tugboat)
 
-Tugboat is an API and AngularJS client for deploying GitHub repos using the [GitHub Deployments API](http://developer.github.com/v3/repos/deployments/).
+Tugboat is an API and AngularJS client for aggregating deployments of GitHub repos.
 
 ![](https://s3.amazonaws.com/ejholmes.github.com/ioiPx.png)
 
-## What happens?
-
-1. You trigger a deploy via GitHub (e.g. `POST https://api.github.com/repos/ejholmes/acme-inc/deployments`)
-2. GitHub sends Tugboat a POST request with the deployment event.
-3. Tugboat deploys the repo using a provider (e.g. To Heroku).
-
-## Why?
-
-The main goal is to make it easier to create tooling for deploying. At [Remind](https://remind.com)
-we like to deploy all of our services via Hubot and Slack. If you're using Hubot, you can use
-the [hubot-deploy](https://github.com/remind101/hubot-deploy) script or the [deploy CLI](https://github.com/remind101/deploy)
-to create GitHub Deployments.
-
 ## Providers
 
-Tugboat supports the concept of "provider" backends that control what happens
-when Tugboat gets a deployment event from GitHub. Currently, the following
-providers are supported.
+Tugboat by itself isn't all that exciting; it won't perform deployments for you, but it does provide an API for deployment providers to hook into.
 
-* **Heroku**: This provider will deploy the repo to Heroku using the [Platform API](https://devcenter.heroku.com/articles/platform-api-reference#build).
+Writing your own providers is really simple and you can write them in any language that you want.
+
+### Provider API
+
+Tugboat exposes an API for registering deployments, add logs, and updating the status. For an example of how to create an external provider with Go, see [provider_test.go](./provider_test.go).
+
+---
+
+#### Authorization
+
+The API expects the `user` part of a basic auth `Authorization` header to be a provider auth token. You can generate a provider auth token using the following:
+
+```console
+$ tugboat tokens create <provider>
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJQcm92aWRlciI6ImZvbyJ9.UYMrZD7cgBdeEXLf11nwEiZpUI2DuOdRsGOZyG2SluU
+```
+
+#### Create Deployment
+
+Creates a new Deployment within tugboat. In general, this would include a post body extracted from a GitHub `deployment` event webhook payload.
+
+The response from this endpoint will be a `Deployment` resource.
+
+```
+POST /deployments
+```
+
+**Example Request**
+
+```json
+{
+  "ID": 1234,
+  "Sha": "abcd...xyz",
+  "Ref": "master"
+}
+```
+
+**Example Response**
+
+```json
+{
+  "ID": "01234567-89ab-cdef-0123-456789abcdef",
+  "Repo": "remind101/r101-api",
+  "Token": "01234567-89ab-cdef-0123-456789abcdef"
+}
+```
+
+---
+
+#### Add Log Lines
+
+This adds lines of logs to the deployment. You can simply stream your logs and they will be added as they come in. Logs show up automatically in the UI via pusher events.
+
+```
+POST /deployments/:id/logs
+```
+
+**Example Request**
+
+```
+Authorization: dXNlcjo=\n
+
+Deploying to production
+Deployed
+```
+
+---
+
+#### Update Status
+
+Updates the status of the deployment. The `status` field should be one of `succeeded`, `failed` or `errored`. If the `status` is `errored` then you can provide an `error` field with details about the error. This will also update the status of the deployment within GitHub itself.
+
+```
+POST /deployments/:id/status
+```
+
+**Example Request**
+
+```json
+{
+  "status": "succeeded"
+}
+```
 
 ## Setup
 

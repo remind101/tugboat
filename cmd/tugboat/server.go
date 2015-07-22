@@ -17,6 +17,7 @@ var cmdServer = cli.Command{
 	Action:    runServer,
 	Flags: []cli.Flag{
 		flagDB,
+		flagProviderSecret,
 		cli.StringFlag{
 			Name:   "base.url",
 			Value:  "http://localhost:8080",

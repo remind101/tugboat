@@ -5,18 +5,23 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http/httptest"
-	"os"
 	"testing"
 	"time"
 
 	"github.com/remind101/tugboat"
 	"github.com/remind101/tugboat/pkg/hooker"
 	"github.com/remind101/tugboat/provider/fake"
-	"github.com/remind101/tugboat/server"
+	"github.com/remind101/tugboat/tugboattest"
 )
 
+// Run the tests with tugboattest.Run, which will lock access to the database
+// since it can't be shared by parallel tests.
+func TestMain(m *testing.M) {
+	tugboattest.Run(m)
+}
+
 func TestDeployment(t *testing.T) {
-	c, tug, s := NewTestClient(t)
+	c, tug, s := newTestClient(t)
 	defer s.Close()
 
 	raw := deploymentPayload(t, "ok")
@@ -31,7 +36,7 @@ func TestDeployment(t *testing.T) {
 		for {
 			<-time.After(1 * time.Second)
 
-			ds, err := tug.DeploymentsRecent()
+			ds, err := tug.Deployments(tugboat.DeploymentsQuery{Limit: 30})
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -64,26 +69,15 @@ func TestDeployment(t *testing.T) {
 	}
 }
 
-// NewTestClient will return a new heroku.Client that's configured to interact
+// newTestClient will return a new heroku.Client that's configured to interact
 // with a instance of the empire HTTP server.
-func NewTestClient(t testing.TB) (*hooker.Client, *tugboat.Tugboat, *httptest.Server) {
-	config := tugboat.Config{}
-	config.DB = "postgres://localhost/tugboat?sslmode=disable"
-	config.GitHub.Token = os.Getenv("TUGBOAT_GITHUB_TOKEN")
+func newTestClient(t testing.TB) (*hooker.Client, *tugboat.Tugboat, *httptest.Server) {
+	tug := tugboattest.New(t)
 
-	tug, err := tugboat.New(config)
-	if err != nil {
-		t.Fatal(err)
-	}
-	tug.Providers = []tugboat.Provider{fake.NewProvider()}
-
-	if err := tug.Reset(); err != nil {
-		t.Fatal(err)
-	}
-
-	s := httptest.NewServer(server.New(tug, server.Config{}))
+	s := httptest.NewServer(tugboattest.NewServer(tug))
 	c := hooker.NewClient(nil)
 	c.URL = s.URL
+	c.Secret = tugboattest.GitHubSecret
 
 	return c, tug, s
 }
