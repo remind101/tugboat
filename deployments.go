@@ -42,23 +42,25 @@ type DeployOpts struct {
 	Provider string
 }
 
+// NewDeployOptsFromEvent instantiates a new DeployOpts instance from a
+// Deployment event.
+func NewDeployOptsFromEvent(e events.Deployment) DeployOpts {
+	return DeployOpts{
+		ID:          e.Deployment.ID,
+		Sha:         e.Deployment.Sha,
+		Ref:         e.Deployment.Ref,
+		Environment: e.Deployment.Environment,
+		Description: e.Deployment.Description,
+		Repo:        e.Repository.FullName,
+	}
+}
+
 // NewDeployOptsFromWebhook instantiates a new DeployOpts instance based on the
 // values inside a `deployment` event webhook payload.
 func NewDeployOptsFromReader(r io.Reader) (DeployOpts, error) {
-	var f events.Deployment
-
-	if err := json.NewDecoder(r).Decode(&f); err != nil {
-		return DeployOpts{}, err
-	}
-
-	return DeployOpts{
-		ID:          f.Deployment.ID,
-		Sha:         f.Deployment.Sha,
-		Ref:         f.Deployment.Ref,
-		Environment: f.Deployment.Environment,
-		Description: f.Deployment.Description,
-		Repo:        f.Repository.FullName,
-	}, nil
+	var e events.Deployment
+	err := json.NewDecoder(r).Decode(&e)
+	return NewDeployOptsFromEvent(e), err
 }
 
 // StatusUpdate is used to update the status of a Deployment.
