@@ -5,13 +5,11 @@ import (
 	"fmt"
 	"io"
 
-	"golang.org/x/net/context"
-
 	"code.google.com/p/goauth2/oauth"
-
 	"github.com/google/go-github/github"
 	"github.com/joshk/pusher"
 	"github.com/mattes/migrate/migrate"
+	"golang.org/x/net/context"
 )
 
 // BaseURL is the baseURL where tugboat is running.

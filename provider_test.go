@@ -4,9 +4,8 @@ import (
 	"io"
 	"log"
 
-	"golang.org/x/net/context"
-
 	"github.com/remind101/tugboat"
+	"golang.org/x/net/context"
 )
 
 func deploy(ctx context.Context, d *tugboat.Deployment, w io.Writer) error {

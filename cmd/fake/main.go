@@ -9,9 +9,8 @@ import (
 	"log"
 	"os"
 
-	"golang.org/x/net/context"
-
 	"github.com/remind101/tugboat"
+	"golang.org/x/net/context"
 )
 
 var (
