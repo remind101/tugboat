@@ -232,14 +232,22 @@ func Deploy(ctx context.Context, opts DeployOpts, p Provider, t client) (deploym
 
 	r, w := io.Pipe()
 
+	logsDone := make(chan struct{}, 1)
 	go func() {
-		t.WriteLogs(deployment, r)
+		// we're ignoring err here.
+		_ = t.WriteLogs(deployment, r)
+		close(logsDone)
 	}()
 
 	t.UpdateStatus(deployment, statusUpdate(func() error {
 		err = p.Deploy(ctx, deployment, w)
 		return err
 	}))
+
+	w.Close()
+
+	// Wait for logs to finish streaming.
+	<-logsDone
 
 	return
 }
