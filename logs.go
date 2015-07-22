@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io"
 	"strings"
 	"time"
@@ -26,6 +27,7 @@ type LogLine struct {
 
 // LogLinesCreate inserts a LogLine into the store.
 func (s *store) LogLinesCreate(l *LogLine) error {
+	fmt.Println(l)
 	return s.db.Insert(l)
 }
 
