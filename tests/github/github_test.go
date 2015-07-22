@@ -36,6 +36,7 @@ func TestDeployment(t *testing.T) {
 				t.Fatal(err)
 			}
 
+			fmt.Printf("Total deployments: %d\n", len(ds))
 			if len(ds) != 0 {
 				d := ds[0]
 
