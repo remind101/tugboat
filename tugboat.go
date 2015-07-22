@@ -189,7 +189,7 @@ func (t *Tugboat) Deploy(ctx context.Context, opts DeployOpts) ([]*Deployment, e
 	var deployments []*Deployment
 
 	for _, p := range ps {
-		d, err := t.deploy(ctx, opts, p)
+		d, err := Deploy(ctx, opts, p, t)
 		if err != nil {
 			return nil, err
 		}
@@ -198,10 +198,6 @@ func (t *Tugboat) Deploy(ctx context.Context, opts DeployOpts) ([]*Deployment, e
 	}
 
 	return deployments, nil
-}
-
-func (t *Tugboat) deploy(ctx context.Context, opts DeployOpts, p Provider) (*Deployment, error) {
-	return Deploy(ctx, opts, p, t)
 }
 
 func (t *Tugboat) Reset() error {
