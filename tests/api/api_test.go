@@ -3,16 +3,19 @@ package api_test
 import (
 	"fmt"
 	"io/ioutil"
-	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
 
 	"github.com/remind101/tugboat"
-	"github.com/remind101/tugboat/server"
+	"github.com/remind101/tugboat/tugboattest"
 )
 
-const githubSecret = "abcd"
+// Run the tests with tugboattest.Run, which will lock access to the database
+// since it can't be shared by parallel tests.
+func TestMain(m *testing.M) {
+	tugboattest.Run(m)
+}
 
 func TestDeploymentsCreate(t *testing.T) {
 	c, _, s := newTestClient(t)
@@ -109,30 +112,14 @@ func createDeployment(c *tugboat.Client) (*tugboat.Deployment, error) {
 // newTestClient will return a new heroku.Client that's configured to interact
 // with a instance of the empire HTTP server.
 func newTestClient(t testing.TB) (*tugboat.Client, *tugboat.Tugboat, *httptest.Server) {
-	config := tugboat.Config{}
-	config.DB = "postgres://localhost/tugboat?sslmode=disable"
+	tug := tugboattest.New(t)
 
-	tug, err := tugboat.New(config)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	if err := tug.Reset(); err != nil {
-		t.Fatal(err)
-	}
-
-	s := httptest.NewServer(newServer(tug))
+	s := httptest.NewServer(tugboattest.NewServer(tug))
 	c := tugboat.NewClient(nil)
 	c.URL = s.URL
 	c.Token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJQcm92aWRlciI6Imhlcm9rdSJ9.HVBoIvRnGKR87odScLnkFWHi4pvSI8V7LJpjh00njBY"
 
 	return c, tug, s
-}
-
-func newServer(tug *tugboat.Tugboat) http.Handler {
-	config := server.Config{}
-	config.GitHub.Secret = githubSecret
-	return server.New(tug, config)
 }
 
 func deploymentPayload(t testing.TB, fixture string) []byte {
