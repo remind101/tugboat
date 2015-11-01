@@ -2,6 +2,7 @@
 
 set -e
 
+echo "hosts: files dns" >> /etc/nsswitch.conf
 echo "@edge-community http://dl-4.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
 packages="curl git go@edge-community"
 
