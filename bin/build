@@ -5,7 +5,7 @@ set -e
 echo "@edge http://dl-4.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories
 packages="curl git go@edge"
 
-apk add --update curl git go@edge
+apk add --update $packages
 
 GOPATH=/go go get github.com/tools/godep
 cd /go/src/github.com/remind101/tugboat
