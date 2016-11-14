@@ -9,7 +9,8 @@
     'app.directives',
     'app.services',
     'app.filters',
-    'app.controllers'
+    'app.controllers',
+    'angularMoment'
   ]);
 
   module.config(function($locationProvider, $stateProvider) {
