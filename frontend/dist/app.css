@@ -18,8 +18,8 @@
   animation-delay: -1.1s; }
 
 .spinner .rect3 {
-  -webkit-animation-delay: -1s;
-  animation-delay: -1s; }
+  -webkit-animation-delay: -1.0s;
+  animation-delay: -1.0s; }
 
 .spinner .rect4 {
   -webkit-animation-delay: -0.9s;
@@ -32,7 +32,6 @@
 @-webkit-keyframes stretchdelay {
   0%, 40%, 100% {
     -webkit-transform: scaleY(0.4); }
-
   20% {
     -webkit-transform: scaleY(1); } }
 
@@ -40,7 +39,6 @@
   0%, 40%, 100% {
     transform: scaleY(0.4);
     -webkit-transform: scaleY(0.4); }
-
   20% {
     transform: scaleY(1);
     -webkit-transform: scaleY(1); } }
