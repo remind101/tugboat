@@ -157,34 +157,6 @@ module.run(['$templateCache', function($templateCache) {
     }
 })(Date);
 
-(function(module) {
-try {
-  module = angular.module('templates');
-} catch (e) {
-  module = angular.module('templates', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('header.html',
-    '\n' +
-    '<div class="navbar navbar-default navbar-static-top" id="header">\n' +
-    '  <div class="container">\n' +
-    '    <div class="navbar-header">\n' +
-    '      <a class="navbar-brand" href="" ui-sref="app.jobs.list">Tugboat</a>\n' +
-    '    </div>\n' +
-    '    <div class="navbar-collapse collapse">\n' +
-    '      <ul class="nav navbar-nav navbar-right">\n' +
-    '        <li class="user">\n' +
-    '        <a href="" ng-bind="user.username"></a>\n' +
-    '        <img class="gravatar" ng-src="{{user.gravatar}}">\n' +
-    '        </li>\n' +
-    '      </ul>\n' +
-    '    </div>\n' +
-    '  </div>\n' +
-    '</div>\n' +
-    '');
-}]);
-})();
-
 (function(angular) {
   'use strict';
 
@@ -196,7 +168,8 @@ module.run(['$templateCache', function($templateCache) {
     'app.directives',
     'app.services',
     'app.filters',
-    'app.controllers'
+    'app.controllers',
+    'angularMoment'
   ]);
 
   module.config(function($locationProvider, $stateProvider) {
@@ -263,8 +236,23 @@ try {
   module = angular.module('templates', []);
 }
 module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('jobs.html',
-    '<div ui-view></div>\n' +
+  $templateCache.put('header.html',
+    '\n' +
+    '<div class="navbar navbar-default navbar-static-top" id="header">\n' +
+    '  <div class="container">\n' +
+    '    <div class="navbar-header">\n' +
+    '      <a class="navbar-brand" href="" ui-sref="app.jobs.list">Tugboat</a>\n' +
+    '    </div>\n' +
+    '    <div class="navbar-collapse collapse">\n' +
+    '      <ul class="nav navbar-nav navbar-right">\n' +
+    '        <li class="user">\n' +
+    '        <a href="" ng-bind="user.username"></a>\n' +
+    '        <img class="gravatar" ng-src="{{user.gravatar}}">\n' +
+    '        </li>\n' +
+    '      </ul>\n' +
+    '    </div>\n' +
+    '  </div>\n' +
+    '</div>\n' +
     '');
 }]);
 })();
@@ -293,34 +281,8 @@ try {
   module = angular.module('templates', []);
 }
 module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('jobs/detail.html',
-    '<div class="job">\n' +
-    '  <header class="job__header">\n' +
-    '    <h1 class="job__status">\n' +
-    '      <span ng-class="{ \'is-queued\': job.isQueued(), \'is-started\': job.isStarted() }" ng-if="job.isQueued() || job.isStarted()">\n' +
-    '        <div class="spinner"></div>\n' +
-    '        <span ng-if="job.isQueued()">Queued</span>\n' +
-    '        <span ng-if="job.isStarted()">Deploying</span>\n' +
-    '      </span>\n' +
-    '      <span class="is-done" ng-if="job.isDeployed()">Deployed</span>\n' +
-    '      <span class="is-failed" ng-if="job.isFailed()">Failed</span>\n' +
-    '      <span class="is-errored" ng-if="job.isErrored()">Errored</span>\n' +
-    '    </h1>\n' +
-    '    <p class="job__destination">\n' +
-    '    <strong ng-bind="job.ref" title="{{ job.sha }}"></strong>\n' +
-    '    &#8674;\n' +
-    '    <strong ng-bind="job.environment"></strong>\n' +
-    '    </p>\n' +
-    '  </header>\n' +
-    '  <div class="job__not-started" ng-if="job.isQueued()">\n' +
-    '    <strong>Hang Tight!</strong>\n' +
-    '    Your logs should be showing up shortly\n' +
-    '  </div>\n' +
-    '  <div class="job__log" id="log" ng-bind-html="job.output | ansi" ng-if="!job.isQueued() && !job.isErrored()" sticky="job.output"></div>\n' +
-    '  <div class="job__error" ng-if="job.isErrored()">\n' +
-    '    <div class="alert alert-danger" ng-bind="job.error"></div>\n' +
-    '  </div>\n' +
-    '</div>\n' +
+  $templateCache.put('jobs.html',
+    '<div ui-view></div>\n' +
     '');
 }]);
 })();
@@ -400,6 +362,64 @@ try {
   module = angular.module('templates', []);
 }
 module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('jobs/detail.html',
+    '<div class="job">\n' +
+    '  <header class="job__header">\n' +
+    '    <h1 class="job__status">\n' +
+    '      <span ng-class="{ \'is-queued\': job.isQueued(), \'is-started\': job.isStarted() }" ng-if="job.isQueued() || job.isStarted()">\n' +
+    '        <div class="spinner"></div>\n' +
+    '        <span ng-if="job.isQueued()">Queued</span>\n' +
+    '        <span ng-if="job.isStarted()">Deploying</span>\n' +
+    '      </span>\n' +
+    '      <span class="is-done" ng-if="job.isDeployed()">Deployed</span>\n' +
+    '      <span class="is-failed" ng-if="job.isFailed()">Failed</span>\n' +
+    '      <span class="is-errored" ng-if="job.isErrored()">Errored</span>\n' +
+    '    </h1>\n' +
+    '    <p class="job__destination">\n' +
+    '    <strong ng-bind="job.ref" title="{{ job.sha }}"></strong>\n' +
+    '    &#8674;\n' +
+    '    <strong ng-bind="job.environment"></strong>\n' +
+    '    </p>\n' +
+    '  </header>\n' +
+    '  <div class="job__not-started" ng-if="job.isQueued()">\n' +
+    '    <strong>Hang Tight!</strong>\n' +
+    '    Your logs should be showing up shortly\n' +
+    '  </div>\n' +
+    '  <div class="job__log" id="log" ng-bind-html="job.output | ansi" ng-if="!job.isQueued() && !job.isErrored()" sticky="job.output"></div>\n' +
+    '  <div class="job__error" ng-if="job.isErrored()">\n' +
+    '    <div class="alert alert-danger" ng-bind="job.error"></div>\n' +
+    '  </div>\n' +
+    '</div>\n' +
+    '');
+}]);
+})();
+
+(function(angular) {
+  'use strict';
+
+  var module = angular.module('app.filters', [
+    'ng'
+  ]);
+
+  module.filter('ansi', function($window, $sce) {
+    var ansi_up = $window.ansi_up,
+        ansi_to_html = ansi_up.ansi_to_html,
+        escape_for_html = ansi_up.escape_for_html;
+
+    return function(input) {
+      return $sce.trustAsHtml(ansi_to_html(escape_for_html(input)));
+    };
+  });
+
+})(angular);
+
+(function(module) {
+try {
+  module = angular.module('templates');
+} catch (e) {
+  module = angular.module('templates', []);
+}
+module.run(['$templateCache', function($templateCache) {
   $templateCache.put('jobs/list.html',
     '<h2 class="page-header">Deploys</h2>\n' +
     '<table class="table table-striped">\n' +
@@ -427,33 +447,14 @@ module.run(['$templateCache', function($templateCache) {
     '    <td ng-bind="job.environment" title="{{ job.environment }}"></td>\n' +
     '    <td ng-bind="job.provider" title="{{ job.provider }}"></td>\n' +
     '    <td ng-bind="job.status"></td>\n' +
-    '    <td ng-bind="job.startedAt"></td>\n' +
-    '    <td ng-bind="job.completedAt"></td>\n' +
+    '    <td ng-bind="job.startedAt | amCalendar"></td>\n' +
+    '    <td ng-bind="job.completedAt | amCalendar"></td>\n' +
     '  </tr>\n' +
     '  </tbody>\n' +
     '</table>\n' +
     '');
 }]);
 })();
-
-(function(angular) {
-  'use strict';
-
-  var module = angular.module('app.filters', [
-    'ng'
-  ]);
-
-  module.filter('ansi', function($window, $sce) {
-    var ansi_up = $window.ansi_up,
-        ansi_to_html = ansi_up.ansi_to_html,
-        escape_for_html = ansi_up.escape_for_html;
-
-    return function(input) {
-      return $sce.trustAsHtml(ansi_to_html(escape_for_html(input)));
-    };
-  });
-
-})(angular);
 
 (function(angular) {
   'use strict';

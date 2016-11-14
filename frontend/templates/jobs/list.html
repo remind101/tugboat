@@ -24,8 +24,8 @@
     <td ng-bind="job.environment" title="{{ job.environment }}"></td>
     <td ng-bind="job.provider" title="{{ job.provider }}"></td>
     <td ng-bind="job.status"></td>
-    <td ng-bind="job.startedAt"></td>
-    <td ng-bind="job.completedAt"></td>
+    <td ng-bind="job.startedAt | amCalendar"></td>
+    <td ng-bind="job.completedAt | amCalendar"></td>
   </tr>
   </tbody>
 </table>
