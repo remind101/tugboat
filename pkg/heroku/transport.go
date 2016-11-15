@@ -10,7 +10,7 @@ import (
 	"os"
 	"strings"
 
-	"code.google.com/p/go-uuid/uuid"
+	"github.com/google/uuid"
 )
 
 var DefaultTransport = &Transport{}
@@ -78,7 +78,7 @@ func (t *Transport) RoundTrip(req *http.Request) (*http.Response, error) {
 	}
 
 	req.Header.Set("Accept", fmt.Sprintf("application/vnd.heroku+json; version=%s", version))
-	req.Header.Set("Request-Id", uuid.New())
+	req.Header.Set("Request-Id", uuid.New().String())
 	req.SetBasicAuth(t.Username, t.Password)
 	for k, v := range t.AdditionalHeaders {
 		req.Header[k] = v

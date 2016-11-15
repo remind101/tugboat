@@ -7,12 +7,11 @@ import (
 	"net/http"
 	"strings"
 
-	"code.google.com/p/goauth2/oauth"
-
 	"github.com/google/go-github/github"
 	"github.com/remind101/tugboat"
 	"github.com/remind101/tugboat/pkg/heroku"
 	"golang.org/x/net/context"
+	"golang.org/x/oauth2"
 )
 
 // Provider is a tugboat.Provider that can perform deployments using the Heroku
@@ -130,9 +129,7 @@ func newHerokuClient(token string) *heroku.Service {
 }
 
 func newGitHubClient(token string) *github.Client {
-	t := &oauth.Transport{
-		Token: &oauth.Token{AccessToken: token},
-	}
-
-	return github.NewClient(t.Client())
+	ts := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: token})
+	tc := oauth2.NewClient(oauth2.NoContext, ts)
+	return github.NewClient(tc)
 }
