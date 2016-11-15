@@ -12,13 +12,12 @@ checkout:
 dependencies:
   pre:
     - go install -a -race std
-    - go get github.com/tools/godep
     - createdb tugboat
-    - cd ~/.go_workspace/src/github.com/remind101/tugboat && godep go install ./cmd/...
+    - cd ~/.go_workspace/src/github.com/remind101/tugboat && go install ./cmd/...
     - cd ~/.go_workspace/src/github.com/remind101/tugboat && tugboat migrate
 
 
 test:
   override:
     - cd ~/.go_workspace/src/github.com/remind101/tugboat && make cmd
-    - cd ~/.go_workspace/src/github.com/remind101/tugboat && godep go test -race ./...
+    - cd ~/.go_workspace/src/github.com/remind101/tugboat && go test -race ./...
