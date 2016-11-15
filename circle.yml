@@ -20,4 +20,4 @@ dependencies:
 test:
   override:
     - cd ~/.go_workspace/src/github.com/remind101/tugboat && make cmd
-    - cd ~/.go_workspace/src/github.com/remind101/tugboat && go test -race ./...
+    - cd ~/.go_workspace/src/github.com/remind101/tugboat && make test

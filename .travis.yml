@@ -18,4 +18,4 @@ before_install:
 
 script:
   - make cmd
-  - go test -race ./...
+  - make test

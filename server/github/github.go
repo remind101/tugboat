@@ -34,6 +34,8 @@ func (h *DeploymentHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	fmt.Printf("opts: %#v\n", opts)
+
 	ds, err := h.tugboat.Deploy(context.TODO(), opts)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)

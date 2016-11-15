@@ -55,6 +55,8 @@ func (c *Client) Trigger(event string, v interface{}) (*http.Response, error) {
 	req.Header.Set("X-GitHub-Event", event)
 	req.Header.Set("X-Hub-Signature", fmt.Sprintf("sha1=%s", hookshot.Signature(b.Bytes(), c.Secret)))
 
+	fmt.Printf("request: %#v\n", req)
+	fmt.Printf("url: " + req.URL.String())
 	return c.Do(req)
 }
 
@@ -74,5 +76,6 @@ func (c *Client) Do(req *http.Request) (*http.Response, error) {
 		return resp, fmt.Errorf("hooker: request failed with status %d: %s", resp.StatusCode, raw)
 	}
 
+	fmt.Printf("resp: %#v\n", resp)
 	return resp, err
 }

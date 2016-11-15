@@ -6,3 +6,6 @@ cmd:
 
 docker:
 	docker build --no-cache -t remind101/tugboat .
+
+test:
+	go test -race $(shell go list ./... | grep -v /vendor/)

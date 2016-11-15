@@ -37,6 +37,7 @@ func TestDeployment(t *testing.T) {
 			<-time.After(1 * time.Second)
 
 			ds, err := tug.Deployments(tugboat.DeploymentsQuery{Limit: 30})
+			fmt.Printf("ds: %#v\n", ds)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -64,7 +65,7 @@ func TestDeployment(t *testing.T) {
 		if got, want := out, fake.DefaultScenarios["Ok"].Logs; got != want {
 			t.Fatalf("Logs => %s; want %s", got, want)
 		}
-	case <-time.After(2 * time.Second):
+	case <-time.After(10 * time.Second):
 		t.Fatal("timedout")
 	}
 }

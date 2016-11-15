@@ -12,6 +12,8 @@ import (
 	"golang.org/x/oauth2"
 )
 
+import _ "github.com/mattes/migrate/driver/postgres"
+
 // BaseURL is the baseURL where tugboat is running.
 var BaseURL string
 
@@ -125,6 +127,11 @@ func (t *Tugboat) DeploymentsUpdate(d *Deployment) error {
 
 // UpdateStatus updates the deployment using the given StatusUpdate
 func (t *Tugboat) UpdateStatus(d *Deployment, update StatusUpdate) error {
+	fmt.Println("UpdateStatus called!")
+
+	fmt.Printf("deployment: %#v\n", d)
+	fmt.Printf("StatusUpdate: %#v\n", update)
+
 	switch update.Status {
 	case StatusFailed:
 		d.Failed()
@@ -181,7 +188,15 @@ func (t *Tugboat) Deploy(ctx context.Context, opts DeployOpts) ([]*Deployment, e
 		}
 	}
 
+	fmt.Println("this is being hit!!!! DEPLOY!!!!")
+	fmt.Println("this is being hit!!!! DEPLOY!!!!")
+	fmt.Println("this is being hit!!!! DEPLOY!!!!")
+	fmt.Println("this is being hit!!!! DEPLOY!!!!")
+	fmt.Println("this is being hit!!!! DEPLOY!!!!")
+	fmt.Println("this is being hit!!!! DEPLOY!!!!")
+
 	ps := t.Providers
+	fmt.Printf("ps: %#v\n", ps)
 	if len(ps) == 0 {
 		ps = []Provider{&NullProvider{}}
 	}
@@ -235,6 +250,9 @@ func deploy(ctx context.Context, opts DeployOpts, p Provider, t client) (deploym
 		}
 		close(logsDone)
 	}()
+
+	fmt.Printf("provider: %#v\n", p)
+	fmt.Printf("client: %#v\n", t)
 
 	t.UpdateStatus(deployment, statusUpdate(func() error {
 		err = p.Deploy(ctx, deployment, w)
