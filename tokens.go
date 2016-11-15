@@ -84,7 +84,7 @@ func parseToken(secret []byte, token string) (*Token, error) {
 
 func tokenToJWT(token *Token) *jwt.Token {
 	t := jwt.New(jwt.SigningMethodHS256)
-	t.Claims["Provider"] = token.Provider
+	t.Claims = jwt.MapClaims{"Provider": token.Provider}
 	return t
 }
 
@@ -92,7 +92,7 @@ func tokenToJWT(token *Token) *jwt.Token {
 func jwtToToken(t *jwt.Token) (*Token, error) {
 	var token Token
 
-	if p, ok := t.Claims["Provider"].(string); ok {
+	if p, ok := t.Claims.(jwt.MapClaims)["Provider"].(string); ok {
 		token.Provider = p
 	} else {
 		return &token, errors.New("missing provider")
