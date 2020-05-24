@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"io"
 
-	"code.google.com/p/goauth2/oauth"
+	"golang.org/x/oauth2"
 	"github.com/google/go-github/github"
 	"github.com/joshk/pusher"
 	"github.com/mattes/migrate/migrate"
@@ -306,10 +306,22 @@ func newPusherClient(uri string) (Pusher, error) {
 	), nil
 }
 
-func newGitHubClient(token string) *github.Client {
-	t := &oauth.Transport{
-		Token: &oauth.Token{AccessToken: token},
-	}
 
-	return github.NewClient(t.Client())
+type tokenSource struct {
+	AccessToken string
+}
+
+func (c *tokenSource) Token() (*oauth2.Token, error) {
+	return &oauth2.Token{AccessToken: c.AccessToken}, nil
+}
+
+func newTokenSource(token string) oauth2.TokenSource {
+	source := &tokenSource{
+		AccessToken: token,
+	}
+	return oauth2.ReuseTokenSource(nil, source)
+}
+
+func newGitHubClient(token string) *github.Client {
+	return github.NewClient(oauth2.NewClient(context.Background(), newTokenSource(token)))
 }

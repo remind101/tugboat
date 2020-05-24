@@ -7,8 +7,7 @@ import (
 	"net/http"
 	"strings"
 
-	"code.google.com/p/goauth2/oauth"
-
+	"golang.org/x/oauth2"
 	"github.com/google/go-github/github"
 	"github.com/remind101/tugboat"
 	"github.com/remind101/tugboat/pkg/heroku"
@@ -129,10 +128,21 @@ func newHerokuClient(token string) *heroku.Service {
 	})
 }
 
-func newGitHubClient(token string) *github.Client {
-	t := &oauth.Transport{
-		Token: &oauth.Token{AccessToken: token},
-	}
+type tokenSource struct {
+	AccessToken string
+}
 
-	return github.NewClient(t.Client())
+func (c *tokenSource) Token() (*oauth2.Token, error) {
+	return &oauth2.Token{AccessToken: c.AccessToken}, nil
+}
+
+func newTokenSource(token string) oauth2.TokenSource {
+	source := &tokenSource{
+		AccessToken: token,
+	}
+	return oauth2.ReuseTokenSource(nil, source)
+}
+
+func newGitHubClient(token string) *github.Client {
+	return github.NewClient(oauth2.NewClient(context.Background(), newTokenSource(token)))
 }
