@@ -10,7 +10,7 @@ import (
 	"os"
 	"strings"
 
-	"code.google.com/p/go-uuid/uuid"
+	oauth "golang.org/x/oauth2"
 )
 
 var DefaultTransport = &Transport{}

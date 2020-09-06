@@ -2,6 +2,7 @@ package tugboat
 
 import (
 	"errors"
+	"fmt"
 	"reflect"
 	"testing"
 )
@@ -62,7 +63,7 @@ func TestUpdateStatus(t *testing.T) {
 		update := statusUpdate(tt.fn)
 
 		if got, want := update, tt.status; !reflect.DeepEqual(got, want) {
-			t.Fatalf("#%d: Status => %s; want %s", i, got, want)
+			t.Fatalf("#%d: Status => %s; want %s", i, fmt.Sprint(got), fmt.Sprint(want))
 		}
 	}
 }

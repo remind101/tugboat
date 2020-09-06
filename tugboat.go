@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"io"
 
-	"code.google.com/p/goauth2/oauth"
 	"github.com/google/go-github/github"
 	"github.com/joshk/pusher"
 	"github.com/mattes/migrate/migrate"
 	"golang.org/x/net/context"
+	"golang.org/x/oauth2"
 )
 
 // BaseURL is the baseURL where tugboat is running.
@@ -307,9 +307,8 @@ func newPusherClient(uri string) (Pusher, error) {
 }
 
 func newGitHubClient(token string) *github.Client {
-	t := &oauth.Transport{
-		Token: &oauth.Token{AccessToken: token},
-	}
-
-	return github.NewClient(t.Client())
+	tokenSource := oauth2.StaticTokenSource(&oauth2.Token{
+		AccessToken: token,
+	})
+	return github.NewClient(oauth2.NewClient(context.Background(), tokenSource))
 }
