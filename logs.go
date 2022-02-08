@@ -105,8 +105,13 @@ func (w *logWriter) Write(p []byte) (int, error) {
 
 	read := len(p)
 
+	var (
+		err error
+		b []byte
+	)
+
 	for {
-		b, err := r.ReadBytes('\n')
+		b, err = r.ReadBytes('\n')
 
 		// Heroku may send a null character as a heartbeat signal. We
 		// want to strip out any null characters, as inserting them into
@@ -115,16 +120,15 @@ func (w *logWriter) Write(p []byte) (int, error) {
 
 		if err != nil {
 			if err == io.EOF {
-				return read, createLine(line)
-			} else {
-				return read, err
+				err = createLine(line)
 			}
+			break
 		}
 
-		if err := createLine(line); err != nil {
-			return read, err
+		if err = createLine(line); err != nil {
+			break
 		}
 	}
 
-	return read, nil
+	return read, err
 }

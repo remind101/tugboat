@@ -1,0 +1,46 @@
+version: 2
+
+defaults: &defaults
+  working_directory: /home/circleci/go/src/github.com/remind101/tugboat
+
+workflows:
+  version: 2
+  build-and-test:
+    jobs:
+      - build:
+          context: docker-hub
+      - test:
+          context: docker-hub
+      - vet:
+          context: docker-hub
+
+jobs:
+  build:
+    <<: *defaults
+
+    docker:
+      - image: cimg/go:1.17
+
+    steps:
+      - checkout
+      - run: go build
+
+  test:
+    <<: *defaults
+
+    docker:
+      - image: cimg/go:1.17
+
+    steps:
+      - checkout
+      - run: go test
+
+  vet:
+    <<: *defaults
+
+    docker:
+      - image: cimg/go:1.17
+
+    steps:
+      - checkout
+      - run: go vet

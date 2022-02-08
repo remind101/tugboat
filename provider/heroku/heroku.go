@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"strings"
 
-	"code.google.com/p/goauth2/oauth"
+	oauth "golang.org/x/oauth2"
 
 	"github.com/google/go-github/github"
 	"github.com/remind101/tugboat"
